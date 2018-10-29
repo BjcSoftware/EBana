@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AE7DE008-62C6-4F01-AED3-4DED128A0BE9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Data</RootNamespace>
+    <AssemblyName>Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLite.CodeFirst, Version=1.5.1.25, Culture=neutral, PublicKeyToken=eb96ba0a78d831a7, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLite.CodeFirst.1.5.1.25\lib\net45\SQLite.CodeFirst.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArticlesSettings\ArticlesSettings.cs" />
+    <Compile Include="Repository\Credentials\CredentialsReader\CredentialsReader.cs" />
+    <Compile Include="Repository\Credentials\CredentialsReader\ICredentialsReader.cs" />
+    <Compile Include="Repository\Credentials\CredentialsUpdater\CredentialsUpdater.cs" />
+    <Compile Include="Repository\Credentials\CredentialsUpdater\ICredentialsUpdater.cs" />
+    <Compile Include="Repository\Reader\EfReader.cs" />
+    <Compile Include="Repository\Reader\EfReaderWithoutCaching.cs" />
+    <Compile Include="Repository\Reader\IReader.cs" />
+    <Compile Include="Factory\Article\ArticleFromRawArticleFactory.cs" />
+    <Compile Include="Factory\Article\IArticleFactory.cs" />
+    <Compile Include="Factory\Article\RawArticleToArticleMapper.cs" />
+    <Compile Include="Factory\RawArticle\IRawArticleFactory.cs" />
+    <Compile Include="ArticlesSettings\IArticlesSettings.cs" />
+    <Compile Include="Models\RawArticle.cs" />
+    <Compile Include="Factory\RawArticle\RawArticleExcelFactory.cs" />
+    <Compile Include="Models\Article.cs" />
+    <Compile Include="Models\Credentials.cs" />
+    <Compile Include="Models\Banalise.cs" />
+    <Compile Include="Models\EPI.cs" />
+    <Compile Include="Models\SEL.cs" />
+    <Compile Include="Models\TypeArticle.cs" />
+    <Compile Include="Models\TypeEpi.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Writer\EfWriter.cs" />
+    <Compile Include="Repository\Writer\IWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Excel\Excel.csproj">
+      <Project>{a8130e81-91f8-411c-9e09-530925b629b2}</Project>
+      <Name>Excel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
