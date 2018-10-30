@@ -1,19 +1,13 @@
-﻿/*
- * Par Benjamin Cararo
- * Email: benjamin.cararo@bjcperso.fr
- */
-
-using System;
+﻿using System;
 using Xl = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
-using System.Collections.Generic;
 
 namespace Excel
 {
 	public class ExcelFile
 	{
 		# region Constructeur / Destructeur
-		public ExcelFile(String excelFilePath)
+		public ExcelFile(string excelFilePath)
 		{
 			mXlApp = new Xl.Application();
 			mXlWorkbook = mXlApp.Workbooks.Open(excelFilePath);
@@ -70,7 +64,6 @@ namespace Excel
 
         public int RowCount()
 		{
-            //return mXlWorkSheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell).Row;
             mXlRange = (Xl.Range)mXlWorkSheet.Cells[mXlWorkSheet.Rows.Count, 1];
             return mXlRange.get_End(Xl.XlDirection.xlUp).Row;
         }
