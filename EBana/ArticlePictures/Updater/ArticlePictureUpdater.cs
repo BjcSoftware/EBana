@@ -17,6 +17,17 @@ namespace EBana.ArticlePictures
             this.fileService = fileService;
             this.pictureFileNameFormatter = pictureFileNameFormatter;
             this.articlePictureSettings = articlePictureSettings;
+
+            CreatePictureFolderIfDoesNotExist();
+        }
+
+        private void CreatePictureFolderIfDoesNotExist()
+        {
+            string pictureFolderPath = articlePictureSettings.PictureFolderPath;
+            if (!fileService.DirectoryExists(pictureFolderPath))
+            {
+                fileService.CreateDirectory(pictureFolderPath);
+            }
         }
 
         public void UpdatePictureOfArticle(Article articleToUpdate, Uri newPictureLocation)
