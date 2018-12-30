@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{778EF8A1-CEC3-49C8-A3E1-A68710ECA6EC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EBana.Domain</RootNamespace>
+    <AssemblyName>EBana.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BCrypt.Net, Version=0.1.5073.29922, Culture=neutral, PublicKeyToken=6bcd409ee6bc9292, processorArchitecture=MSIL">
+      <HintPath>..\packages\BCrypt-Official.0.1.109\lib\BCrypt.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArticlePictures\ArticlePictureFileNameFormatter\ArticlePictureFileNameFormatter.cs" />
+    <Compile Include="ArticlePictures\ArticlePictureFileNameFormatter\IArticlePictureFileNameFormatter.cs" />
+    <Compile Include="ArticlePictures\ArticlePictureSettings.cs" />
+    <Compile Include="ArticlePictures\Locator\ArticlePictureLocator.cs" />
+    <Compile Include="ArticlePictures\Locator\IArticlePictureLocator.cs" />
+    <Compile Include="ArticlePictures\Updater\ArticlePictureUpdater.cs" />
+    <Compile Include="ArticlePictures\Updater\IArticlePictureUpdater.cs" />
+    <Compile Include="ArticleStorageUpdater\ArticleStorageUpdater.cs" />
+    <Compile Include="IArticleRepository.cs" />
+    <Compile Include="ArticleSearchEngine\IArticleSearchEngine.cs" />
+    <Compile Include="ArticleSettings\ArticleSettings.cs" />
+    <Compile Include="ArticleSettings\IArticleSettings.cs" />
+    <Compile Include="IArticleProvider.cs" />
+    <Compile Include="ArticleStorageUpdater\IArticleStorageUpdater.cs" />
+    <Compile Include="ArticleSearchEngine\ISearchCriteriaProvider.cs" />
+    <Compile Include="Models\Article.cs" />
+    <Compile Include="Models\Banalise.cs" />
+    <Compile Include="Models\Credentials.cs" />
+    <Compile Include="Models\EPI.cs" />
+    <Compile Include="Models\SEL.cs" />
+    <Compile Include="Models\TypeArticle.cs" />
+    <Compile Include="Models\TypeEpi.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\Authenticator\Authenticator.cs" />
+    <Compile Include="Security\Authenticator\IAuthenticator.cs" />
+    <Compile Include="Security\Hash\BCryptHash.cs" />
+    <Compile Include="Security\Hash\IHash.cs" />
+    <Compile Include="Security\ICredentialsReader.cs" />
+    <Compile Include="Security\ICredentialsUpdater.cs" />
+    <Compile Include="Security\PasswordUpdater\IPasswordUpdater.cs" />
+    <Compile Include="Security\PasswordUpdater\PasswordUpdater.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EBana.Services\EBana.Services\EBana.Services.csproj">
+      <Project>{EDB65C51-2A9E-4834-878C-81DD72A1AF5B}</Project>
+      <Name>EBana.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

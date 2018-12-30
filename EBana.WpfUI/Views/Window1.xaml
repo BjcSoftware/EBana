@@ -1,0 +1,13 @@
+<mui:ModernWindow x:Class="EBana.WpfUI.Views.Window1"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+    Title="EBana" Height="810" Width="740"
+    ContentSource="/Views/MainMenu.xaml">
+
+    <mui:ModernWindow.TitleLinks>
+        <mui:Link DisplayName="A Propos" Source="/Views/About.xaml" />
+        <mui:Link DisplayName="Aide" Source="/Views/About.xaml" />
+    </mui:ModernWindow.TitleLinks>
+    
+</mui:ModernWindow>
