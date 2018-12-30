@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EBana.Domain.Models;
 using EBana.Services.File;
 
@@ -29,9 +30,9 @@ namespace EBana.Domain.ArticlePictures
             this.fileNameFormater = fileNameFormater;
             this.pictureSettings = pictureSettings;
 
-            CreatePictureFolderIfDoesNotExist();
-
             availableArticlePictureCache = new List<string>();
+
+            CreatePictureFolderIfDoesNotExist();
         }
 
         private void CreatePictureFolderIfDoesNotExist()
@@ -61,19 +62,39 @@ namespace EBana.Domain.ArticlePictures
 
         public bool IsArticleHavingAPicture(Article article)
         {
-            if(article != null)
+            if (article != null)
             {
-                if (availableArticlePictureCache.Count == 0)
-                {
-                    var availablePictureNames = fileService.GetAllFileNamesInFolder(pictureSettings.PictureFolderPath);
-                    availableArticlePictureCache.AddRange(availablePictureNames);
-                }
-
+                var existingPictureNames = GetExistingPictureNames();
                 string potentialPictureName = GetPictureFileNameFromArticle(article);
-                return availableArticlePictureCache.Contains(potentialPictureName);
+                return existingPictureNames.Contains(potentialPictureName);
             }
 
             return false;
+        }
+
+        private IEnumerable<string> GetExistingPictureNames()
+        {
+            // on utilise ici un système de cache pour limiter le nombre d'appels systèmes (qui peuvent être lents)
+            if (ArticlePictureCacheIsEmpty())
+            {
+                UpdateArticlePictureCache();
+            }
+
+            return availableArticlePictureCache;
+        }
+
+        private bool ArticlePictureCacheIsEmpty()
+        {
+            return availableArticlePictureCache.Count == 0;
+        }
+
+        private void UpdateArticlePictureCache()
+        {
+            var availablePictureNames = fileService
+                .GetAllFileNamesInFolder(pictureSettings.PictureFolderPath);
+
+            availableArticlePictureCache.Clear();
+            availableArticlePictureCache.AddRange(availablePictureNames);
         }
 
         private string GetPictureFileNameFromArticle(Article article)
