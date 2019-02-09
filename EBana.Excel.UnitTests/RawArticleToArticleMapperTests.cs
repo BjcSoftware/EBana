@@ -45,8 +45,7 @@ namespace EBana.Excel.UnitTests
                 Ref = "N0000000",
                 Libelle = "Libelle",
                 Localisation = "Localisation",
-                IdMagasin = articlesSettings.GetIdMagasinBanalise()
-            };
+                IdMagasin = articlesSettings.IdMagasinBanalise            };
 
             return validRawArticleBanalise;
         }
@@ -69,7 +68,7 @@ namespace EBana.Excel.UnitTests
                 Ref = "N0000000",
                 Libelle = "Libelle",
                 Localisation = "Localisation",
-                IdMagasin = articlesSettings.GetIdMagasinBanalise(),
+                IdMagasin = articlesSettings.IdMagasinBanalise,
                 TypeEpi = new TypeEpi() { Libelle = "TypeEPI" }
             };
 
@@ -94,8 +93,7 @@ namespace EBana.Excel.UnitTests
                 Ref = "I0000000",
                 Libelle = "Libelle",
                 Localisation = "Localisation",
-                IdMagasin = articlesSettings.GetIdMagasinSEL()
-            };
+                IdMagasin = articlesSettings.IdMagasinSEL            };
 
             return validRawArticleSEL;
         }

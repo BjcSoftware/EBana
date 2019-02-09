@@ -37,7 +37,7 @@ namespace EBana.Excel.UnitTests
             string nullSource = null;
 
             var exception = Assert.Catch<ArgumentNullException>(
-                () => provider.GetArticles(nullSource));
+                () => provider.GetArticlesFrom(nullSource));
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace EBana.Excel.UnitTests
                 sampleArticle
             };
 
-            List<Article> actualArticles = articleProvider.GetArticles("articles.xls").ToList();
+            List<Article> actualArticles = articleProvider.GetArticlesFrom("articles.xls").ToList();
 
             Assert.AreEqual(
                 expectedTwoArticles,
@@ -66,7 +66,7 @@ namespace EBana.Excel.UnitTests
                 CreateRawArticleProviderProvidingNoRawArticle());
             var expectedArticles = new List<Article>();
 
-            var actualArticles = articleProvider.GetArticles("empty.xls");
+            var actualArticles = articleProvider.GetArticlesFrom("empty.xls");
 
             Assert.AreEqual(
                 expectedArticles,
@@ -109,7 +109,7 @@ namespace EBana.Excel.UnitTests
             };
 
             rawArticleProvider
-                .GetRawArticles(Arg.Any<string>())
+                .GetRawArticlesFrom(Arg.Any<string>())
                 .Returns(twoRawArticles);
 
             return rawArticleProvider;
@@ -130,7 +130,7 @@ namespace EBana.Excel.UnitTests
             var emptyList = new List<RawArticle>();
             var provider = Substitute.For<IRawArticleProvider>();
             provider
-                .GetRawArticles(Arg.Any<string>())
+                .GetRawArticlesFrom(Arg.Any<string>())
                 .Returns(emptyList);
 
             return provider;

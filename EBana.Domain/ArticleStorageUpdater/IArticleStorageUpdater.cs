@@ -8,6 +8,6 @@ namespace EBana.Domain
     /// </summary>
     public interface IArticleStorageUpdater
     {
-        void ReplaceAvailableArticlesWith(IEnumerable<Article> articles);
+        void ReplaceAvailableArticlesWith(IEnumerable<Article> newArticles);
     }
 }

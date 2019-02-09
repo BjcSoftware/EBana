@@ -11,174 +11,174 @@ using EBana.Domain.SearchEngine;
 
 namespace EBana.WpfUI.ViewModels
 {
-    public class CatalogueViewModel : Notifier
+	public class CatalogueViewModel : Notifier
 	{
-        public ICommand SearchCommand { get; private set; }
-        public ICommand ShowSelectedArticleFluCommand { get; private set; }
+		public ICommand SearchCommand { get; private set; }
+		public ICommand ShowSelectedArticleFluCommand { get; private set; }
 
-        private readonly IArticlePictureLocator articlePictureLocator;
-        private readonly IMessageBoxDialogService messageBoxService;
-        private readonly IWebBrowserService webBrowserService;
-        private readonly ISearchSettingsProvider searchSettingsProvider;
-        private readonly IArticleSearchEngine articleSearchEngine;
+		private readonly IArticlePictureLocator articlePictureLocator;
+		private readonly IMessageBoxDialogService messageBoxService;
+		private readonly IWebBrowserService webBrowserService;
+		private readonly ISearchSettingsProvider searchSettingsProvider;
+		private readonly IArticleSearchEngine articleSearchEngine;
 
-        public CatalogueViewModel(
-            IArticlePictureLocator articlePictureLocator,
-            IMessageBoxDialogService messageBoxService, 
-            IWebBrowserService webBrowserService,
-            ISearchSettingsProvider searchSettingsProvider,
-            IArticleSearchEngine articleSearchEngine)
+		public CatalogueViewModel(
+			IArticlePictureLocator articlePictureLocator,
+			IMessageBoxDialogService messageBoxService, 
+			IWebBrowserService webBrowserService,
+			ISearchSettingsProvider searchSettingsProvider,
+			IArticleSearchEngine articleSearchEngine)
 		{
-            if (articlePictureLocator == null)
-                throw new ArgumentNullException("articlePictureLocator");
-            if (messageBoxService == null)
-                throw new ArgumentNullException("messageBoxService");
-            if (webBrowserService == null)
-                throw new ArgumentNullException("webBrowserService");
-            if (searchSettingsProvider == null)
-                throw new ArgumentNullException("searchSettingsProvider");
-            if (articleSearchEngine == null)
-                throw new ArgumentNullException("articleSearchEngine");
+			if (articlePictureLocator == null)
+				throw new ArgumentNullException("articlePictureLocator");
+			if (messageBoxService == null)
+				throw new ArgumentNullException("messageBoxService");
+			if (webBrowserService == null)
+				throw new ArgumentNullException("webBrowserService");
+			if (searchSettingsProvider == null)
+				throw new ArgumentNullException("searchSettingsProvider");
+			if (articleSearchEngine == null)
+				throw new ArgumentNullException("articleSearchEngine");
 
-            this.articlePictureLocator = articlePictureLocator;
-            this.messageBoxService = messageBoxService;
-            this.webBrowserService = webBrowserService;
-            this.searchSettingsProvider = searchSettingsProvider;
-            this.articleSearchEngine = articleSearchEngine;
+			this.articlePictureLocator = articlePictureLocator;
+			this.messageBoxService = messageBoxService;
+			this.webBrowserService = webBrowserService;
+			this.searchSettingsProvider = searchSettingsProvider;
+			this.articleSearchEngine = articleSearchEngine;
 
-            SearchCommand = new RelayCommand(() => SearchArticles());
-            ShowSelectedArticleFluCommand = new RelayCommand(() => ShowSelectedArticleFlu());
-            
-            InitPropertiesBoundToUI();
-        }
+			SearchCommand = new RelayCommand(() => Search());
+			ShowSelectedArticleFluCommand = new RelayCommand(() => ShowSelectedArticleFlu());
+			
+			InitPropertiesBoundToUI();
+		}
 
-        private void InitPropertiesBoundToUI()
-        {
-            SearchQuery = string.Empty;
-            InitAvailableArticleTypesList();
-            InitAvailableEpiTypesList();
-            SearchResults = new ObservableCollection<Article>();
-        }
-
-        private void InitAvailableArticleTypesList()
-        {
-            var articlesTypes = searchSettingsProvider.GetArticleTypes();
-            AvailableArticleTypes = new ObservableCollection<TypeArticle>(articlesTypes);
-            SelectDefaultArticleType();
-        }
-
-        private void SelectDefaultArticleType()
-        {
-            if (AvailableArticleTypes.Count != 0)
-            {
-                SelectedArticleType = AvailableArticleTypes.First();
-            }
-        }
-
-        private void InitAvailableEpiTypesList()
-        {
-            var epiTypes = searchSettingsProvider.GetEpiTypes();
-            AvailableEpiTypes = new ObservableCollection<TypeEpi>(epiTypes);
-            SelectDefaultEpiType();
-        }
-
-        private void SelectDefaultEpiType()
-        {
-            if (AvailableEpiTypes.Count != 0)
-            {
-                SelectedEpiType = AvailableEpiTypes.First();
-            }
-        }
-
-        /// <summary>
-        /// Lancer une recherche à partir des paramètres de recherche actuels.
-        /// Les résultats sont placés dans la liste SearchResults.
-        /// </summary>
-        private void SearchArticles()
+		private void InitPropertiesBoundToUI()
 		{
-            RefreshSearchResults();
+			SearchQuery = string.Empty;
+			InitAvailableArticleTypesList();
+			InitAvailableEpiTypesList();
+			SearchResults = new ObservableCollection<Article>();
+		}
 
-            if (SearchResults.Count == 0)
-            {
-                NotifyUserThatNoResultFound();
-            }
-        }
+		private void InitAvailableArticleTypesList()
+		{
+			var articlesTypes = searchSettingsProvider.GetArticleTypes();
+			AvailableArticleTypes = new ObservableCollection<TypeArticle>(articlesTypes);
+			SelectDefaultArticleType();
+		}
 
-        private void RefreshSearchResults()
-        {
-            IEnumerable<Article> foundArticles = PerformSearch();
-            ResetSearchResultsTo(foundArticles);
-        }
+		private void SelectDefaultArticleType()
+		{
+			if (AvailableArticleTypes.Count != 0)
+			{
+				SelectedArticleType = AvailableArticleTypes.First();
+			}
+		}
 
-        private IEnumerable<Article> PerformSearch()
-        {
-            IEnumerable<Article> foundArticles;
-            if(IsSearchedArticleSel())
-            {
-                foundArticles = articleSearchEngine
-                    .SearchSel(SearchQuery);
-            }
-            else if (IsSearchedArticleEpi())
-            {
-                foundArticles = articleSearchEngine
-                    .SearchEpi(SearchQuery, SelectedEpiType);
-            }
-            else
-            {
-                foundArticles = articleSearchEngine
-                    .SearchBanalise(SearchQuery);
-            }
+		private void InitAvailableEpiTypesList()
+		{
+			var epiTypes = searchSettingsProvider.GetEpiTypes();
+			AvailableEpiTypes = new ObservableCollection<TypeEpi>(epiTypes);
+			SelectDefaultEpiType();
+		}
 
-            return foundArticles;
-        }
+		private void SelectDefaultEpiType()
+		{
+			if (AvailableEpiTypes.Count != 0)
+			{
+				SelectedEpiType = AvailableEpiTypes.First();
+			}
+		}
 
-        private bool IsSearchedArticleSel()
-        {
-            return SelectedArticleType.Libelle == "SEL";
-        }
+		/// <summary>
+		/// Lancer une recherche à partir des paramètres de recherche actuels.
+		/// Les résultats sont placés dans la liste SearchResults.
+		/// </summary>
+		private void Search()
+		{
+			RefreshSearchResults();
 
-        private bool IsSearchedArticleEpi()
-        {
-            return IsSearchedArticleEPI;
-        }
+			if (SearchResults.Count == 0)
+			{
+				NotifyUserThatNoResultFound();
+			}
+		}
 
-        private void ResetSearchResultsTo(IEnumerable<Article> articles)
-        {
-            SearchResults = new ObservableCollection<Article>(articles);
-        }
+		private void RefreshSearchResults()
+		{
+			IEnumerable<Article> foundArticles = PerformSearch();
+			ResetSearchResultsTo(foundArticles);
+		}
 
-        private void NotifyUserThatNoResultFound()
-        {
-            messageBoxService.Show(
-                "Information",
-                "Aucun résultat ne correspond à vos critères de recherche.",
-                DialogButton.Ok);
-        }
+		private IEnumerable<Article> PerformSearch()
+		{
+			IEnumerable<Article> foundArticles;
+			if(IsSearchedArticleSel())
+			{
+				foundArticles = articleSearchEngine
+					.SearchSel(SearchQuery);
+			}
+			else if (IsSearchedArticleEpi())
+			{
+				foundArticles = articleSearchEngine
+					.SearchEpi(SearchQuery, SelectedEpiType);
+			}
+			else
+			{
+				foundArticles = articleSearchEngine
+					.SearchBanalise(SearchQuery);
+			}
 
-        private void ShowSelectedArticleFlu()
-        {
-            string url = ((Banalise)SelectedArticle).LienFlu;
-            webBrowserService.Open(url);
-        }
+			return foundArticles;
+		}
 
-        private void OnSelectedArticleChanged()
-        {
-            articlePictureLocator.ClearPictureCache();
-            UpdateDisplayedArticlePicture();
-        }
+		private bool IsSearchedArticleSel()
+		{
+			return SelectedArticleType.Libelle == "SEL";
+		}
 
-        private void UpdateDisplayedArticlePicture()
-        {
-            SelectedArticlePicturePath = articlePictureLocator
-                .GetArticlePictureLocationOrDefault(SelectedArticle).OriginalString;
-        }
+		private bool IsSearchedArticleEpi()
+		{
+			return IsSearchedArticleEPI;
+		}
 
-        #region Propriétés bound à l'UI
+		private void ResetSearchResultsTo(IEnumerable<Article> articles)
+		{
+			SearchResults = new ObservableCollection<Article>(articles);
+		}
 
-        #region Paramètres de recherche
+		private void NotifyUserThatNoResultFound()
+		{
+			messageBoxService.Show(
+				"Information",
+				"Aucun résultat ne correspond à vos critères de recherche.",
+				DialogButton.Ok);
+		}
 
-        #region Type d'article
-        private ObservableCollection<TypeArticle> mAvailableArticleTypes;
+		private void ShowSelectedArticleFlu()
+		{
+			string url = ((Banalise)SelectedArticle).LienFlu;
+			webBrowserService.Open(url);
+		}
+
+		private void OnSelectedArticleChanged()
+		{
+			articlePictureLocator.ClearPictureCache();
+			UpdateDisplayedArticlePicture();
+		}
+
+		private void UpdateDisplayedArticlePicture()
+		{
+			SelectedArticlePicturePath = articlePictureLocator
+				.GetArticlePictureLocationOrDefault(SelectedArticle).OriginalString;
+		}
+
+		#region Propriétés bound à l'UI
+
+		#region Paramètres de recherche
+
+		#region Type d'article
+		private ObservableCollection<TypeArticle> mAvailableArticleTypes;
 		public ObservableCollection<TypeArticle> AvailableArticleTypes
 		{
 			get { return mAvailableArticleTypes; }
@@ -203,10 +203,10 @@ namespace EBana.WpfUI.ViewModels
 		#region Libellé / Référence à rechercher
 		private string mSearchQuery;
 		public string SearchQuery
-        {
+		{
 			get { return mSearchQuery; }
 			set {
-                mSearchQuery = value;
+				mSearchQuery = value;
 				OnPropertyChanged("SearchQuery");
 			}
 		}
@@ -216,7 +216,7 @@ namespace EBana.WpfUI.ViewModels
 		{
 			get { return mAvailableSearchCriterias; }
 			set {
-                mAvailableSearchCriterias = value;
+				mAvailableSearchCriterias = value;
 				OnPropertyChanged("AvailableSearchCriterias");
 			}
 		}
@@ -254,43 +254,43 @@ namespace EBana.WpfUI.ViewModels
 			}
 		}
 
-        #endregion
+		#endregion
 
-        #endregion
+		#endregion
 
-        #region Résultats de recherche
-        private ObservableCollection<Article> mSearchResults;
-        public ObservableCollection<Article> SearchResults
-        {
-            get { return mSearchResults; }
-            set
-            {
-                mSearchResults = value;
-                OnPropertyChanged("SearchResults");
-            }
-        }
+		#region Résultats de recherche
+		private ObservableCollection<Article> mSearchResults;
+		public ObservableCollection<Article> SearchResults
+		{
+			get { return mSearchResults; }
+			set
+			{
+				mSearchResults = value;
+				OnPropertyChanged("SearchResults");
+			}
+		}
 
-        private Article mSelectedArticle;
+		private Article mSelectedArticle;
 		public Article SelectedArticle
 		{
 			get { return mSelectedArticle; }
 			set {
 				mSelectedArticle = value;
 				OnPropertyChanged("SelectedArticle");
-                OnSelectedArticleChanged();
+				OnSelectedArticleChanged();
 			}
 		}
 
-        private string mSelectedArticlePicturePath;
-        public string SelectedArticlePicturePath
-        {
-            get { return mSelectedArticlePicturePath; }
-            set
-            {
-                mSelectedArticlePicturePath = value;
-                OnPropertyChanged("SelectedArticlePicturePath");
-            }
-        }
+		private string mSelectedArticlePicturePath;
+		public string SelectedArticlePicturePath
+		{
+			get { return mSelectedArticlePicturePath; }
+			set
+			{
+				mSelectedArticlePicturePath = value;
+				OnPropertyChanged("SelectedArticlePicturePath");
+			}
+		}
 
 		#endregion
 		

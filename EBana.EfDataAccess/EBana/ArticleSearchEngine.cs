@@ -64,7 +64,7 @@ namespace EBana.EfDataAccess
             return banaliseReader
                 .Find(a => a.Libelle.ToLower().Contains(searchQuery) ||
                             a.Ref.ToLower().Contains(searchQuery))
-                .OrderBy(a => a.Ref); ;
+                .OrderBy(a => a.Ref);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace EBana.EfDataAccess
                 .Find(a => (a.Libelle.ToLower().Contains(searchQuery) ||
                             a.Ref.ToLower().Contains(searchQuery)) &&
                             a.TypeEpi.Equals(type))
-                .OrderBy(a => a.Ref); ;
+                .OrderBy(a => a.Ref);
         }
 
         /// <summary>

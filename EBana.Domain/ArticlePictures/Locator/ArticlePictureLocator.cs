@@ -62,14 +62,11 @@ namespace EBana.Domain.ArticlePictures
 
         public bool IsArticleHavingAPicture(Article article)
         {
-            if (article != null)
-            {
-                var existingPictureNames = GetExistingPictureNames();
-                string potentialPictureName = GetPictureFileNameFromArticle(article);
-                return existingPictureNames.Contains(potentialPictureName);
-            }
-
-            return false;
+            if (article == null) return false;
+            
+            var existingPictureNames = GetExistingPictureNames();
+            string potentialPictureName = GetPictureFileNameFromArticle(article);
+            return existingPictureNames.Contains(potentialPictureName);
         }
 
         private IEnumerable<string> GetExistingPictureNames()

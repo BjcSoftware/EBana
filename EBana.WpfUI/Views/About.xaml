@@ -7,8 +7,7 @@
     <Grid Style="{StaticResource ContentRoot}">
         <ScrollViewer>
             <StackPanel MinWidth="200">
-                <TextBlock Text="A propos" Style="{StaticResource Heading2}" />
-                <TextBlock Text="EBana" />
+                <TextBlock Text="A propos - eBana" Style="{StaticResource Heading2}" />
                 <TextBlock Text="Conçu par Benjamin Cararo" Margin="0 10 0 0"/>
                 <TextBlock Text="Email: benjamin.cararo@bjcperso.fr"/>
             </StackPanel>

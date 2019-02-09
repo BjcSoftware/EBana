@@ -13,6 +13,9 @@ namespace EBana.EfDataAccess.Repository
 
         public EfReaderWithoutCaching(EfReader<TEntity> decoratedReader)
         {
+            if (decoratedReader == null)
+                throw new ArgumentNullException("decoratedReader");
+
             this.decoratedReader = decoratedReader;
         }
 

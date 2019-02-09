@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 
 namespace EBana.EfDataAccess.Repository
@@ -11,6 +12,9 @@ namespace EBana.EfDataAccess.Repository
 
         public EfWriter(DbContext context)
         {
+            if (context == null)
+                throw new ArgumentNullException("context");
+
             this.context = context;
             entities = this.context.Set<TEntity>();
         }

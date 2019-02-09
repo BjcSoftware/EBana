@@ -17,10 +17,10 @@ namespace EBana.Domain
             this.articleRepository = articleRepository;
         }
 		
-		public void ReplaceAvailableArticlesWith(IEnumerable<Article> articles)
+		public void ReplaceAvailableArticlesWith(IEnumerable<Article> newArticles)
         {
             articleRepository.RemoveAll();
-            articleRepository.AddRange(articles);
+            articleRepository.AddRange(newArticles);
         }
 	}
 }

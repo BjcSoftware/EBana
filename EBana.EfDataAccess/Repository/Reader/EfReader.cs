@@ -14,6 +14,9 @@ namespace EBana.EfDataAccess.Repository
 
         public EfReader(DbContext context)
         {
+            if (context == null)
+                throw new ArgumentNullException("context");
+
             Context = context;
             Entities = Context.Set<TEntity>();
         }

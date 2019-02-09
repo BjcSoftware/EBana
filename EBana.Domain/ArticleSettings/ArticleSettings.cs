@@ -2,17 +2,11 @@
 {
     public class ArticleSettings : IArticleSettings
     {
-        public int GetIdMagasinBanalise()
-        {
-            return idMagasinBanalise;
-        }
+        public int IdMagasinBanalise => m_IdMagasinBanalise;
 
-        public int GetIdMagasinSEL()
-        {
-            return idMagasinSEL;
-        }
+        public int IdMagasinSEL => m_IdMagasinSEL;
 
-        private const int idMagasinBanalise = 1001;
-        private const int idMagasinSEL = 6001;
+        private const int m_IdMagasinBanalise = 1001;
+        private const int m_IdMagasinSEL = 6001;
     }
 }

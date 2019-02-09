@@ -55,7 +55,7 @@ namespace EBana.Excel
 
         private bool IsRawArticleSEL(RawArticle rawArticle)
         {
-            return rawArticle.IdMagasin == articleSettings.GetIdMagasinSEL();
+            return rawArticle.IdMagasin == articleSettings.IdMagasinSEL;
         }
 
         private bool IsRawArticleEPI(RawArticle rawArticle)

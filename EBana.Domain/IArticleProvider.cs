@@ -8,6 +8,6 @@ namespace EBana.Domain
     /// </summary>
     public interface IArticleProvider
     {
-        IEnumerable<Article> GetArticles(string source);
+        IEnumerable<Article> GetArticlesFrom(string source);
     }
 }

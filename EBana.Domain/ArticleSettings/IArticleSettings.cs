@@ -2,7 +2,7 @@
 {
     public interface IArticleSettings
     {
-        int GetIdMagasinBanalise();
-        int GetIdMagasinSEL();
+        int IdMagasinBanalise { get; }
+        int IdMagasinSEL { get; }
     }
 }

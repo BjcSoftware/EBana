@@ -61,7 +61,7 @@ namespace EBana.WpfUI.ViewModels
 
         private void Update()
         {
-            var newArticles = articleProvider.GetArticles(UpdateSource);
+            var newArticles = articleProvider.GetArticlesFrom(UpdateSource);
             updater.ReplaceAvailableArticlesWith(newArticles);
         }
 

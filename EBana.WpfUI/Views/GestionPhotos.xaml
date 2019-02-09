@@ -23,6 +23,37 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <!-- Permet de créer des placeholders dans les TextBoxes -->
+        <Style x:Key="placeHolder" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <TextBox Text="{Binding Path=Text,
+                                                RelativeSource={RelativeSource TemplatedParent}, 
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                 x:Name="textSource" 
+                                 Background="Transparent" 
+                                 Panel.ZIndex="2" />
+                            <TextBox Text="{TemplateBinding Tag}" Background="{TemplateBinding Background}" Panel.ZIndex="1">
+                                <TextBox.Style>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Setter Property="Foreground" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Text, Source={x:Reference textSource}}" Value="">
+                                                <Setter Property="Foreground" Value="LightGray"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 	
 	<Grid Style="{StaticResource ContentRoot}">
@@ -65,10 +96,11 @@
                        VerticalAlignment="Center"/>
 			
 			<!-- Raccourci clavier pour rechercher -->
-			<TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" 
                      Grid.Column="1"
-                     Margin="5 0">
-				<TextBox.InputBindings>
+                     Margin="5 0"
+                     Style="{StaticResource placeHolder}" Tag=" Entrez un libellé, une référence ou laisser le champ vide pour afficher tous les articles">
+                <TextBox.InputBindings>
                             <KeyBinding Command="{Binding SearchCommand}"  
                                         Key="Return" />
             	</TextBox.InputBindings>

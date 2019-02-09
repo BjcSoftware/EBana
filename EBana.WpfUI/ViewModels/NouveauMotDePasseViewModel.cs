@@ -86,16 +86,18 @@ namespace EBana.WpfUI.ViewModels
 
         private void NotifyUserThatPasswordSuccessfullyChanged()
         {
-            messageBoxService.Show("Succès",
-                        "Le mot de passe a été mis à jour.",
-                        DialogButton.Ok);
+            messageBoxService.Show(
+                "Succès",
+                "Le mot de passe a été mis à jour.",
+                DialogButton.Ok);
         }
 
         private void NotifyUserThatPasswordDidNotChanged()
         {
-            messageBoxService.Show("Erreur",
-                            "Les informations saisies sont incorrectes: les mots de passe ne correspondent pas ou le mot de passe actuel saisit n'est pas correct.",
-                            DialogButton.Ok);
+            messageBoxService.Show(
+                "Erreur",
+                "Les informations saisies sont incorrectes: les mots de passe ne correspondent pas ou le mot de passe actuel saisit n'est pas correct.",
+                DialogButton.Ok);
         }
 
         private void ClearPasswordBoxes()

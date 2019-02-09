@@ -1,5 +1,6 @@
 ﻿using EBana.Domain.Security;
 using EBana.Domain.Models;
+using System;
 
 namespace EBana.EfDataAccess.Repository
 {
@@ -8,14 +9,24 @@ namespace EBana.EfDataAccess.Repository
         private readonly IWriter<Credentials> credentialsWriter;
         private readonly ICredentialsReader credentialsReader;
 
-        public CredentialsUpdater(IWriter<Credentials> credentialsWriter, ICredentialsReader credentialsReader)
+        public CredentialsUpdater(
+            IWriter<Credentials> credentialsWriter, 
+            ICredentialsReader credentialsReader)
         {
+            if (credentialsWriter == null)
+                throw new ArgumentNullException("credentialsWriter");
+            if (credentialsReader == null)
+                throw new ArgumentNullException("credentialsReader");
+
             this.credentialsWriter = credentialsWriter;
             this.credentialsReader = credentialsReader;
         }
 
         public void Update(Credentials newCredentials)
         {
+            if (newCredentials == null)
+                throw new ArgumentNullException("newCredentials");
+
             RemoveCurrentCredentials();
             credentialsWriter.Add(newCredentials);
             credentialsWriter.Save();

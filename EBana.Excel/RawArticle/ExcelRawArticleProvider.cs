@@ -26,7 +26,7 @@ namespace EBana.Excel
             this.excelFileFactory = excelFileFactory;
         }
 
-        public List<RawArticle> GetRawArticles(string source)
+        public List<RawArticle> GetRawArticlesFrom(string source)
         {
             if (source == null)
                 throw new ArgumentNullException("source");

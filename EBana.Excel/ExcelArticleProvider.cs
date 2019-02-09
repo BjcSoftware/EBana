@@ -29,12 +29,15 @@ namespace EBana.Excel
             this.rawArticleProvider = rawArticleProvider;
         }
 
-        public IEnumerable<Article> GetArticles(string source)
+        /// <summary>
+        /// Lire les articles du fichier Excel <source>
+        /// </summary>
+        public IEnumerable<Article> GetArticlesFrom(string source)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
 
-            rawArticles = rawArticleProvider.GetRawArticles(source);
+            rawArticles = rawArticleProvider.GetRawArticlesFrom(source);
 
             createdArticlesCount = 0;
             List<Article> articles = new List<Article>(rawArticles.Count);

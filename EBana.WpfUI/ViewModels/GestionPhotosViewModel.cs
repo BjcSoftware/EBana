@@ -106,9 +106,10 @@ namespace EBana.WpfUI.ViewModels
 
         private void NotifyUserThatNoResultFound()
         {
-            messageBoxService.Show("Information",
-                                "Aucun résultat ne correspond à vos critères de recherche.",
-                                DialogButton.Ok);
+            messageBoxService.Show(
+                "Information",
+                "Aucun résultat ne correspond à vos critères de recherche.",
+                DialogButton.Ok);
         }
 
         /// <summary>
@@ -123,7 +124,7 @@ namespace EBana.WpfUI.ViewModels
         }
 
         /// <summary>
-        /// Sélectionner une nouvelle photo
+        /// Sélectionner une nouvelle photo pour l'article sélectionné
         /// </summary>
         private void SelectNewPictureFile()
         {
@@ -244,6 +245,7 @@ namespace EBana.WpfUI.ViewModels
             }
 		}
 
+        // propriété utilisée dans le xaml de la vue associée
         private bool mHasTheUserSelectedANewPicture;
         public bool HasTheUserSelectedANewPicture
         {

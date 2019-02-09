@@ -16,7 +16,7 @@ namespace EBana.Excel.UnitTests
                 CreateExcelRawArticleProvider(
                     GetRawArticleDataForTwoArticles());
 
-            var actualRawArticles = rawArticleProvider.GetRawArticles("articles.xls");
+            var actualRawArticles = rawArticleProvider.GetRawArticlesFrom("articles.xls");
             
             var expectedRawArticles = GetExpectedRawArticlesForTwoArticles();
             Assert.AreEqual(
@@ -31,7 +31,7 @@ namespace EBana.Excel.UnitTests
             ExcelRawArticleProvider rawArticleProvider =
                 CreateExcelRawArticleProvider(emptyFileData);
 
-            var rawArticles = rawArticleProvider.GetRawArticles("empty.xls");
+            var rawArticles = rawArticleProvider.GetRawArticlesFrom("empty.xls");
 
             Assert.AreEqual(
                 expected: 0,
@@ -65,7 +65,7 @@ namespace EBana.Excel.UnitTests
                 CreateExcelRawArticleProvider();
 
             var exception = Assert.Catch<ArgumentNullException>(
-                () => rawArticleProvider.GetRawArticles(null));
+                () => rawArticleProvider.GetRawArticlesFrom(null));
         }
 
         private List<RawArticle> GetExpectedRawArticlesForTwoArticles()

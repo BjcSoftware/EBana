@@ -7,6 +7,6 @@ namespace EBana.Excel
     /// </summary>
     public interface IRawArticleProvider
     {
-        List<RawArticle> GetRawArticles(string source);
+        List<RawArticle> GetRawArticlesFrom(string source);
     }
 }
