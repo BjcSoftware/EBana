@@ -42,13 +42,17 @@ namespace EBana.Domain.ArticlePictures
             Article articleToUpdate, 
             Uri newPictureLocation)
         {
-            string pictureFolderPath = articlePictureSettings.PictureFolderPath;
-            string pictureFileName = GetPictureFileNameFromArticle(articleToUpdate);
-            string updatedPictureLocation = $"{pictureFolderPath}/{pictureFileName}";
-
             fileService.Copy(
-                newPictureLocation.OriginalString, 
-                updatedPictureLocation);
+                newPictureLocation.OriginalString,
+                GetPictureLocation(articleToUpdate));
+        }
+
+        private string GetPictureLocation(Article article)
+        {
+            string pictureFolderPath = articlePictureSettings.PictureFolderPath;
+            string pictureFileName = GetPictureFileNameFromArticle(article);
+            string pictureLocation = $"{pictureFolderPath}/{pictureFileName}";
+            return pictureLocation;
         }
 
         private string GetPictureFileNameFromArticle(Article article)

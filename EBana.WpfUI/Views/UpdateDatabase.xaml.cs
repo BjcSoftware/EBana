@@ -17,71 +17,67 @@ namespace EBana.WpfUI.Views
 		public UpdateDatabase()
 		{
 			InitializeComponent();
-            DataContext = CreateViewModel();
+			DataContext = CreateViewModel();
 		}
 
-        private UpdateArticlesViewModel CreateViewModel()
-        {
-            return new UpdateArticlesViewModel(
-                CreateFileDialogService(),
-                new MessageBoxDialogService(),
-                CreateUpdater(),
-                CreateArticleProvider());
-        }
+		private UpdateArticlesViewModel CreateViewModel()
+		{
+			return new UpdateArticlesViewModel(
+				CreateFileDialogService(),
+				new MessageBoxDialogService(),
+				CreateUpdater(),
+				CreateArticleProvider());
+		}
 
-        private IFileDialogService CreateFileDialogService()
-        {
-            return new WindowsFileDialogService
-            {
-                Filter = "Fichiers Excel (*.xlsx;*.xls)|*xlsx;*xls|Tous les fichiers (*.*)|*.*"
-            };
-        }
+		private IFileDialogService CreateFileDialogService()
+		{
+			return new WindowsFileDialogService
+			{
+				Filter = "Fichiers Excel (*.xlsx;*.xls)|*xlsx;*xls|Tous les fichiers (*.*)|*.*"
+			};
+		}
 
-        private IArticleStorageUpdater CreateUpdater()
-        {
-            DbContext context = CreateDbContext();
+		private IArticleStorageUpdater CreateUpdater()
+		{
+			DbContext context = CreateDbContext();
 
-            IWriter<Article> articleWriter = 
-                new EfWriter<Article>(context);
-            IWriter<TypeEpi> typeEpiWriter = 
-                new EfWriter<TypeEpi>(context);
+			IWriter<Article> articleWriter = 
+				new EfWriter<Article>(context);
+			IWriter<TypeEpi> typeEpiWriter = 
+				new EfWriter<TypeEpi>(context);
 
-            return new ArticleStorageUpdater(
-                new ArticleRepository(
-                    articleWriter,
-                    typeEpiWriter));
-        }
+			return new ArticleStorageUpdater(
+				new ArticleRepository(
+					articleWriter,
+					typeEpiWriter));
+		}
 
-        private DbContext CreateDbContext()
-        {
-            return new EBanaContext(
-                new BCryptHash());
-        }
+		private DbContext CreateDbContext()
+		{
+			return new EBanaContext(
+				new BCryptHash());
+		}
 
-        private IArticleProvider CreateArticleProvider()
-        {
-            IRawArticleProvider rawArticleProvider = 
-                CreateRawArticleProvider();
+		private IArticleProvider CreateArticleProvider()
+		{
+			return new ExcelArticleProvider(
+				CreateRawArticleProvider(),
+				CreateRawArticleToArticleMapper());
+		}
 
-            IRawArticleToArticleMapper rawArticleToArticleMapper = 
-                CreateRawArticleToArticleMapper();
+		private IRawArticleProvider CreateRawArticleProvider()
+		{
+			return new ExcelRawArticleProvider(
+				new RecordToRawArticleMapperWithEpiCaching(
+					new RecordToRawArticleMapper(
+						new ArticleFieldToRecordFieldMapping())),
+				new ExcelFileFactory());
+		}
 
-            return new ExcelArticleProvider(
-                rawArticleProvider,
-                rawArticleToArticleMapper);
-        }
-
-        private IRawArticleProvider CreateRawArticleProvider()
-        {
-            return new ExcelRawArticleProvider(
-                new ArticleFieldToColumnMapping(),
-                new ExcelFileFactory());
-        }
-
-        private IRawArticleToArticleMapper CreateRawArticleToArticleMapper()
-        {
-            return new Excel.RawArticleToArticleMapper(
-                new ArticleSettings());
-        }
-    }
+		private IRawArticleToArticleMapper CreateRawArticleToArticleMapper()
+		{
+			return new RawArticleToArticleMapper(
+				new ArticleSettings());
+		}
+	}
 }

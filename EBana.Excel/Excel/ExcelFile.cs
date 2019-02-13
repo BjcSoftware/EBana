@@ -1,91 +1,84 @@
-﻿using System;
-using Xl = Microsoft.Office.Interop.Excel;
-using System.Runtime.InteropServices;
+﻿using ExcelDataReader;
+using System;
+using System.IO;
 
 namespace EBana.Excel
 {
-	public class ExcelFile : IExcelFile
-	{
-		# region Constructeur / Destructeur
-		public ExcelFile(string excelFilePath)
-		{
-            if (excelFilePath == null)
-                throw new ArgumentNullException("excelFilePath");
+    /// <summary>
+    /// Représente un fichier Excel.
+    /// Utilise la bibliothèque ExcelDataReader: https://github.com/ExcelDataReader/ExcelDataReader.
+    /// 
+    /// Note: Excel n'a pas besoin d'être installé pour que la bibliothèque fonctionne.
+    /// </summary>
+    public class ExcelFile : IExcelFile
+    {
+        private readonly FileStream fileStream;
+        private readonly IExcelDataReader excelReader;
 
-			mXlApp = new Xl.Application();
-			mXlWorkbook = mXlApp.Workbooks.Open(excelFilePath);
-
-            var format = mXlWorkbook.FileFormat;
-
-			mXlWorkSheet = (Xl.Worksheet)mXlWorkbook.Sheets[1];
-			mXlRange = mXlWorkSheet.UsedRange;
-		}
-		
-		~ExcelFile()
-		{
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
-			
-			Marshal.ReleaseComObject(mXlRange);
-			Marshal.ReleaseComObject(mXlWorkSheet);
-			
-			mXlApp.Quit();
-			Marshal.ReleaseComObject(mXlApp);
-		}
-		
-		# endregion
-		
-		# region Méthodes
-
-        public string[,] GetCellsAsStringInRange(
-            ExcelCoords upperLhs, 
-            ExcelCoords lowerRhs)
+        public ExcelFile(string filePath)
         {
-            object[,] range = GetRawCellsInRange(upperLhs, lowerRhs);
+            if (string.IsNullOrEmpty(filePath))
+                throw new ArgumentNullException("filePath");
 
-            int rowCount = range.GetLength(0);
-            int columnCount = range.GetLength(1);
-            string[,] strRange = new string[rowCount, columnCount];
+            fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
+            excelReader = ExcelReaderFactory.CreateReader(fileStream);
+        }
 
-            for (int col = 0; col < columnCount; ++col)
+        ~ExcelFile()
+        {
+            excelReader.Close();
+            fileStream.Close();
+        }
+
+        public string[,] GetCellsAsStringInRange(RectangularRange range)
+        {
+            if (range == null)
+                throw new ArgumentNullException("range");
+
+            var cells = new string[range.RowCount, range.ColumnCount];
+
+            PutReaderOnRow(range.UpperLeftCorner.Row);
+            for (uint row = 0; row < range.RowCount; row++)
             {
-                for (int row = 0; row < rowCount; ++row)
+                excelReader.Read();
+                for (uint column = 0; column < range.ColumnCount; column++)
                 {
-                    strRange[row, col] = range[row+1, col+1]?.ToString();
+                    cells[row, column] = excelReader.GetValue((int)column)?.ToString();
                 }
             }
 
-            return strRange;
+            return cells;
         }
 
-        private object[,] GetRawCellsInRange(
-            ExcelCoords upperLhs, 
-            ExcelCoords lowerRhs)
+        private void PutReaderOnRow(uint row)
         {
-            Xl.Range upperLhsCell = mXlWorkSheet.Cells[upperLhs.Row, upperLhs.Column];
-            Xl.Range lowerRhsCell = mXlWorkSheet.Cells[lowerRhs.Row, lowerRhs.Column];
-
-            Xl.Range range = mXlWorkSheet.get_Range(upperLhsCell, lowerRhsCell);
-            return (object[,])range.get_Value(Xl.XlRangeValueDataType.xlRangeValueDefault);
+            excelReader.Reset();
+            uint offsetFromTop = row - 1;
+            SkipLines(offsetFromTop);
         }
 
-        public int RowCount()
-		{
-            int lastUsedRow = mXlWorkSheet.Cells.Find("*", System.Reflection.Missing.Value,
-                            System.Reflection.Missing.Value, System.Reflection.Missing.Value,
-                            Xl.XlSearchOrder.xlByRows, Xl.XlSearchDirection.xlPrevious,
-                            false, System.Reflection.Missing.Value, System.Reflection.Missing.Value).Row;
-
-            return lastUsedRow;
+        private void SkipLines(uint count)
+        {
+            for (uint i = 0; i < count; i++)
+            {
+                excelReader.Read();
+            }
         }
-		
-		# endregion
-		
-		# region Membres privés
-		private Xl.Application mXlApp;
-		private Xl.Workbook mXlWorkbook;
-		private Xl.Worksheet mXlWorkSheet;
-		private Xl.Range mXlRange;
-		# endregion
-	}
+
+        public uint RowCount
+        {
+            get
+            {
+                excelReader.Reset();
+
+                uint rowCount = 0;
+                while (excelReader.Read() && excelReader.GetValue(0) != null)
+                {
+                    rowCount++;
+                }
+                
+                return rowCount;
+            }
+        }
+    }
 }

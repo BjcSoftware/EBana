@@ -34,5 +34,20 @@ namespace EBana.Excel
 				   LienFlu == article.LienFlu &&
 				   EqualityComparer<TypeEpi>.Default.Equals(TypeEpi, article.TypeEpi);
 		}
+
+		public override int GetHashCode()
+		{
+			var hashCode = -577979777;
+			hashCode = hashCode * -1521134295 + IdArticle.GetHashCode();
+			hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Ref);
+			hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Libelle);
+			hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Localisation);
+			hashCode = hashCode * -1521134295 + Quantite.GetHashCode();
+			hashCode = hashCode * -1521134295 + EqualityComparer<int?>.Default.GetHashCode(IdMagasin);
+			hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(InfosSupplementaires);
+			hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(LienFlu);
+			hashCode = hashCode * -1521134295 + EqualityComparer<TypeEpi>.Default.GetHashCode(TypeEpi);
+			return hashCode;
+		}
 	}
 }

@@ -8,7 +8,14 @@ namespace EBana.Domain.SearchEngine
     /// </summary>
     public interface ISearchSettingsProvider
     {
+        /// <summary>
+        /// Récupérer les types d'articles disponibles.
+        /// </summary>
         IEnumerable<TypeArticle> GetArticleTypes();
+
+        /// <summary>
+        /// Récupérer les types d'EPIs disponibles.
+        /// </summary>
         IEnumerable<TypeEpi> GetEpiTypes();
     }
 }

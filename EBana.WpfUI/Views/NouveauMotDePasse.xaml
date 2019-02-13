@@ -35,7 +35,8 @@
 					Width="172"
 					Height="25"
 					Margin="10"
-                    HorizontalContentAlignment="Center"/>
+                    HorizontalContentAlignment="Center"
+                    MaxLength="100"/>
 
                 <TextBlock
 					Text="Nouveau mot de passe"
@@ -47,7 +48,8 @@
 					Width="172"
 					Height="25"
 					Margin="10"
-                    HorizontalContentAlignment="Center"/>
+                    HorizontalContentAlignment="Center"
+                    MaxLength="100"/>
 
                 <TextBlock
 					Text="Confirmation nouveau mot de passe"
@@ -59,7 +61,8 @@
 					Width="172"
 					Height="25"
 					Margin="10"
-                    HorizontalContentAlignment="Center"/>
+                    HorizontalContentAlignment="Center"
+                    MaxLength="100"/>
 
                     <Button Content="Valider" Command="{Binding NewPasswordCommand}" Margin="0 20 0 0">
                         <Button.CommandParameter>

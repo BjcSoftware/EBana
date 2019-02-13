@@ -61,9 +61,11 @@
     <Compile Include="ExcelArticleProviderTests.cs" />
     <Compile Include="Excel\ExcelCoordsTests.cs" />
     <Compile Include="Excel\ExcelFileTests.cs" />
-    <Compile Include="ExcelRawArticleProviderTests.cs" />
+    <Compile Include="RawArticle\ExcelRawArticleProviderTests.cs" />
+    <Compile Include="RawArticle\RecordMapper\RecordToRawArticleMapperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RawArticleToArticleMapperTests.cs" />
+    <Compile Include="RawArticle\RawArticleToArticleMapperTests.cs" />
+    <Compile Include="RawArticle\RecordMapper\RecordToRawArticleMapperWithEpiCachingTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

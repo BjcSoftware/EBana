@@ -38,24 +38,25 @@ namespace EBana.Excel.UnitTests
                 actual: rawArticles.Count);
         }
 
+        
         [Test]
-        public void Constructor_NullMappingPassed_Throws()
+        public void Constructor_NullMapperPassed_Throws()
         {
-            ArticleFieldToColumnMapping nullMapping = null;
+            IRecordToRawArticleMapper nullMapper = null;
 
             var stubExcelFileFactory = Substitute.For<IExcelFileFactory>();
             var exception = Assert.Catch<ArgumentNullException>(
-                () => new ExcelRawArticleProvider(nullMapping, stubExcelFileFactory));
+                () => new ExcelRawArticleProvider(nullMapper, stubExcelFileFactory));
         }
 
         [Test]
         public void Constructor_NullExcelFileFactoryPassed_Throws()
         {
             IExcelFileFactory nullFactory = null;
-
-            var stubMapping = new ArticleFieldToColumnMapping();
+            
+            var stubMapper = Substitute.For<IRecordToRawArticleMapper>();
             var exception = Assert.Catch<ArgumentNullException>(
-                () => new ExcelRawArticleProvider(stubMapping, nullFactory));
+                () => new ExcelRawArticleProvider(stubMapper, nullFactory));
         }
 
         [Test]
@@ -97,37 +98,35 @@ namespace EBana.Excel.UnitTests
             };
         }
 
+        private ExcelRawArticleProvider CreateExcelRawArticleProvider()
+        {
+            return CreateExcelRawArticleProvider(GetEmptyFileData());
+        }
+
         private ExcelRawArticleProvider CreateExcelRawArticleProvider(string[,] rawArticlesData)
         {
             IExcelFile stubExcelFile = CreateStubExcelFile(rawArticlesData);
-
             var excelFileFactoryStub = Substitute.For<IExcelFileFactory>();
             excelFileFactoryStub
                 .CreateExcelFile(Arg.Any<string>())
                 .Returns(stubExcelFile);
 
             return new ExcelRawArticleProvider(
-                new ArticleFieldToColumnMapping(),
+                new RecordToRawArticleMapper(
+                    new ArticleFieldToRecordFieldMapping()),
                 excelFileFactoryStub);
-        }
-
-        private ExcelRawArticleProvider CreateExcelRawArticleProvider()
-        {
-            return CreateExcelRawArticleProvider(GetEmptyFileData());
         }
 
         private IExcelFile CreateStubExcelFile(string[,] data)
         {
             var stubExcelFile = Substitute.For<IExcelFile>();
             stubExcelFile
-                .GetCellsAsStringInRange(
-                    Arg.Any<ExcelCoords>(),
-                    Arg.Any<ExcelCoords>())
+                .GetCellsAsStringInRange(Arg.Any<RectangularRange>())
                 .Returns(data);
 
             stubExcelFile
-                .RowCount()
-                .Returns(data.GetLength(0) + 1);
+                .RowCount
+                .Returns((uint)(data.GetLength(0) + 1));
 
             return stubExcelFile;
         }

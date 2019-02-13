@@ -7,7 +7,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>WinExe</OutputType>
     <RootNamespace>EBana.WpfUI</RootNamespace>
-    <AssemblyName>EBana.WpfUI</AssemblyName>
+    <AssemblyName>EBana</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <TargetFrameworkProfile />
@@ -64,6 +64,7 @@
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <Optimize>false</Optimize>
+    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -141,7 +142,6 @@
     <Compile Include="ViewModels\Notifier.cs" />
     <Compile Include="ViewModels\Command\RelayCommand.cs" />
     <Compile Include="ViewModels\NouveauMotDePasseViewModel.cs" />
-    <Compile Include="ViewModels\SearchResultsViewModel.cs" />
     <Compile Include="ViewModels\UpdateArticlesViewModel.cs" />
     <Compile Include="Views\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>

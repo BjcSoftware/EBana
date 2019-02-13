@@ -3,10 +3,13 @@
     public interface IExcelFile
     {
         /// <summary>
-        /// Récupérer les données contenues dans le recangle délimité par <paramref name="upperLhs"/> et <paramref name="lowerRhs"/>.
+        /// Récupérer les données contenues dans le recangle.
         /// </summary>
-        /// <returns></returns>
-        string[,] GetCellsAsStringInRange(ExcelCoords upperLhs, ExcelCoords lowerRhs);
-        int RowCount();
+        string[,] GetCellsAsStringInRange(RectangularRange range);
+        
+        /// <summary>
+        /// Nombre de lignes, on considère la fin du fichier à la première ligne où la première colonne est vide.
+        /// </summary>
+        uint RowCount { get; }
     }
 }

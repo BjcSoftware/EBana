@@ -69,7 +69,7 @@ namespace EBana.WpfUI.ViewModels
 
 		private void SelectDefaultArticleType()
 		{
-			if (AvailableArticleTypes.Count != 0)
+			if (AvailableArticleTypes.Any())
 			{
 				SelectedArticleType = AvailableArticleTypes.First();
 			}
@@ -84,7 +84,7 @@ namespace EBana.WpfUI.ViewModels
 
 		private void SelectDefaultEpiType()
 		{
-			if (AvailableEpiTypes.Count != 0)
+			if (AvailableEpiTypes.Any())
 			{
 				SelectedEpiType = AvailableEpiTypes.First();
 			}
@@ -173,6 +173,11 @@ namespace EBana.WpfUI.ViewModels
 				.GetArticlePictureLocationOrDefault(SelectedArticle).OriginalString;
 		}
 
+		private void OnAvailableEpiTypesChanged()
+		{
+			AreEpiAvailable = AvailableEpiTypes.Any();
+		}
+
 		#region Propriétés bound à l'UI
 
 		#region Paramètres de recherche
@@ -220,10 +225,21 @@ namespace EBana.WpfUI.ViewModels
 				OnPropertyChanged("AvailableSearchCriterias");
 			}
 		}
-		
+
 		#endregion
-		
+
 		#region Paramètres EPIs
+		private bool mAreEpiAvailable;
+		public bool AreEpiAvailable
+		{
+			get { return mAreEpiAvailable; }
+			set
+			{
+				mAreEpiAvailable = value;
+				OnPropertyChanged("AreEpiAvailable");
+			}
+		}
+
 		private bool mIsSearchedArticleEPI;
 		public bool IsSearchedArticleEPI
 		{
@@ -241,6 +257,8 @@ namespace EBana.WpfUI.ViewModels
 			set {
 				mAvailableEpiTypes = value;
 				OnPropertyChanged("AvailableEpiTypes");
+				OnAvailableEpiTypesChanged();
+
 			}
 		}
 		

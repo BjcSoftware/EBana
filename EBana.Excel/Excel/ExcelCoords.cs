@@ -7,18 +7,18 @@ namespace EBana.Excel
     /// </summary>
     public class ExcelCoords
     {
-        public ExcelCoords(int column, int row)
+        public ExcelCoords(uint column, uint row)
         {
-            if(column < 1 || row < 1)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            if (column < 1)
+                throw new ArgumentOutOfRangeException("column");
+            if (row < 1)
+                throw new ArgumentOutOfRangeException("row");
 
             Column = column;
             Row = row;
         }
 
-        public int Column { get; set; }
-        public int Row { get; set; }     
+        public uint Column { get; set; }
+        public uint Row { get; set; }
     }
 }
