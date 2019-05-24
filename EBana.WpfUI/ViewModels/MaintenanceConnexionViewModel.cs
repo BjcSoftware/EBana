@@ -1,9 +1,11 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
-using EBana.Security;
 using System;
 using EBana.Services.Dialog;
 using EBana.Domain.Security;
+using EBana.WpfUI.Core.ViewModel;
+using EBana.WpfUI.Core.Command;
+using EBana.WpfUI.Core;
 
 namespace EBana.WpfUI.ViewModels
 {
@@ -15,23 +17,28 @@ namespace EBana.WpfUI.ViewModels
 
         private readonly IMessageBoxDialogService messageBoxService;
         private readonly IAuthenticator authenticator;
+        private readonly INavigationService navigator;
 
         public MaintenanceConnexionViewModel(
             IMessageBoxDialogService messageBoxService, 
-            IAuthenticator authenticator)
+            IAuthenticator authenticator,
+            INavigationService navigator)
 		{
             if (messageBoxService == null)
-                throw new ArgumentNullException("messageBoxService");
+                throw new ArgumentNullException(nameof(messageBoxService));
             if (authenticator == null)
-                throw new ArgumentNullException("authenticator");
+                throw new ArgumentNullException(nameof(authenticator));
+            if (navigator == null)
+                throw new ArgumentNullException(nameof(navigator));
 
             this.messageBoxService = messageBoxService;
             this.authenticator = authenticator;
+            this.navigator = navigator;
 
-            LoginCommand = new RelayParameterizedCommand( (param) => DoLoginCommand(param) );
+            LoginCommand = new RelayParameterizedCommand( (param) => Login(param) );
 		}
 		
-		private void DoLoginCommand(object passwordBox)
+		private void Login(object passwordBox)
 		{
             BindPasswordBox(passwordBox);
 
@@ -61,18 +68,15 @@ namespace EBana.WpfUI.ViewModels
 
         private void OpenMaintenanceMainMenu()
         {
-            System.Windows.IInputElement target = FirstFloor.ModernUI.Windows.Navigation.NavigationHelper.FindFrame(
-                "_top", 
-                System.Windows.Application.Current.MainWindow);
-
-            NavigationCommands.GoToPage.Execute("/Views/MenuMaintenance.xaml", target);
+            navigator.NavigateTo("MaintenanceMenu");
         }
 
         private void NotifyUserPasswordNotCorrect()
         {
-            messageBoxService.Show("Erreur",
-                    "Le mot de passe saisit n'est pas valide.",
-                    DialogButton.Ok);
+            messageBoxService.Show(
+                "Erreur",
+                "Le mot de passe saisit n'est pas valide.",
+                DialogButton.Ok);
         }
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using EBana.Domain;
 using EBana.Services.Dialog;
+using EBana.WpfUI.Core.ViewModel;
 using System;
 
 namespace EBana.WpfUI.ViewModels
@@ -18,13 +19,13 @@ namespace EBana.WpfUI.ViewModels
             IArticleProvider articleProvider)
 		{
             if (fileDialogService == null)
-                throw new ArgumentNullException("fileDialogService");
+                throw new ArgumentNullException(nameof(fileDialogService));
             if (messageBoxService == null)
-                throw new ArgumentNullException("messageBoxService");
+                throw new ArgumentNullException(nameof(messageBoxService));
             if (updater == null)
-                throw new ArgumentNullException("updater");
+                throw new ArgumentNullException(nameof(updater));
             if (articleProvider == null)
-                throw new ArgumentNullException("articleProvider");
+                throw new ArgumentNullException(nameof(articleProvider));
 
             this.fileDialogService = fileDialogService;
             this.messageBoxService = messageBoxService;

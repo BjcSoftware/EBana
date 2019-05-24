@@ -13,9 +13,9 @@ namespace EBana.Domain.Security
             IHash hash)
         {
             if (credentialsReader == null)
-                throw new ArgumentNullException("credentialsReader");
+                throw new ArgumentNullException(nameof(credentialsReader));
             if (hash == null)
-                throw new ArgumentNullException("hash");
+                throw new ArgumentNullException(nameof(hash));
 
             this.credentialsReader = credentialsReader;
             this.hash = hash;
@@ -24,7 +24,7 @@ namespace EBana.Domain.Security
         public bool IsPasswordCorrect(string password)
         {
             if (password == null)
-                throw new ArgumentNullException("password");
+                throw new ArgumentNullException(nameof(password));
 
             var hashedPassword = GetPasswordHash();
             return hash.Verify(password, hashedPassword);

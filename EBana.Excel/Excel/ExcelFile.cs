@@ -18,7 +18,7 @@ namespace EBana.Excel
         public ExcelFile(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
 
             fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
             excelReader = ExcelReaderFactory.CreateReader(fileStream);

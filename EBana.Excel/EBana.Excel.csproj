@@ -55,7 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawArticle\RawArticleToArticleMapper\IRawArticleToArticleMapper.cs" />
     <Compile Include="RawArticle\RawArticleToArticleMapper\RawArticleToArticleMapper.cs" />
-    <Compile Include="RawArticle\ArticleFieldToRecordFieldMapping.cs" />
+    <Compile Include="RawArticle\RecordMapper\ArticleFieldToRecordFieldMapping.cs" />
     <Compile Include="RawArticle\RecordMapper\RecordToRawArticleMapperWithEpiCaching.cs" />
     <Compile Include="RawArticle\IRawArticleProvider.cs" />
     <Compile Include="RawArticle\RecordMapper\IRecordToRawArticleMapper.cs" />

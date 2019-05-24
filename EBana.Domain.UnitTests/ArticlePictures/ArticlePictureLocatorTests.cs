@@ -28,12 +28,12 @@ namespace EBana.Domain.ArticlePictures.UnitTests
                 .GetAllFileNamesInFolder(Arg.Any<string>())
                 .Returns(pictureNames);
 
-            var stubFileNameFormatter = Substitute.For<IArticlePictureFileNameFormatter>();
-            stubFileNameFormatter
+            var stubNameFormater = Substitute.For<IArticlePictureNameFormater>();
+            stubNameFormater
                 .Format(Arg.Any<Article>())
-                .Returns("article.jpg");
+                .Returns("article");
 
-            var locator = CreateArticlePictureLocator(stubFileService, stubFileNameFormatter);
+            var locator = CreateArticlePictureLocator(stubFileService, stubNameFormater);
 
             Article articleWithAPicture = new Article();
             bool IsArticleHavingAPicture = locator
@@ -81,12 +81,12 @@ namespace EBana.Domain.ArticlePictures.UnitTests
                 .GetAllFileNamesInFolder(Arg.Any<string>())
                 .Returns(pictureNames);
 
-            var stubFileNameFormatter = Substitute.For<IArticlePictureFileNameFormatter>();
-            stubFileNameFormatter
+            var stubNameFormater = Substitute.For<IArticlePictureNameFormater>();
+            stubNameFormater
                 .Format(Arg.Any<Article>())
-                .Returns("article.jpg");
+                .Returns("article");
 
-            var locator = CreateArticlePictureLocator(stubFileService, stubFileNameFormatter);
+            var locator = CreateArticlePictureLocator(stubFileService, stubNameFormater);
 
             Article articleWithAPicture = new Article();
             string returnedPicturePath = locator
@@ -99,8 +99,8 @@ namespace EBana.Domain.ArticlePictures.UnitTests
         {
             var stubFileService = Substitute.For<IFileService>();
             ArticlePictureSettings pictureSettings = CreatePictureSettings();
-            var fileNameFormatter = new ArticlePictureFileNameFormatter(pictureSettings);
-            var locator = new ArticlePictureLocator(stubFileService, fileNameFormatter, pictureSettings);
+            var fileNameFormater = new ArticlePictureNameFormater(pictureSettings);
+            var locator = new ArticlePictureLocator(stubFileService, fileNameFormater, pictureSettings);
 
             return locator;
         }
@@ -108,17 +108,18 @@ namespace EBana.Domain.ArticlePictures.UnitTests
         private ArticlePictureLocator CreateArticlePictureLocator(IFileService fileService)
         {
             ArticlePictureSettings pictureSettings = CreatePictureSettings();
-            var fileNameFormatter = new ArticlePictureFileNameFormatter(pictureSettings);
-            var locator = new ArticlePictureLocator(fileService, fileNameFormatter, pictureSettings);
+            var fileNameFormater = new ArticlePictureNameFormater(pictureSettings);
+            var locator = new ArticlePictureLocator(fileService, fileNameFormater, pictureSettings);
 
             return locator;
         }
 
-        private ArticlePictureLocator CreateArticlePictureLocator(IFileService fileService,
-            IArticlePictureFileNameFormatter fileNameFormatter)
+        private ArticlePictureLocator CreateArticlePictureLocator(
+            IFileService fileService,
+            IArticlePictureNameFormater fileNameFormater)
         {
             ArticlePictureSettings pictureSettings = CreatePictureSettings();
-            var locator = new ArticlePictureLocator(fileService, fileNameFormatter, pictureSettings);
+            var locator = new ArticlePictureLocator(fileService, fileNameFormater, pictureSettings);
 
             return locator;
         }
@@ -130,17 +131,18 @@ namespace EBana.Domain.ArticlePictures.UnitTests
 
         private string GetDefaultPicturePath()
         {
-            ArticlePictureSettings pictureSettings = CreatePictureSettings();
-            string pictureFolder = pictureSettings.PictureFolderPath;
-            string defaultPicture = pictureSettings.DefaultPictureName;
-            string fileExtension = pictureSettings.PictureFileExtension;
-
-            return $"{pictureFolder}/{defaultPicture}.{fileExtension}";
+            var pictureSettings = CreatePictureSettings();
+            return pictureSettings.FormatPicturePath("default");
         }
 
         private ArticlePictureSettings CreatePictureSettings()
         {
             return new ArticlePictureSettings("pictureFolder", "jpg", "default");
+        }
+
+        private ArticlePictureSettings CreatePictureSettings(string defaultFileName, string fileExtension)
+        {
+            return new ArticlePictureSettings("pictureFolder", fileExtension, defaultFileName);
         }
     }
 }

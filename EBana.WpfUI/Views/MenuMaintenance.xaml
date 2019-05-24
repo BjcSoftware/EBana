@@ -18,25 +18,25 @@
 			Grid.Row="0"
 			Margin="0 15" />
 		<Button
+            Command="{Binding GoToArticlesUpdaterCommand}"
 			Content="Mettre à jour"
 			Grid.Row="1"
 			Height="40"
 			Margin="10"
-			Name="button1"
-			Click="cmdUpdate_click" />
+			Name="cmdUpdate" />
 		<Button
+            Command="{Binding GoToPictureManagerCommand}"
 			Content="Gérer les photos d'articles"
 			Grid.Row="2"
 			Height="40"
 			Margin="10"
-			Name="cmdPhotos"
-			Click="cmdPhotos_Click" />
+			Name="cmdPhotos" />
 		<Button
+            Command="{Binding GoToPasswordUpdaterCommand}"
 			x:Name="cmdNewPassword"
 			Content="Définir un nouveau mot de passe"
 			Grid.Row="3"
 			Height="40"
-			Margin="10"
-			Click="cmdNewPassword_Click" />
+			Margin="10" />
 	</Grid>
 </Page>

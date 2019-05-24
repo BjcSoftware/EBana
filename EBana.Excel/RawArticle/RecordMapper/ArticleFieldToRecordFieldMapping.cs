@@ -17,6 +17,6 @@
         public readonly int Flu = 6;
         public readonly int AdditionalInfos = 7;
         public readonly int EpiIdentifier = 8;
-        public readonly int EpiType = 9;
+        public readonly int EpiLabel = 9;
     }
 }

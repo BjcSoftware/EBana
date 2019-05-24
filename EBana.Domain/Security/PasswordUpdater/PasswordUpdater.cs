@@ -14,9 +14,9 @@ namespace EBana.Domain.Security
             IHash hash)
         {
             if (credentialsUpdater == null)
-                throw new ArgumentNullException("credentialsUpdater");
+                throw new ArgumentNullException(nameof(credentialsUpdater));
             if (hash == null)
-                throw new ArgumentNullException("hash");
+                throw new ArgumentNullException(nameof(hash));
 
             this.credentialsUpdater = credentialsUpdater;
             this.hash = hash;
@@ -30,9 +30,7 @@ namespace EBana.Domain.Security
 
         private Credentials CreateNewCredentialsFromPassword(string newPassword)
         {
-            string newPasswordHash = hash.Hash(newPassword);
-            var newCredentials = new Credentials() { Password = newPasswordHash };
-            return newCredentials;
+            return new Credentials() { Password = hash.Hash(newPassword) };
         }
     }
 }

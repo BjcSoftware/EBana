@@ -7,34 +7,33 @@ namespace EBana.Domain.ArticlePictures
     public class ArticlePictureUpdater : IArticlePictureUpdater
     {
         private readonly IFileService fileService;
-        private readonly IArticlePictureFileNameFormatter pictureFileNameFormatter;
-        private readonly ArticlePictureSettings articlePictureSettings;
+        private readonly IArticlePictureNameFormater nameFormater;
+        private readonly ArticlePictureSettings settings;
 
         public ArticlePictureUpdater(
             IFileService fileService, 
-            IArticlePictureFileNameFormatter pictureFileNameFormatter,
-            ArticlePictureSettings articlePictureSettings)
+            IArticlePictureNameFormater nameFormater,
+            ArticlePictureSettings settings)
         {
             if (fileService == null)
-                throw new ArgumentNullException("fileService");
-            if (pictureFileNameFormatter == null)
-                throw new ArgumentNullException("pictureFileNameFormatter");
-            if (articlePictureSettings == null)
-                throw new ArgumentNullException("articlePictureSettings");
+                throw new ArgumentNullException(nameof(fileService));
+            if (nameFormater == null)
+                throw new ArgumentNullException(nameof(nameFormater));
+            if (settings == null)
+                throw new ArgumentNullException(nameof(settings));
 
             this.fileService = fileService;
-            this.pictureFileNameFormatter = pictureFileNameFormatter;
-            this.articlePictureSettings = articlePictureSettings;
+            this.nameFormater = nameFormater;
+            this.settings = settings;
 
             CreatePictureFolderIfDoesNotExist();
         }
 
         private void CreatePictureFolderIfDoesNotExist()
         {
-            string pictureFolderPath = articlePictureSettings.PictureFolderPath;
-            if (!fileService.DirectoryExists(pictureFolderPath))
+            if (!fileService.DirectoryExists(settings.PictureFolderPath))
             {
-                fileService.CreateDirectory(pictureFolderPath);
+                fileService.CreateDirectory(settings.PictureFolderPath);
             }
         }
 
@@ -49,15 +48,12 @@ namespace EBana.Domain.ArticlePictures
 
         private string GetPictureLocation(Article article)
         {
-            string pictureFolderPath = articlePictureSettings.PictureFolderPath;
-            string pictureFileName = GetPictureFileNameFromArticle(article);
-            string pictureLocation = $"{pictureFolderPath}/{pictureFileName}";
-            return pictureLocation;
+            return settings.FormatPicturePath(GetPictureNameFor(article));
         }
 
-        private string GetPictureFileNameFromArticle(Article article)
+        private string GetPictureNameFor(Article article)
         {
-            return pictureFileNameFormatter.Format(article);
+            return nameFormater.Format(article);
         }
     }
 }

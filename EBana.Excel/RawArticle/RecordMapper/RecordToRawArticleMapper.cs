@@ -14,7 +14,7 @@ namespace EBana.Excel
         public RecordToRawArticleMapper(ArticleFieldToRecordFieldMapping fieldMapping)
         {
             if (fieldMapping == null)
-                throw new ArgumentNullException("fieldMapping");
+                throw new ArgumentNullException(nameof(fieldMapping));
 
             this.fieldMapping = fieldMapping;
         }
@@ -24,7 +24,7 @@ namespace EBana.Excel
         public RawArticle Map(List<string> record)
         {
             if (record == null)
-                throw new ArgumentNullException("record");
+                throw new ArgumentNullException(nameof(record));
 
             RawArticle rawArticle = new RawArticle()
             {
@@ -37,13 +37,28 @@ namespace EBana.Excel
                 InfosSupplementaires    = record[fieldMapping.AdditionalInfos]
             };
             
-            string epiType = record[fieldMapping.EpiType]?.Capitalize();
-            if(epiType != null)
+            string epiLabel = record[fieldMapping.EpiLabel]?.Capitalize();
+            if(epiLabel != null)
             {
-                rawArticle.TypeEpi = new TypeEpi { Libelle = epiType };
+                rawArticle.TypeEpi = new TypeEpi { Libelle = epiLabel };
             }
 
             return rawArticle;
+        }
+    }
+
+    public static class StringHelper
+    {
+        public static string Capitalize(this string s)
+        {
+            if (s == string.Empty || s == null)
+            {
+                return s;
+            }
+            else
+            {
+                return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(s.ToLower());
+            }
         }
     }
 }

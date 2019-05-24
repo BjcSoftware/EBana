@@ -9,26 +9,26 @@ namespace EBana.Domain.ArticlePictures
     public class ArticlePictureLocator : IArticlePictureLocator
     {
         private readonly IFileService fileService;
-        private readonly IArticlePictureFileNameFormatter fileNameFormater;
-        private readonly ArticlePictureSettings pictureSettings;
+        private readonly IArticlePictureNameFormater nameFormater;
+        private readonly ArticlePictureSettings settings;
 
         private List<string> availableArticlePictureCache;
 
         public ArticlePictureLocator(
             IFileService fileService,
-            IArticlePictureFileNameFormatter fileNameFormater, 
-            ArticlePictureSettings pictureSettings)
+            IArticlePictureNameFormater nameFormater, 
+            ArticlePictureSettings settings)
         {
             if (fileService == null)
-                throw new ArgumentNullException("fileService");
-            if (fileNameFormater == null)
-                throw new ArgumentNullException("fileNameFormater");
-            if (pictureSettings == null)
-                throw new ArgumentNullException("pictureSettings");
+                throw new ArgumentNullException(nameof(fileService));
+            if (nameFormater == null)
+                throw new ArgumentNullException(nameof(nameFormater));
+            if (settings == null)
+                throw new ArgumentNullException(nameof(settings));
 
             this.fileService = fileService;
-            this.fileNameFormater = fileNameFormater;
-            this.pictureSettings = pictureSettings;
+            this.nameFormater = nameFormater;
+            this.settings = settings;
 
             availableArticlePictureCache = new List<string>();
 
@@ -37,7 +37,7 @@ namespace EBana.Domain.ArticlePictures
 
         private void CreatePictureFolderIfDoesNotExist()
         {
-            string pictureFolderPath = pictureSettings.PictureFolderPath;
+            string pictureFolderPath = settings.PictureFolderPath;
             if (!fileService.DirectoryExists(pictureFolderPath))
             {
                 fileService.CreateDirectory(pictureFolderPath);
@@ -47,29 +47,25 @@ namespace EBana.Domain.ArticlePictures
         public Uri GetArticlePictureLocationOrDefault(Article articleToLocate)
         {
             string pictureFileName = GetArticlePictureFileNameOrDefault(articleToLocate);
-            string picturePath = $"{pictureSettings.PictureFolderPath}/{pictureFileName}";
-            Uri pictureLocation = new Uri(picturePath, UriKind.Relative);
-            return pictureLocation;
+            string picturePath = $"{settings.PictureFolderPath}/{pictureFileName}";
+            return new Uri(picturePath, UriKind.Relative);
         }
 
         private string GetArticlePictureFileNameOrDefault(Article article)
         {
-            string fileName =  IsArticleHavingAPicture(article) ?
-                GetPictureFileNameFromArticle(article) : GetDefaultPictureFileName();
-
-            return fileName;
+            return IsArticleHavingAPicture(article) ?
+                GetPictureFileNameFor(article) : GetDefaultPictureFileName();
         }
 
         public bool IsArticleHavingAPicture(Article article)
         {
             if (article == null) return false;
             
-            var existingPictureNames = GetExistingPictureNames();
-            string potentialPictureName = GetPictureFileNameFromArticle(article);
-            return existingPictureNames.Contains(potentialPictureName);
+            return ExistingPictureFileNames()
+                .Contains(GetPictureFileNameFor(article));
         }
 
-        private IEnumerable<string> GetExistingPictureNames()
+        private IEnumerable<string> ExistingPictureFileNames()
         {
             // on utilise ici un système de cache pour limiter le nombre d'appels systèmes (qui peuvent être lents)
             if (ArticlePictureCacheIsEmpty())
@@ -87,29 +83,30 @@ namespace EBana.Domain.ArticlePictures
 
         private void UpdateArticlePictureCache()
         {
-            var availablePictureNames = fileService
-                .GetAllFileNamesInFolder(pictureSettings.PictureFolderPath);
-
             availableArticlePictureCache.Clear();
-            availableArticlePictureCache.AddRange(availablePictureNames);
+            availableArticlePictureCache
+                .AddRange(AvailableArticlePictures());
         }
 
-        private string GetPictureFileNameFromArticle(Article article)
+        private IEnumerable<string> AvailableArticlePictures()
         {
-            return fileNameFormater.Format(article);
+            return fileService
+                .GetAllFileNamesInFolder(settings.PictureFolderPath)
+                .Where(f => settings.IsCorrectPictureFile(f));
+        }
+
+        private string GetPictureFileNameFor(Article article)
+        {
+            return settings.FormatPictureFileName(
+                nameFormater.Format(article));
         }
 
         private string GetDefaultPictureFileName()
         {
-            return fileNameFormater.FormatDefault();
+            return settings.FormatDefaultPictureFileName();
         }
 
-        public Uri GetPictureFolderLocation()
-        {
-            string folderPath = pictureSettings.PictureFolderPath;
-            Uri pictureFolderLocation = new Uri(folderPath, UriKind.Relative);
-            return pictureFolderLocation;
-        }
+        public Uri PictureFolderLocation => new Uri(settings.PictureFolderPath, UriKind.Relative);
 
         public void ClearPictureCache()
         {

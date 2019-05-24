@@ -7,37 +7,39 @@ using EBana.Services.Dialog;
 using EBana.Domain.ArticlePictures;
 using EBana.Domain.SearchEngine;
 using System.Linq;
+using EBana.WpfUI.Core.ViewModel;
+using EBana.WpfUI.Core.Command;
 
 namespace EBana.WpfUI.ViewModels
 {
 	public class GestionPhotosViewModel : Notifier
 	{
-		private readonly IArticlePictureLocator articlePictureLocator;
-		private readonly IArticlePictureUpdater articlePictureUpdater;
+		private readonly IArticlePictureLocator locator;
+		private readonly IArticlePictureUpdater updater;
 		private readonly IFileDialogService fileDialogService;
 		private readonly IMessageBoxDialogService messageBoxService;
 		private readonly IArticleSearchEngine searchEngine;
 
 		public GestionPhotosViewModel(
-			IArticlePictureLocator articlePictureLocator,
-			IArticlePictureUpdater articlePictureUpdater,
+			IArticlePictureLocator locator,
+			IArticlePictureUpdater updater,
 			IFileDialogService fileDialogService, 
 			IMessageBoxDialogService messageBoxService, 
 			IArticleSearchEngine searchEngine)
 		{
-			if (articlePictureLocator == null)
-				throw new ArgumentNullException("articlePictureLocator");
-			if (articlePictureUpdater == null)
-				throw new ArgumentNullException("articlePictureUpdater");
+			if (locator == null)
+				throw new ArgumentNullException(nameof(locator));
+			if (updater == null)
+				throw new ArgumentNullException(nameof(updater));
 			if (fileDialogService == null)
-				throw new ArgumentNullException("fileDialogService");
+				throw new ArgumentNullException(nameof(fileDialogService));
 			if (messageBoxService == null)
-				throw new ArgumentNullException("messageBoxService");
+				throw new ArgumentNullException(nameof(messageBoxService));
 			if (searchEngine == null)
-				throw new ArgumentNullException("searchEngine");
+				throw new ArgumentNullException(nameof(searchEngine));
 
-			this.articlePictureLocator = articlePictureLocator;
-			this.articlePictureUpdater = articlePictureUpdater;
+			this.locator = locator;
+			this.updater = updater;
 			this.fileDialogService = fileDialogService;
 			this.messageBoxService = messageBoxService;
 			this.searchEngine = searchEngine;
@@ -96,7 +98,7 @@ namespace EBana.WpfUI.ViewModels
 
 		private bool IsArticleNotHavingAPicture(Article article)
 		{
-			return !articlePictureLocator.IsArticleHavingAPicture(article);
+			return !locator.IsArticleHavingAPicture(article);
 		}
 
 		private void ResetSearchResultsTo(IEnumerable<Article> articles)
@@ -117,8 +119,8 @@ namespace EBana.WpfUI.ViewModels
 		/// </summary>
 		private void OpenPictureFolder()
 		{
-			string pictureFolder = articlePictureLocator
-				.GetPictureFolderLocation().OriginalString;
+			string pictureFolder = locator
+				.PictureFolderLocation.OriginalString;
 
 			fileDialogService.OpenFileBrowserInFolder(pictureFolder);
 		}
@@ -139,27 +141,26 @@ namespace EBana.WpfUI.ViewModels
 		private void UpdateSelectedArticlePicture()
 		{
 			Uri newPictureLocation = new Uri(DisplayedArticlePicturePath);
-			articlePictureUpdater
-				.UpdatePictureOfArticle(SelectedArticle, newPictureLocation);
+			updater.UpdatePictureOfArticle(
+                SelectedArticle, 
+                newPictureLocation);
 
 			// le cache des photos n'est plus valide car une photo vient d'être mise à jour
-			articlePictureLocator.ClearPictureCache();
+			locator.ClearPictureCache();
 
 			// la sélection de l'utilisateur a été validée
 			HasTheUserSelectedANewPicture = false;
 
-			NotifyUserArticlePictureSuccessfullyUpdated(SelectedArticle);
+			NotifyUserArticlePictureUpdated(SelectedArticle);
 
 			RefreshSearchResults();
 		}
 
-		private void NotifyUserArticlePictureSuccessfullyUpdated(Article articleWithNewPicture)
+		private void NotifyUserArticlePictureUpdated(Article article)
 		{
-			string articleRef = articleWithNewPicture.Ref;
-			string articleLabel = articleWithNewPicture.Libelle;
 			messageBoxService.Show(
 				"Succès",
-			   $"La photo de l'article {articleRef} ({articleLabel}) a été mise à jour.",
+			   $"La photo de l'article {article.Ref} ({article.Libelle}) a été mise à jour.",
 			   DialogButton.Ok);
 		}
 
@@ -182,7 +183,7 @@ namespace EBana.WpfUI.ViewModels
 
 		private void UpdateDisplayedPictureFromArticle(Article article)
 		{
-			Uri updatedArticlePicturePath = articlePictureLocator
+			Uri updatedArticlePicturePath = locator
 				.GetArticlePictureLocationOrDefault(article);
 
 			DisplayedArticlePicturePath = updatedArticlePicturePath.OriginalString;

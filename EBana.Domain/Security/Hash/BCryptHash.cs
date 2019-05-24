@@ -5,8 +5,7 @@
         public string Hash(string textToHash)
         {
             int salt = 12;
-            string hashedText = BCrypt.Net.BCrypt.HashPassword(textToHash, salt);
-            return hashedText;
+            return BCrypt.Net.BCrypt.HashPassword(textToHash, salt);
         }
 
         public bool Verify(string plainText, string hashedText)

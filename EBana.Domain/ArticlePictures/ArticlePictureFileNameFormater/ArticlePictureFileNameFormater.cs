@@ -3,11 +3,11 @@ using System;
 
 namespace EBana.Domain.ArticlePictures
 {
-    public class ArticlePictureFileNameFormatter : IArticlePictureFileNameFormatter
+    public class ArticlePictureNameFormater : IArticlePictureNameFormater
     {
         private readonly ArticlePictureSettings pictureSettings;
 
-        public ArticlePictureFileNameFormatter(
+        public ArticlePictureNameFormater(
             ArticlePictureSettings pictureSettings)
         {
             if (pictureSettings == null)
@@ -21,20 +21,12 @@ namespace EBana.Domain.ArticlePictures
             if (article == null)
                 throw new ArgumentNullException("article");
 
-            string name = article.Ref;
-            string fileExtension = pictureSettings.PictureFileExtension;
-            string fileName = $"{name}.{fileExtension}";
-
-            return fileName;
+            return article.Ref;
         }
 
         public string FormatDefault()
         {
-            string defaultName = pictureSettings.DefaultPictureName;
-            string fileExtension = pictureSettings.PictureFileExtension;
-            string fileName = $"{defaultName}.{fileExtension}";
-
-            return fileName;
+            return pictureSettings.DefaultPictureName;
         }
     }
 }

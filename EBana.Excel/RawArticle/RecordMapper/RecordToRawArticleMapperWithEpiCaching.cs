@@ -19,7 +19,7 @@ namespace EBana.Excel
         public RecordToRawArticleMapperWithEpiCaching(IRecordToRawArticleMapper decoratedMapper)
         {
             if (decoratedMapper == null)
-              throw new ArgumentNullException("decorated");
+              throw new ArgumentNullException(nameof(decoratedMapper));
 
             this.decoratedMapper = decoratedMapper;
             cachedEpiType = new List<TypeEpi>();
@@ -30,7 +30,7 @@ namespace EBana.Excel
         public RawArticle Map(List<string> record)
         {
             if (record == null)
-                throw new ArgumentNullException("record");
+                throw new ArgumentNullException(nameof(record));
 
             RawArticle article = decoratedMapper.Map(record);
             article.TypeEpi = GetEpiTypeFor(article);
@@ -40,7 +40,7 @@ namespace EBana.Excel
 
         private TypeEpi GetEpiTypeFor(RawArticle article)
         {
-            return article.TypeEpi is null ? null : GetUniqueEpiTypeFor(article);
+            return article.IsEpi() ? GetUniqueEpiTypeFor(article) : null;
         }
 
         private TypeEpi GetUniqueEpiTypeFor(RawArticle rawArticle)

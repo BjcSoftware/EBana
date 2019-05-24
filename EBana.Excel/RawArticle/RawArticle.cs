@@ -20,6 +20,11 @@ namespace EBana.Excel
 		// partie spécifique aux EPIs
 		public TypeEpi TypeEpi { get; set; }
 
+		public bool IsEpi()
+		{
+			return TypeEpi != null;
+		}
+
 		public override bool Equals(object obj)
 		{
 			var article = obj as RawArticle;

@@ -13,25 +13,25 @@ namespace EBana.Domain.ArticlePictures.UnitTests
         public void UpdatePictureOfArticle_ByDefault_CopyNewPictureIntoTheRightLocation()
         {
             var stubFileService = Substitute.For<IFileService>();
-            var stubFileNameFormatter = Substitute.For<IArticlePictureFileNameFormatter>();
-            string updatedPictureFileName = "article.jpg";
-            stubFileNameFormatter
+            var stubFileNameFormater = Substitute.For<IArticlePictureNameFormater>();
+            stubFileNameFormater
                 .Format(Arg.Any<Article>())
-                .Returns(updatedPictureFileName);
-            var updater = CreateArticlePictureUpdater(stubFileService, stubFileNameFormatter);
+                .Returns("article");
+            var updater = CreateArticlePictureUpdater(stubFileService, stubFileNameFormater);
 
             string expectedUpdateSrc = "updateSource/newPicture.jpg";
             updater.UpdatePictureOfArticle(
-                new Article(), 
+                new Article(),
                 new Uri(expectedUpdateSrc, UriKind.Relative));
 
-            string expectedUpdateDest = $"{GetPictureFolderPath()}/{updatedPictureFileName}";
+            string expectedUpdateDest = $"{PictureFolderPath}/article.jpg";
+
             stubFileService.Received().Copy(expectedUpdateSrc, expectedUpdateDest);
         }
 
         private ArticlePictureUpdater CreateArticlePictureUpdater(
             IFileService fileService, 
-            IArticlePictureFileNameFormatter fileNameFormatter)
+            IArticlePictureNameFormater fileNameFormatter)
         {
             ArticlePictureSettings pictureSettings = CreatePictureSettings();
             var updater = new ArticlePictureUpdater(fileService, fileNameFormatter, pictureSettings);
@@ -44,9 +44,6 @@ namespace EBana.Domain.ArticlePictures.UnitTests
             return new ArticlePictureSettings("pictureFolder", "jpg", "default");
         }
 
-        private string GetPictureFolderPath()
-        {
-            return CreatePictureSettings().PictureFolderPath;
-        }
+        private string PictureFolderPath => CreatePictureSettings().PictureFolderPath;
     }
 }

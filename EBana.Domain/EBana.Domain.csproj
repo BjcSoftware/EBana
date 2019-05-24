@@ -48,8 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArticlePictures\ArticlePictureFileNameFormatter\ArticlePictureFileNameFormatter.cs" />
-    <Compile Include="ArticlePictures\ArticlePictureFileNameFormatter\IArticlePictureFileNameFormatter.cs" />
+    <Compile Include="ArticlePictures\ArticlePictureFileNameFormater\ArticlePictureFileNameFormater.cs" />
+    <Compile Include="ArticlePictures\ArticlePictureFileNameFormater\IArticlePictureFileNameFormater.cs" />
     <Compile Include="ArticlePictures\ArticlePictureSettings.cs" />
     <Compile Include="ArticlePictures\Locator\ArticlePictureLocator.cs" />
     <Compile Include="ArticlePictures\Locator\IArticlePictureLocator.cs" />

@@ -2,11 +2,13 @@
 
 namespace EBana.Domain.ArticlePictures
 {
-    public interface IArticlePictureFileNameFormatter
+    public interface IArticlePictureNameFormater
     {
         string Format(Article article);
 
-        // donner le nom de l'image d'article par défaut
+        /// <summary>
+        /// Donner le nom de l'image d'article par défaut
+        /// </summary>
         string FormatDefault();
     }
 }

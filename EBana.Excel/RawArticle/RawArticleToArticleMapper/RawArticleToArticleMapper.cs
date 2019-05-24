@@ -9,14 +9,14 @@ namespace EBana.Excel
     /// </summary>
     public class RawArticleToArticleMapper : IRawArticleToArticleMapper
     {
-        private readonly IArticleSettings articleSettings;
+        private readonly IArticleSettings settings;
 
-        public RawArticleToArticleMapper(IArticleSettings articleSettings)
+        public RawArticleToArticleMapper(IArticleSettings settings)
         {
-            if (articleSettings == null)
-                throw new ArgumentNullException("articleSettings");
+            if (settings == null)
+                throw new ArgumentNullException(nameof(settings));
 
-            this.articleSettings = articleSettings;
+            this.settings = settings;
         }
 
         public Article Map(RawArticle rawArticle)
@@ -24,7 +24,47 @@ namespace EBana.Excel
             if (rawArticle == null)
                 throw new ArgumentNullException("rawArticle");
 
-            Article article = new Article()
+            if (IsRawArticleBanalise(rawArticle))
+                return rawArticle.IsEpi() ? CreateEpiFromRawArticle(rawArticle) : 
+                    CreateBanaliseFromRawArticle(rawArticle);
+
+            else if (IsRawArticleSEL(rawArticle))
+                return CreateSelFromRawArticle(rawArticle);
+            else
+                throw new InvalidOperationException("rawArticle");
+        }
+
+        private bool IsRawArticleBanalise(RawArticle rawArticle)
+        {
+            return rawArticle.IdMagasin == settings.IdMagasinBanalise;
+        }
+
+        private Banalise CreateBanaliseFromRawArticle(RawArticle rawArticle)
+        {
+            return new Banalise(
+                CreateArticleFromRawArticle(rawArticle)) { LienFlu = rawArticle.LienFlu };
+        }
+
+        private Article CreateEpiFromRawArticle(RawArticle rawArticle)
+        {
+            return new EPI(
+                CreateBanaliseFromRawArticle(rawArticle)) { TypeEpi = rawArticle.TypeEpi };
+        }
+
+        private bool IsRawArticleSEL(RawArticle rawArticle)
+        {
+            return rawArticle.IdMagasin == settings.IdMagasinSEL;
+        }
+
+        private SEL CreateSelFromRawArticle(RawArticle rawArticle)
+        {
+            return new SEL(
+                CreateArticleFromRawArticle(rawArticle));
+        }
+
+        private Article CreateArticleFromRawArticle(RawArticle rawArticle)
+        {
+            return new Article()
             {
                 Ref = rawArticle.Ref,
                 Libelle = rawArticle.Libelle,
@@ -32,35 +72,6 @@ namespace EBana.Excel
                 Quantite = rawArticle.Quantite,
                 InfosSupplementaires = rawArticle.InfosSupplementaires
             };
-
-            if (IsRawArticleSEL(rawArticle))
-            {
-                return new SEL(article);
-            }
-            else
-            {
-                // l'article à produire est du banalisé
-                Banalise articleBanalise = new Banalise(article) { LienFlu = rawArticle.LienFlu };
-
-                if (IsRawArticleEPI(rawArticle))
-                {
-                    return new EPI(articleBanalise) { TypeEpi = rawArticle.TypeEpi };
-                }
-                else
-                {
-                    return articleBanalise;
-                }
-            }
-        }
-
-        private bool IsRawArticleSEL(RawArticle rawArticle)
-        {
-            return rawArticle.IdMagasin == articleSettings.IdMagasinSEL;
-        }
-
-        private bool IsRawArticleEPI(RawArticle rawArticle)
-        {
-            return rawArticle.TypeEpi != null;
         }
     }
 }

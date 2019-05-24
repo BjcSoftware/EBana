@@ -2,6 +2,7 @@
 using EBana.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EBana.Excel
 {
@@ -10,9 +11,6 @@ namespace EBana.Excel
     /// </summary>
     public class ExcelArticleProvider : IArticleProvider
     {
-        private List<RawArticle> rawArticles;
-        private int createdArticlesCount;
-
         private readonly IRawArticleProvider rawArticleProvider;
         private readonly IRawArticleToArticleMapper rawArticleToArticleMapper;
 
@@ -21,12 +19,12 @@ namespace EBana.Excel
             IRawArticleToArticleMapper rawArticleToArticleMapper)
         {
             if (rawArticleProvider == null)
-                throw new ArgumentNullException("rawArticleProvider");
+                throw new ArgumentNullException(nameof(rawArticleProvider));
             if (rawArticleToArticleMapper == null)
-                throw new ArgumentNullException("rawArticleToArticleMapper");
-
-            this.rawArticleToArticleMapper = rawArticleToArticleMapper;
+                throw new ArgumentNullException(nameof(rawArticleToArticleMapper));
+            
             this.rawArticleProvider = rawArticleProvider;
+            this.rawArticleToArticleMapper = rawArticleToArticleMapper;
         }
 
         /// <summary>
@@ -35,30 +33,11 @@ namespace EBana.Excel
         public IEnumerable<Article> GetArticlesFrom(string source)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
-            rawArticles = rawArticleProvider.GetRawArticlesFrom(source);
-
-            createdArticlesCount = 0;
-            List<Article> articles = new List<Article>(rawArticles.Count);
-            while (ThereIsStillArticleToGet())
-            {
-                articles.Add(GetNextArticle());
-            }
-
-            return articles;
-        }
-
-        private bool ThereIsStillArticleToGet()
-        {
-            return createdArticlesCount < rawArticles.Count;
-        }
-
-        private Article GetNextArticle()
-        {
-            RawArticle rawArticle = rawArticles[createdArticlesCount++];
-            Article createdArticle = rawArticleToArticleMapper.Map(rawArticle);
-            return createdArticle;
+            return 
+                from rawArticle in rawArticleProvider.GetRawArticlesFrom(source)
+                select rawArticleToArticleMapper.Map(rawArticle);
         }
     }
 }

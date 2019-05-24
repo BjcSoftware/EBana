@@ -19,8 +19,7 @@ namespace EBana.EfDataAccess.Repository
 
         public Credentials GetCredentials()
         {
-            Credentials credentials = credentialsReader.GetAll().First();
-            return credentials;
+            return credentialsReader.GetAll().First();
         }
     }
 }

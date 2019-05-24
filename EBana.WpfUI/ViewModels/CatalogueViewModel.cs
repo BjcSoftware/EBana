@@ -8,6 +8,8 @@ using EBana.Services.Dialog;
 using EBana.Services.Web;
 using EBana.Domain.ArticlePictures;
 using EBana.Domain.SearchEngine;
+using EBana.WpfUI.Core.ViewModel;
+using EBana.WpfUI.Core.Command;
 
 namespace EBana.WpfUI.ViewModels
 {
@@ -30,15 +32,15 @@ namespace EBana.WpfUI.ViewModels
 			IArticleSearchEngine articleSearchEngine)
 		{
 			if (articlePictureLocator == null)
-				throw new ArgumentNullException("articlePictureLocator");
+				throw new ArgumentNullException(nameof(articlePictureLocator));
 			if (messageBoxService == null)
-				throw new ArgumentNullException("messageBoxService");
+				throw new ArgumentNullException(nameof(messageBoxService));
 			if (webBrowserService == null)
-				throw new ArgumentNullException("webBrowserService");
+				throw new ArgumentNullException(nameof(webBrowserService));
 			if (searchSettingsProvider == null)
-				throw new ArgumentNullException("searchSettingsProvider");
+				throw new ArgumentNullException(nameof(searchSettingsProvider));
 			if (articleSearchEngine == null)
-				throw new ArgumentNullException("articleSearchEngine");
+				throw new ArgumentNullException(nameof(articleSearchEngine));
 
 			this.articlePictureLocator = articlePictureLocator;
 			this.messageBoxService = messageBoxService;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace EBana.WpfUI.ViewModels
+namespace EBana.WpfUI.Core.Command
 {
     public class RelayParameterizedCommand : ICommand
     {

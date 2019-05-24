@@ -3,10 +3,12 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using EBana.Domain.Security;
 using EBana.Services.Dialog;
+using EBana.WpfUI.Core.Command;
+using EBana.WpfUI.Core.ViewModel;
 
 namespace EBana.WpfUI.ViewModels
 {
-    class NouveauMotDePasseViewModel : Notifier
+    public class NouveauMotDePasseViewModel : Notifier
     {
         public ICommand NewPasswordCommand { get; private set; }
 
@@ -24,11 +26,11 @@ namespace EBana.WpfUI.ViewModels
             IPasswordUpdater passwordUpdater)
         {
             if (messageBoxService == null)
-                throw new ArgumentNullException("messageBoxService");
+                throw new ArgumentNullException(nameof(messageBoxService));
             if (authenticator == null)
-                throw new ArgumentNullException("authenticator");
+                throw new ArgumentNullException(nameof(authenticator));
             if (passwordUpdater == null)
-                throw new ArgumentNullException("passwordUpdater");
+                throw new ArgumentNullException(nameof(passwordUpdater));
 
             this.messageBoxService = messageBoxService;
             this.authenticator = authenticator;

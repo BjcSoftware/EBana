@@ -15,27 +15,27 @@ namespace EBana.Excel
         private uint currentArticleIndex;
 
         private readonly IRecordToRawArticleMapper recordToRawArticleMapper;
-        private readonly IExcelFileFactory excelFileFactory;
+        private readonly IExcelFileFactory factory;
 
         public ExcelRawArticleProvider(
             IRecordToRawArticleMapper recordToRawArticleMapper,
-            IExcelFileFactory excelFileFactory)
+            IExcelFileFactory factory)
         {
             if (recordToRawArticleMapper == null)
-                throw new ArgumentNullException("recordToRawArticleMapper");
-            if (excelFileFactory == null)
-                throw new ArgumentNullException("excelFileFactory");
+                throw new ArgumentNullException(nameof(recordToRawArticleMapper));
+            if (factory == null)
+                throw new ArgumentNullException(nameof(factory));
 
             this.recordToRawArticleMapper = recordToRawArticleMapper;
-            this.excelFileFactory = excelFileFactory;
+            this.factory = factory;
         }
 
         public List<RawArticle> GetRawArticlesFrom(string source)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
-            var xlFile = excelFileFactory.CreateExcelFile(source);
+            var xlFile = factory.CreateExcelFile(source);
             articleCount = xlFile.RowCount - 1;
             rawArticleData = ReadRawArticlesDataFrom(xlFile, articleCount);
 
@@ -76,21 +76,6 @@ namespace EBana.Excel
             for (var i = array.GetLowerBound(1); i <= array.GetUpperBound(1); i++)
             {
                 yield return array[row, i];
-            }
-        }
-    }
-
-    public static class StringHelper
-    {
-        public static string Capitalize(this string s)
-        {
-            if (s == string.Empty || s == null)
-            {
-                return s;
-            }
-            else
-            {
-                return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(s.ToLower());
             }
         }
     }

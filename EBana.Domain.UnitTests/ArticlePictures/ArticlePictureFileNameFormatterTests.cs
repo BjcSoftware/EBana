@@ -5,7 +5,7 @@ using System;
 namespace EBana.Domain.ArticlePictures.UnitTests
 {
     [TestFixture]
-    public class ArticlePictureFileNameFormatterTests
+    public class ArticlePictureNameFormaterTests
     {
         [Test]
         public void Constructor_NullSettingsPassed_Throws()
@@ -13,29 +13,27 @@ namespace EBana.Domain.ArticlePictures.UnitTests
             ArticlePictureSettings nullSettings = null;
 
             var exception = Assert.Catch<ArgumentNullException>(
-                () => new ArticlePictureFileNameFormatter(nullSettings));
+                () => new ArticlePictureNameFormater(nullSettings));
         }
 
         [Test]
         public void Format_NullArticlePassed_Throws()
         {
-            ArticlePictureFileNameFormatter formatter = CreateFormatter();
+            ArticlePictureNameFormater formater = CreateFormater();
             Article nullArticle = null;
 
             var exception = Assert.Catch<ArgumentNullException>(
-                () => formatter.Format(nullArticle));
+                () => formater.Format(nullArticle));
         }
 
         [Test]
-        public void Format_CorrectArticlePassed_ReturnsCorrectFileName()
+        public void Format_CorrectArticlePassed_ReturnsCorrectName()
         {
             var article = new Article() { Ref = "N0000000" };
-            var settings = CreateArticlePictureSettings();
-            var formatter = new ArticlePictureFileNameFormatter(settings);
-            string expectedFileName = 
-                $"{article.Ref}.{settings.PictureFileExtension}";
+            var formater = CreateFormater();
+            string expectedFileName = article.Ref;
 
-            string actualFileName = formatter.Format(article);
+            string actualFileName = formater.Format(article);
 
             Assert.AreEqual(
                 expectedFileName,
@@ -43,32 +41,36 @@ namespace EBana.Domain.ArticlePictures.UnitTests
         }
 
         [Test]
-        public void FormatDefault_Always_ReturnsDefaultFileName()
+        public void FormatDefault_Always_ReturnsDefaultName()
         {
-            var settings = CreateArticlePictureSettings();
-            var formatter = new ArticlePictureFileNameFormatter(settings);
-            string expectedFileName = 
-                $"{settings.DefaultPictureName}.{settings.PictureFileExtension}";
+            var settings = CreateSettings("default");
+            var formater = new ArticlePictureNameFormater(settings);
+            string expectedFileName = "default";
 
-            string actualFileName = formatter.FormatDefault();
+            string actualFileName = formater.FormatDefault();
 
             Assert.AreEqual(
                 expectedFileName,
                 actualFileName);
         }
 
-        private ArticlePictureFileNameFormatter CreateFormatter()
+        private ArticlePictureNameFormater CreateFormater()
         {
-            return new ArticlePictureFileNameFormatter(
-                CreateArticlePictureSettings());
+            return new ArticlePictureNameFormater(
+                CreateSettings());
         }
 
-        private ArticlePictureSettings CreateArticlePictureSettings()
+        private ArticlePictureSettings CreateSettings()
+        {
+            return CreateSettings("default");
+        }
+
+        private ArticlePictureSettings CreateSettings(string defaultFileName)
         {
             return new ArticlePictureSettings(
                 "folder",
-                "ext",
-                "default");
+                ".jpg",
+                defaultFileName);
         }
     }
 }

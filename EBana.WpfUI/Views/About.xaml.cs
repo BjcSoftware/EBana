@@ -2,7 +2,7 @@
 
 namespace EBana.WpfUI.Views
 {
-    public partial class About : UserControl
+    public partial class About : Page
     {
         public About()
         {
