@@ -1,4 +1,4 @@
-﻿using EBana.WpfUI.ViewModels;
+﻿using EBana.PresentationLogic.ViewModels;
 using System.Windows.Controls;
 
 namespace EBana.WpfUI.Views

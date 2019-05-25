@@ -8,10 +8,10 @@ using EBana.Services.Dialog;
 using EBana.Services.Web;
 using EBana.Domain.ArticlePictures;
 using EBana.Domain.SearchEngine;
-using EBana.WpfUI.Core.ViewModel;
-using EBana.WpfUI.Core.Command;
+using EBana.PresentationLogic.Core.ViewModel;
+using EBana.PresentationLogic.Core.Command;
 
-namespace EBana.WpfUI.ViewModels
+namespace EBana.PresentationLogic.ViewModels
 {
 	public class CatalogueViewModel : Notifier
 	{

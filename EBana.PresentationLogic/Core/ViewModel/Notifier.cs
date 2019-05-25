@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace EBana.WpfUI.Core.ViewModel
+namespace EBana.PresentationLogic.Core.ViewModel
 {
 	public class Notifier : INotifyPropertyChanged
 	{

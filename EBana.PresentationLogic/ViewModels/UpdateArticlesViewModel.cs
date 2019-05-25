@@ -1,9 +1,9 @@
 ﻿using EBana.Domain;
+using EBana.PresentationLogic.Core.ViewModel;
 using EBana.Services.Dialog;
-using EBana.WpfUI.Core.ViewModel;
 using System;
 
-namespace EBana.WpfUI.ViewModels
+namespace EBana.PresentationLogic.ViewModels
 {
 	public class UpdateArticlesViewModel : Notifier
 	{

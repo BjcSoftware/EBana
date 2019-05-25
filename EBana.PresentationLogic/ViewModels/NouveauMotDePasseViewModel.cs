@@ -2,11 +2,11 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using EBana.Domain.Security;
+using EBana.PresentationLogic.Core.Command;
+using EBana.PresentationLogic.Core.ViewModel;
 using EBana.Services.Dialog;
-using EBana.WpfUI.Core.Command;
-using EBana.WpfUI.Core.ViewModel;
 
-namespace EBana.WpfUI.ViewModels
+namespace EBana.PresentationLogic.ViewModels
 {
     public class NouveauMotDePasseViewModel : Notifier
     {

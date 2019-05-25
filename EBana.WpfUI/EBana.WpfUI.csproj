@@ -135,20 +135,9 @@
     <Compile Include="Converters\SelectedEpiTypeToPicturePathConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\SelectedItemTypeToVisibilityConverter.cs" />
-    <Compile Include="Core\INavigationService.cs" />
     <Compile Include="Core\MyContentLoader.cs" />
     <Compile Include="Core\NavigationService.cs" />
-    <Compile Include="Core\Command\RelayParameterizedCommand.cs" />
     <Compile Include="Core\PageComposer.cs" />
-    <Compile Include="ViewModels\CatalogueViewModel.cs" />
-    <Compile Include="ViewModels\GestionPhotosViewModel.cs" />
-    <Compile Include="ViewModels\MainMenuViewModel.cs" />
-    <Compile Include="ViewModels\MaintenanceConnexionViewModel.cs" />
-    <Compile Include="Core\ViewModel\Notifier.cs" />
-    <Compile Include="Core\Command\RelayCommand.cs" />
-    <Compile Include="ViewModels\MaintenanceMenuViewModel.cs" />
-    <Compile Include="ViewModels\NouveauMotDePasseViewModel.cs" />
-    <Compile Include="ViewModels\UpdateArticlesViewModel.cs" />
     <Compile Include="Views\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
@@ -223,6 +212,10 @@
     <ProjectReference Include="..\EBana.Excel\EBana.Excel.csproj">
       <Project>{A8130E81-91F8-411C-9E09-530925B629B2}</Project>
       <Name>EBana.Excel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EBana.PresentationLogic\EBana.PresentationLogic.csproj">
+      <Project>{7bd4bdae-69e3-43ef-9824-e41ffd69e92f}</Project>
+      <Name>EBana.PresentationLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\EBana.Services\EBana.Services\EBana.Services.csproj">
       <Project>{edb65c51-2a9e-4834-878c-81dd72a1af5b}</Project>

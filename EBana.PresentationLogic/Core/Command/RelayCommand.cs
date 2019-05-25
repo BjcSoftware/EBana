@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace EBana.WpfUI.Core.Command
+namespace EBana.PresentationLogic.Core.Command
 {
     /// <summary>
     /// A basic command that runs an Action

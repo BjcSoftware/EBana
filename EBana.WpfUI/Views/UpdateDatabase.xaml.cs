@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using EBana.WpfUI.ViewModels;
+using EBana.PresentationLogic.ViewModels;
 
 namespace EBana.WpfUI.Views
 {

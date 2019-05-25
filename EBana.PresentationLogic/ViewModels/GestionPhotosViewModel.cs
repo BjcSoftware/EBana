@@ -7,10 +7,10 @@ using EBana.Services.Dialog;
 using EBana.Domain.ArticlePictures;
 using EBana.Domain.SearchEngine;
 using System.Linq;
-using EBana.WpfUI.Core.ViewModel;
-using EBana.WpfUI.Core.Command;
+using EBana.PresentationLogic.Core.ViewModel;
+using EBana.PresentationLogic.Core.Command;
 
-namespace EBana.WpfUI.ViewModels
+namespace EBana.PresentationLogic.ViewModels
 {
 	public class GestionPhotosViewModel : Notifier
 	{

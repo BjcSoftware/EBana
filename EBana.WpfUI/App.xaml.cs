@@ -5,6 +5,7 @@ using EBana.Services.Dialog;
 using EBana.WpfUI.Views;
 using FirstFloor.ModernUI.Windows.Controls;
 using EBana.WpfUI.Core;
+using EBana.PresentationLogic.Core;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -20,16 +21,13 @@ namespace EBana
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			SetupLogger();
+
 			base.OnStartup(e);
 
             mainWindow = new Window1();
-
             navigator = new NavigationService(mainWindow);
-
             var composer = new PageComposer(navigator);
-
             mainWindow.ContentLoader = new MyContentLoader(composer);
-
             mainWindow.Show();
 
             navigator.NavigateTo("MainMenu");

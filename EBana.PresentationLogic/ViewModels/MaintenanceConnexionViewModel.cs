@@ -3,11 +3,11 @@ using System.Windows.Input;
 using System;
 using EBana.Services.Dialog;
 using EBana.Domain.Security;
-using EBana.WpfUI.Core.ViewModel;
-using EBana.WpfUI.Core.Command;
-using EBana.WpfUI.Core;
+using EBana.PresentationLogic.Core.ViewModel;
+using EBana.PresentationLogic.Core;
+using EBana.PresentationLogic.Core.Command;
 
-namespace EBana.WpfUI.ViewModels
+namespace EBana.PresentationLogic.ViewModels
 {
 	public class MaintenanceConnexionViewModel : Notifier
 	{

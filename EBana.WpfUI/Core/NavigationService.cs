@@ -1,4 +1,5 @@
 ﻿using System;
+using EBana.PresentationLogic.Core;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace EBana.WpfUI.Core

@@ -1,10 +1,10 @@
-﻿using EBana.WpfUI.Core;
-using EBana.WpfUI.Core.Command;
-using EBana.WpfUI.Core.ViewModel;
+﻿using EBana.PresentationLogic.Core;
+using EBana.PresentationLogic.Core.Command;
+using EBana.PresentationLogic.Core.ViewModel;
 using System;
 using System.Windows.Input;
 
-namespace EBana.WpfUI.ViewModels
+namespace EBana.PresentationLogic.ViewModels
 {
     public class MainMenuViewModel : Notifier
     {

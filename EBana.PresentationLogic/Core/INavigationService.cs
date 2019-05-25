@@ -1,4 +1,4 @@
-﻿namespace EBana.WpfUI.Core
+﻿namespace EBana.PresentationLogic.Core
 {
     public interface INavigationService
     {

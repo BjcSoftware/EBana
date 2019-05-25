@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBana.WpfUI", "EBana.WpfUI\EBana.WpfUI.csproj", "{1E67F9B1-B27C-4DF8-BCA8-CF3E23139349}"
 EndProject
@@ -30,6 +30,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBana.Services", "EBana.Services\EBana.Services\EBana.Services.csproj", "{EDB65C51-2A9E-4834-878C-81DD72A1AF5B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBana.WindowsServices", "EBana.Services\EBana.WindowsServices\EBana.WindowsServices.csproj", "{F2E10053-03B9-4F3A-8133-49D0408E3D24}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EBana.PresentationLogic", "EBana.PresentationLogic", "{8BF622F7-840B-4DC1-85BA-D0CBFE8E4F17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBana.PresentationLogic", "EBana.PresentationLogic\EBana.PresentationLogic.csproj", "{7BD4BDAE-69E3-43EF-9824-E41FFD69E92F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +77,10 @@ Global
 		{F2E10053-03B9-4F3A-8133-49D0408E3D24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2E10053-03B9-4F3A-8133-49D0408E3D24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2E10053-03B9-4F3A-8133-49D0408E3D24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BD4BDAE-69E3-43EF-9824-E41FFD69E92F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BD4BDAE-69E3-43EF-9824-E41FFD69E92F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BD4BDAE-69E3-43EF-9824-E41FFD69E92F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BD4BDAE-69E3-43EF-9824-E41FFD69E92F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +95,7 @@ Global
 		{778EF8A1-CEC3-49C8-A3E1-A68710ECA6EC} = {1225499A-D623-4F62-8929-4B6FE58BA54F}
 		{EDB65C51-2A9E-4834-878C-81DD72A1AF5B} = {0B8D2B93-D4A9-4E57-88EF-7C695567F9E3}
 		{F2E10053-03B9-4F3A-8133-49D0408E3D24} = {0B8D2B93-D4A9-4E57-88EF-7C695567F9E3}
+		{7BD4BDAE-69E3-43EF-9824-E41FFD69E92F} = {8BF622F7-840B-4DC1-85BA-D0CBFE8E4F17}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B5F6E163-0146-4BDC-AC03-2E1CBA0BD702}
