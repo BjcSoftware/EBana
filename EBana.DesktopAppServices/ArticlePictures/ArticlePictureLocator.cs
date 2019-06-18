@@ -1,33 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EBana.Domain.ArticlePictures;
 using EBana.Domain.Models;
 using EBana.Services.File;
 
-namespace EBana.Domain.ArticlePictures
+namespace EBana.Services.DesktopAppServices.ArticlePictures
 {
     public class ArticlePictureLocator : IArticlePictureLocator
     {
         private readonly IFileService fileService;
-        private readonly IArticlePictureNameFormater nameFormater;
+        private readonly IArticlePictureNameFormatter nameFormatter;
         private readonly ArticlePictureSettings settings;
 
         private List<string> availableArticlePictureCache;
 
         public ArticlePictureLocator(
             IFileService fileService,
-            IArticlePictureNameFormater nameFormater, 
+            IArticlePictureNameFormatter nameFormatter, 
             ArticlePictureSettings settings)
         {
             if (fileService == null)
                 throw new ArgumentNullException(nameof(fileService));
-            if (nameFormater == null)
-                throw new ArgumentNullException(nameof(nameFormater));
+            if (nameFormatter == null)
+                throw new ArgumentNullException(nameof(nameFormatter));
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
 
             this.fileService = fileService;
-            this.nameFormater = nameFormater;
+            this.nameFormatter = nameFormatter;
             this.settings = settings;
 
             availableArticlePictureCache = new List<string>();
@@ -98,7 +99,7 @@ namespace EBana.Domain.ArticlePictures
         private string GetPictureFileNameFor(Article article)
         {
             return settings.FormatPictureFileName(
-                nameFormater.Format(article));
+                nameFormatter.FormatName(article));
         }
 
         private string GetDefaultPictureFileName()

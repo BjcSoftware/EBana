@@ -21,13 +21,13 @@ namespace EBana.EfDataAccess
             IReader<SEL> selReader)
         {
             if (articleReader == null)
-                throw new ArgumentNullException("articleReader");
+                throw new ArgumentNullException(nameof(articleReader));
             if (banaliseReader == null)
-                throw new ArgumentNullException("banaliseReader");
+                throw new ArgumentNullException(nameof(banaliseReader));
             if (epiReader == null)
-                throw new ArgumentNullException("epiReader");
+                throw new ArgumentNullException(nameof(epiReader));
             if (selReader == null)
-                throw new ArgumentNullException("selReader");
+                throw new ArgumentNullException(nameof(selReader));
 
             this.articleReader = articleReader;
             this.banaliseReader = banaliseReader;
@@ -35,14 +35,33 @@ namespace EBana.EfDataAccess
             this.selReader = selReader;
         }
 
+        public IEnumerable<Article> PerformSearch(SearchSettings settings)
+        {
+            if (settings == null)
+                throw new ArgumentNullException(nameof(settings));
+
+            string articleTypeFilter = settings.ArticleTypeFilter?.Libelle;
+            switch (articleTypeFilter)
+            {
+                case null:
+                    return SearchArticles(settings.Query);
+                case "Banalisé":
+                    return SearchBanalise(settings);
+                case "SEL":
+                    return SearchSel(settings.Query);
+                default:
+                    throw new InvalidOperationException($"Invalid article type: {settings.ArticleTypeFilter}");
+            }
+        }
+
         /// <summary>
         /// Rechercher les articles
         /// qui possèdent un libellé ou une référence qui contient <paramref name="searchQuery"/>
         /// </summary>
-        public IEnumerable<Article> SearchArticles(string searchQuery)
+        private IEnumerable<Article> SearchArticles(string searchQuery)
         {
             if (searchQuery == null)
-                throw new ArgumentNullException("searchQuery");
+                throw new ArgumentNullException(nameof(searchQuery));
 
             searchQuery = searchQuery.ToLower();
             return articleReader
@@ -51,14 +70,23 @@ namespace EBana.EfDataAccess
                 .OrderBy(a => a.Ref);
         }
 
+        private IEnumerable<Article> SearchBanalise(SearchSettings settings)
+        {
+            if (settings.IsEpi)
+            {
+                return SearchEpi(settings.Query, settings.EpiTypeFilter);
+            }
+            return SearchBanalise(settings.Query);
+        }
+
         /// <summary>
         /// Rechercher les articles banalisés
         /// qui possèdent un libellé ou une référence qui contient <paramref name="searchQuery"/>
         /// </summary>
-        public IEnumerable<Article> SearchBanalise(string searchQuery)
+        private IEnumerable<Article> SearchBanalise(string searchQuery)
         {
             if (searchQuery == null)
-                throw new ArgumentNullException("searchQuery");
+                throw new ArgumentNullException(nameof(searchQuery));
 
             searchQuery = searchQuery.ToLower();
             return banaliseReader
@@ -71,12 +99,12 @@ namespace EBana.EfDataAccess
         /// Rechercher les articles EPI de type <paramref name="type"/>
         /// qui possèdent un libellé ou une référence qui contient <paramref name="searchQuery"/>
         /// </summary>
-        public IEnumerable<Article> SearchEpi(string searchQuery, TypeEpi type)
+        private IEnumerable<Article> SearchEpi(string searchQuery, TypeEpi type)
         {
             if (searchQuery == null)
-                throw new ArgumentNullException("searchQuery");
+                throw new ArgumentNullException(nameof(searchQuery));
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             searchQuery = searchQuery.ToLower();
             return epiReader
@@ -90,10 +118,10 @@ namespace EBana.EfDataAccess
         /// Rechercher les articles SEL
         /// qui possèdent un libellé ou une référence qui contient <paramref name="searchQuery"/>
         /// </summary>
-        public IEnumerable<Article> SearchSel(string searchQuery)
+        private IEnumerable<Article> SearchSel(string searchQuery)
         {
             if (searchQuery == null)
-                throw new ArgumentNullException("searchQuery");
+                throw new ArgumentNullException(nameof(searchQuery));
 
             searchQuery = searchQuery.ToLower();
             return selReader

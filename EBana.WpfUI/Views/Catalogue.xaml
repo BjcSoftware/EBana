@@ -116,7 +116,7 @@
 						VerticalAlignment="Center" />
 					<ComboBox
 						ItemsSource="{Binding AvailableArticleTypes}"
-						SelectedItem="{Binding SelectedArticleType, Mode=TwoWay}"
+						SelectedItem="{Binding SearchSettings.ArticleTypeFilter, Mode=TwoWay}"
 						SelectedIndex="0"
 						VerticalAlignment="Center"
 						Margin="10 0 0 0"
@@ -145,7 +145,7 @@
 					
 					<!-- TextBox pour saisir une recherche (le style "placeHolder" est responsable de la MaxLength) -->
 					<TextBox
-						Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+						Text="{Binding SearchSettings.Query, UpdateSourceTrigger=PropertyChanged}"
 						Height="24"
 						Grid.Row="0"
 						Grid.Column="1"
@@ -183,7 +183,7 @@
 					
 					<!-- EPI -->
 					<CheckBox Content="EPI"
-						IsChecked="{Binding IsSearchedArticleEPI}"
+						IsChecked="{Binding SearchSettings.IsEpi}"
 						Grid.Row="0"
 						Grid.Column="0"
 						Margin="0 5"
@@ -202,7 +202,7 @@
 						Grid.Column="1"
 						VerticalAlignment="Center"
 						ItemsSource="{Binding AvailableEpiTypes}"
-						SelectedItem="{Binding SelectedEpiType}"
+						SelectedItem="{Binding SearchSettings.EpiTypeFilter}"
 						Visibility="{Binding IsChecked, ElementName=chkBoxEpi, Converter={StaticResource BooleanToVisibilityConverter}}">
 						
 						<ComboBox.ItemTemplate>

@@ -121,10 +121,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml" />
+    <ApplicationDefinition Include="Views\App.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="Views\App.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -201,6 +201,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EBana.DesktopAppServices\EBana.DesktopAppServices.csproj">
+      <Project>{96C893D5-A3FA-45F3-9686-1D5547D5F493}</Project>
+      <Name>EBana.DesktopAppServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EBana.EfDataAccess\EBana.EfDataAccess.csproj">
       <Project>{ae7de008-62c6-4f01-aed3-4ded128a0be9}</Project>
       <Name>EBana.EfDataAccess</Name>

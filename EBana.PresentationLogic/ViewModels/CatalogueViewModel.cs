@@ -17,19 +17,20 @@ namespace EBana.PresentationLogic.ViewModels
 	{
 		public ICommand SearchCommand { get; private set; }
 		public ICommand ShowSelectedArticleFluCommand { get; private set; }
+        public SearchSettings SearchSettings { get; private set; }
 
 		private readonly IArticlePictureLocator articlePictureLocator;
 		private readonly IMessageBoxDialogService messageBoxService;
 		private readonly IWebBrowserService webBrowserService;
 		private readonly ISearchSettingsProvider searchSettingsProvider;
-		private readonly IArticleSearchEngine articleSearchEngine;
+		private readonly IArticleSearchEngine searchEngine;
 
 		public CatalogueViewModel(
 			IArticlePictureLocator articlePictureLocator,
 			IMessageBoxDialogService messageBoxService, 
 			IWebBrowserService webBrowserService,
 			ISearchSettingsProvider searchSettingsProvider,
-			IArticleSearchEngine articleSearchEngine)
+			IArticleSearchEngine searchEngine)
 		{
 			if (articlePictureLocator == null)
 				throw new ArgumentNullException(nameof(articlePictureLocator));
@@ -39,14 +40,14 @@ namespace EBana.PresentationLogic.ViewModels
 				throw new ArgumentNullException(nameof(webBrowserService));
 			if (searchSettingsProvider == null)
 				throw new ArgumentNullException(nameof(searchSettingsProvider));
-			if (articleSearchEngine == null)
-				throw new ArgumentNullException(nameof(articleSearchEngine));
+			if (searchEngine == null)
+				throw new ArgumentNullException(nameof(searchEngine));
 
 			this.articlePictureLocator = articlePictureLocator;
 			this.messageBoxService = messageBoxService;
 			this.webBrowserService = webBrowserService;
 			this.searchSettingsProvider = searchSettingsProvider;
-			this.articleSearchEngine = articleSearchEngine;
+			this.searchEngine = searchEngine;
 
 			SearchCommand = new RelayCommand(() => Search());
 			ShowSelectedArticleFluCommand = new RelayCommand(() => ShowSelectedArticleFlu());
@@ -56,7 +57,7 @@ namespace EBana.PresentationLogic.ViewModels
 
 		private void InitPropertiesBoundToUI()
 		{
-			SearchQuery = string.Empty;
+            SearchSettings = new SearchSettings();
 			InitAvailableArticleTypesList();
 			InitAvailableEpiTypesList();
 			SearchResults = new ObservableCollection<Article>();
@@ -73,7 +74,7 @@ namespace EBana.PresentationLogic.ViewModels
 		{
 			if (AvailableArticleTypes.Any())
 			{
-				SelectedArticleType = AvailableArticleTypes.First();
+				SearchSettings.ArticleTypeFilter = AvailableArticleTypes.First();
 			}
 		}
 
@@ -88,7 +89,7 @@ namespace EBana.PresentationLogic.ViewModels
 		{
 			if (AvailableEpiTypes.Any())
 			{
-				SelectedEpiType = AvailableEpiTypes.First();
+				SearchSettings.EpiTypeFilter = AvailableEpiTypes.First();
 			}
 		}
 
@@ -108,40 +109,8 @@ namespace EBana.PresentationLogic.ViewModels
 
 		private void RefreshSearchResults()
 		{
-			IEnumerable<Article> foundArticles = PerformSearch();
+			var foundArticles = searchEngine.PerformSearch(SearchSettings);
 			ResetSearchResultsTo(foundArticles);
-		}
-
-		private IEnumerable<Article> PerformSearch()
-		{
-			IEnumerable<Article> foundArticles;
-			if(IsSearchedArticleSel())
-			{
-				foundArticles = articleSearchEngine
-					.SearchSel(SearchQuery);
-			}
-			else if (IsSearchedArticleEpi())
-			{
-				foundArticles = articleSearchEngine
-					.SearchEpi(SearchQuery, SelectedEpiType);
-			}
-			else
-			{
-				foundArticles = articleSearchEngine
-					.SearchBanalise(SearchQuery);
-			}
-
-			return foundArticles;
-		}
-
-		private bool IsSearchedArticleSel()
-		{
-			return SelectedArticleType.Libelle == "SEL";
-		}
-
-		private bool IsSearchedArticleEpi()
-		{
-			return IsSearchedArticleEPI;
 		}
 
 		private void ResetSearchResultsTo(IEnumerable<Article> articles)
@@ -195,40 +164,7 @@ namespace EBana.PresentationLogic.ViewModels
 			}
 		}
 		
-		private TypeArticle mSelectedArticleType;
-		public TypeArticle SelectedArticleType
-		{
-			get { return mSelectedArticleType; }
-			set {
-				mSelectedArticleType = value;
-				OnPropertyChanged("SelectedArticleType");
-			}
-		}
-		
 		# endregion
-		
-		#region Libellé / Référence à rechercher
-		private string mSearchQuery;
-		public string SearchQuery
-		{
-			get { return mSearchQuery; }
-			set {
-				mSearchQuery = value;
-				OnPropertyChanged("SearchQuery");
-			}
-		}
-		
-		private ObservableCollection<string> mAvailableSearchCriterias;
-		public ObservableCollection<string> AvailableSearchCriterias
-		{
-			get { return mAvailableSearchCriterias; }
-			set {
-				mAvailableSearchCriterias = value;
-				OnPropertyChanged("AvailableSearchCriterias");
-			}
-		}
-
-		#endregion
 
 		#region Paramètres EPIs
 		private bool mAreEpiAvailable;
@@ -241,16 +177,6 @@ namespace EBana.PresentationLogic.ViewModels
 				OnPropertyChanged("AreEpiAvailable");
 			}
 		}
-
-		private bool mIsSearchedArticleEPI;
-		public bool IsSearchedArticleEPI
-		{
-			get { return mIsSearchedArticleEPI; }
-			set {
-				mIsSearchedArticleEPI = value;
-				OnPropertyChanged("IsSearchedArticleEPI");
-			}
-		}
 		
 		private ObservableCollection<TypeEpi> mAvailableEpiTypes;
 		public ObservableCollection<TypeEpi> AvailableEpiTypes
@@ -261,16 +187,6 @@ namespace EBana.PresentationLogic.ViewModels
 				OnPropertyChanged("AvailableEpiTypes");
 				OnAvailableEpiTypesChanged();
 
-			}
-		}
-		
-		private TypeEpi mSelectedEpiType;
-		public TypeEpi SelectedEpiType
-		{
-			get { return mSelectedEpiType; }
-			set {
-				mSelectedEpiType = value;
-				OnPropertyChanged("SelectedEpiType");
 			}
 		}
 

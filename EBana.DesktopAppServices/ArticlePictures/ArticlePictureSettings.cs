@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EBana.Domain.ArticlePictures
+namespace EBana.Services.DesktopAppServices.ArticlePictures
 {
     public class ArticlePictureSettings
     {

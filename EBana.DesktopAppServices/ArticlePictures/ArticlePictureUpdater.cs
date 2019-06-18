@@ -1,29 +1,30 @@
 ﻿using System;
+using EBana.Domain.ArticlePictures;
 using EBana.Domain.Models;
 using EBana.Services.File;
 
-namespace EBana.Domain.ArticlePictures
+namespace EBana.Services.DesktopAppServices.ArticlePictures
 {
     public class ArticlePictureUpdater : IArticlePictureUpdater
     {
         private readonly IFileService fileService;
-        private readonly IArticlePictureNameFormater nameFormater;
+        private readonly IArticlePicturePathFormatter formatter;
         private readonly ArticlePictureSettings settings;
 
         public ArticlePictureUpdater(
             IFileService fileService, 
-            IArticlePictureNameFormater nameFormater,
+            IArticlePicturePathFormatter formatter,
             ArticlePictureSettings settings)
         {
             if (fileService == null)
                 throw new ArgumentNullException(nameof(fileService));
-            if (nameFormater == null)
-                throw new ArgumentNullException(nameof(nameFormater));
+            if (formatter == null)
+                throw new ArgumentNullException(nameof(formatter));
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
 
             this.fileService = fileService;
-            this.nameFormater = nameFormater;
+            this.formatter = formatter;
             this.settings = settings;
 
             CreatePictureFolderIfDoesNotExist();
@@ -39,21 +40,16 @@ namespace EBana.Domain.ArticlePictures
 
         public void UpdatePictureOfArticle(
             Article articleToUpdate, 
-            Uri newPictureLocation)
+            string newPictureLocation)
         {
+            if (articleToUpdate == null)
+                throw new ArgumentNullException(nameof(articleToUpdate));
+            if (newPictureLocation == null)
+                throw new ArgumentNullException(nameof(newPictureLocation));
+
             fileService.Copy(
-                newPictureLocation.OriginalString,
-                GetPictureLocation(articleToUpdate));
-        }
-
-        private string GetPictureLocation(Article article)
-        {
-            return settings.FormatPicturePath(GetPictureNameFor(article));
-        }
-
-        private string GetPictureNameFor(Article article)
-        {
-            return nameFormater.Format(article);
+                newPictureLocation,
+                formatter.FormatPath(articleToUpdate));
         }
     }
 }

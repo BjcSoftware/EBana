@@ -96,7 +96,7 @@
 					   VerticalAlignment="Center"/>
 			
 			<!-- Raccourci clavier pour rechercher -->
-			<TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" 
+			<TextBox Text="{Binding SearchSettings.Query, UpdateSourceTrigger=PropertyChanged}" 
 					 Grid.Column="1"
 					 Margin="5 0"
 					 Style="{StaticResource placeHolder}" Tag=" Entrer un libellé, une référence ou laisser le champ vide pour afficher tous les articles">

@@ -3,6 +3,7 @@ using EBana.EfDataAccess.Repository;
 using NUnit.Framework;
 using System;
 using NSubstitute;
+using EBana.Domain.SearchEngine;
 
 namespace EBana.EfDataAccess.UnitTests
 {
@@ -74,49 +75,13 @@ namespace EBana.EfDataAccess.UnitTests
         }
 
         [Test]
-        public void SearchBanalise_NullSearchQueryPassed_Throws()
+        public void PerformSearch_NullSettingsPassed_Throws()
         {
-            ArticleSearchEngine searchEngine = CreateSearchEngine();
-            string nullSearchQuery = null;
+            var searchEngine = CreateSearchEngine();
+            SearchSettings nullSettings = null;
 
-            var exception = Assert.Throws<ArgumentNullException>(
-                () => searchEngine.SearchBanalise(nullSearchQuery));
-        }
-
-        [Test]
-        public void SearchEpi_NullSearchQueryPassed_Throws()
-        {
-            ArticleSearchEngine searchEngine = CreateSearchEngine();
-            string nullSearchQuery = null;
-            TypeEpi typeEpi = new TypeEpi();
-
-            var exception = Assert.Throws<ArgumentNullException>(
-                () => searchEngine.SearchEpi(
-                    nullSearchQuery,
-                    typeEpi));
-        }
-
-        [Test]
-        public void SearchEpi_NullTypeEpiPassed_Throws()
-        {
-            ArticleSearchEngine searchEngine = CreateSearchEngine();
-            string searchQuery = "query";
-            TypeEpi nullTypeEpi = null;
-
-            var exception = Assert.Throws<ArgumentNullException>(
-                () => searchEngine.SearchEpi(
-                    searchQuery,
-                    nullTypeEpi));
-        }
-
-        [Test]
-        public void SearchSel_NullSearchQueryPassed_Throws()
-        {
-            ArticleSearchEngine searchEngine = CreateSearchEngine();
-            string nullSearchQuery = null;
-
-            var exception = Assert.Throws<ArgumentNullException>(
-                () => searchEngine.SearchSel(nullSearchQuery));
+            var exception = Assert.Catch<ArgumentNullException>(
+                () => searchEngine.PerformSearch(nullSettings));
         }
 
         private ArticleSearchEngine CreateSearchEngine()

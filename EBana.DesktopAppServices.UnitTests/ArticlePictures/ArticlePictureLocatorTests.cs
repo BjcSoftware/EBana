@@ -4,7 +4,7 @@ using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace EBana.Domain.ArticlePictures.UnitTests
+namespace EBana.Services.DesktopAppServices.ArticlePictures.UnitTests
 {
     [TestFixture]
     class ArticlePictureLocatorTests
@@ -28,9 +28,9 @@ namespace EBana.Domain.ArticlePictures.UnitTests
                 .GetAllFileNamesInFolder(Arg.Any<string>())
                 .Returns(pictureNames);
 
-            var stubNameFormater = Substitute.For<IArticlePictureNameFormater>();
+            var stubNameFormater = Substitute.For<IArticlePictureNameFormatter>();
             stubNameFormater
-                .Format(Arg.Any<Article>())
+                .FormatName(Arg.Any<Article>())
                 .Returns("article");
 
             var locator = CreateArticlePictureLocator(stubFileService, stubNameFormater);
@@ -81,9 +81,9 @@ namespace EBana.Domain.ArticlePictures.UnitTests
                 .GetAllFileNamesInFolder(Arg.Any<string>())
                 .Returns(pictureNames);
 
-            var stubNameFormater = Substitute.For<IArticlePictureNameFormater>();
+            var stubNameFormater = Substitute.For<IArticlePictureNameFormatter>();
             stubNameFormater
-                .Format(Arg.Any<Article>())
+                .FormatName(Arg.Any<Article>())
                 .Returns("article");
 
             var locator = CreateArticlePictureLocator(stubFileService, stubNameFormater);
@@ -99,7 +99,7 @@ namespace EBana.Domain.ArticlePictures.UnitTests
         {
             var stubFileService = Substitute.For<IFileService>();
             ArticlePictureSettings pictureSettings = CreatePictureSettings();
-            var fileNameFormater = new ArticlePictureNameFormater(pictureSettings);
+            var fileNameFormater = new ArticlePictureNameFormatter(pictureSettings);
             var locator = new ArticlePictureLocator(stubFileService, fileNameFormater, pictureSettings);
 
             return locator;
@@ -108,7 +108,7 @@ namespace EBana.Domain.ArticlePictures.UnitTests
         private ArticlePictureLocator CreateArticlePictureLocator(IFileService fileService)
         {
             ArticlePictureSettings pictureSettings = CreatePictureSettings();
-            var fileNameFormater = new ArticlePictureNameFormater(pictureSettings);
+            var fileNameFormater = new ArticlePictureNameFormatter(pictureSettings);
             var locator = new ArticlePictureLocator(fileService, fileNameFormater, pictureSettings);
 
             return locator;
@@ -116,7 +116,7 @@ namespace EBana.Domain.ArticlePictures.UnitTests
 
         private ArticlePictureLocator CreateArticlePictureLocator(
             IFileService fileService,
-            IArticlePictureNameFormater fileNameFormater)
+            IArticlePictureNameFormatter fileNameFormater)
         {
             ArticlePictureSettings pictureSettings = CreatePictureSettings();
             var locator = new ArticlePictureLocator(fileService, fileNameFormater, pictureSettings);

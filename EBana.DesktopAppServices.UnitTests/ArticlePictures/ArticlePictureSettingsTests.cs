@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace EBana.Domain.ArticlePictures.UnitTests
+namespace EBana.Services.DesktopAppServices.ArticlePictures.UnitTests
 {
     [TestFixture]
     class ArticlePictureSettingsTests

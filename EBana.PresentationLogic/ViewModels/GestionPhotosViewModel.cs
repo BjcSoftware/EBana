@@ -20,44 +20,55 @@ namespace EBana.PresentationLogic.ViewModels
 		private readonly IMessageBoxDialogService messageBoxService;
 		private readonly IArticleSearchEngine searchEngine;
 
+        public SearchSettings SearchSettings { get; private set; }
+
 		public GestionPhotosViewModel(
 			IArticlePictureLocator locator,
 			IArticlePictureUpdater updater,
 			IFileDialogService fileDialogService, 
 			IMessageBoxDialogService messageBoxService, 
 			IArticleSearchEngine searchEngine)
-		{
-			if (locator == null)
-				throw new ArgumentNullException(nameof(locator));
-			if (updater == null)
-				throw new ArgumentNullException(nameof(updater));
-			if (fileDialogService == null)
-				throw new ArgumentNullException(nameof(fileDialogService));
-			if (messageBoxService == null)
-				throw new ArgumentNullException(nameof(messageBoxService));
-			if (searchEngine == null)
-				throw new ArgumentNullException(nameof(searchEngine));
+        {
+            if (locator == null)
+                throw new ArgumentNullException(nameof(locator));
+            if (updater == null)
+                throw new ArgumentNullException(nameof(updater));
+            if (fileDialogService == null)
+                throw new ArgumentNullException(nameof(fileDialogService));
+            if (messageBoxService == null)
+                throw new ArgumentNullException(nameof(messageBoxService));
+            if (searchEngine == null)
+                throw new ArgumentNullException(nameof(searchEngine));
 
-			this.locator = locator;
-			this.updater = updater;
-			this.fileDialogService = fileDialogService;
-			this.messageBoxService = messageBoxService;
-			this.searchEngine = searchEngine;
+            this.locator = locator;
+            this.updater = updater;
+            this.fileDialogService = fileDialogService;
+            this.messageBoxService = messageBoxService;
+            this.searchEngine = searchEngine;
 
-			SearchCommand = new RelayCommand(() => Search());
-			SelectNewPictureFileCommand = new RelayCommand(() => SelectNewPictureFile());
-			UpdateSelectedArticlePictureCommand = new RelayCommand(() => UpdateSelectedArticlePicture());
-			OpenPictureFolderCommand = new RelayCommand(() => OpenPictureFolder());
+            SearchCommand = new RelayCommand(() => Search());
+            SelectNewPictureFileCommand = new RelayCommand(() => SelectNewPictureFile());
+            UpdateSelectedArticlePictureCommand = new RelayCommand(() => UpdateSelectedArticlePicture());
+            OpenPictureFolderCommand = new RelayCommand(() => OpenPictureFolder());
 
-			SearchResults = new ObservableCollection<Article>();
-			SearchQuery = string.Empty;
-			OnlySearchArticlesWithoutPicture = true;
-		}
+            InitSearchSettings();
 
-		/// <summary>
-		/// Rechercher des articles selon les critères de recherche
-		/// </summary>
-		private void Search()
+            SearchResults = new ObservableCollection<Article>();
+            OnlySearchArticlesWithoutPicture = true;
+        }
+
+        private void InitSearchSettings()
+        {
+            SearchSettings = new SearchSettings();
+
+            // ne pas filtrer sur le type d'article
+            SearchSettings.ArticleTypeFilter = null;
+        }
+
+        /// <summary>
+        /// Rechercher des articles selon les critères de recherche
+        /// </summary>
+        private void Search()
 		{
 			RefreshSearchResults();
 			
@@ -74,8 +85,7 @@ namespace EBana.PresentationLogic.ViewModels
 
 		private IEnumerable<Article> PerformSearch()
 		{
-			IEnumerable<Article> foundArticles =
-				searchEngine.SearchArticles(SearchQuery);
+			var foundArticles = searchEngine.PerformSearch(SearchSettings);
 
 			if (OnlySearchArticlesWithoutPicture)
 			{
@@ -140,7 +150,7 @@ namespace EBana.PresentationLogic.ViewModels
 
 		private void UpdateSelectedArticlePicture()
 		{
-			Uri newPictureLocation = new Uri(DisplayedArticlePicturePath);
+			string newPictureLocation = DisplayedArticlePicturePath;
 			updater.UpdatePictureOfArticle(
                 SelectedArticle, 
                 newPictureLocation);
@@ -196,18 +206,6 @@ namespace EBana.PresentationLogic.ViewModels
 		public ICommand OpenPictureFolderCommand { get; private set; }
 
 		#region Propriétés avec Notifier
-
-		private string mSearchQuery;
-		public string SearchQuery
-		{
-			get {
-				return mSearchQuery;
-			}
-			set {
-				mSearchQuery = value;
-				OnPropertyChanged("SearchQuery");
-			}
-		}
 
 		private bool mOnlySearchArticlesWithoutPicture;
 		public bool OnlySearchArticlesWithoutPicture

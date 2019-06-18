@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using System;
 
-namespace EBana.Domain.ArticlePictures.UnitTests
+namespace EBana.Services.DesktopAppServices.ArticlePictures.UnitTests
 {
     [TestFixture]
     public class ArticlePictureNameFormaterTests
@@ -13,17 +13,17 @@ namespace EBana.Domain.ArticlePictures.UnitTests
             ArticlePictureSettings nullSettings = null;
 
             var exception = Assert.Catch<ArgumentNullException>(
-                () => new ArticlePictureNameFormater(nullSettings));
+                () => new ArticlePictureNameFormatter(nullSettings));
         }
 
         [Test]
         public void Format_NullArticlePassed_Throws()
         {
-            ArticlePictureNameFormater formater = CreateFormater();
+            ArticlePictureNameFormatter formater = CreateFormater();
             Article nullArticle = null;
 
             var exception = Assert.Catch<ArgumentNullException>(
-                () => formater.Format(nullArticle));
+                () => formater.FormatName(nullArticle));
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace EBana.Domain.ArticlePictures.UnitTests
             var formater = CreateFormater();
             string expectedFileName = article.Ref;
 
-            string actualFileName = formater.Format(article);
+            string actualFileName = formater.FormatName(article);
 
             Assert.AreEqual(
                 expectedFileName,
@@ -44,19 +44,19 @@ namespace EBana.Domain.ArticlePictures.UnitTests
         public void FormatDefault_Always_ReturnsDefaultName()
         {
             var settings = CreateSettings("default");
-            var formater = new ArticlePictureNameFormater(settings);
+            var formater = new ArticlePictureNameFormatter(settings);
             string expectedFileName = "default";
 
-            string actualFileName = formater.FormatDefault();
+            string actualFileName = formater.FormatDefaultName();
 
             Assert.AreEqual(
                 expectedFileName,
                 actualFileName);
         }
 
-        private ArticlePictureNameFormater CreateFormater()
+        private ArticlePictureNameFormatter CreateFormater()
         {
-            return new ArticlePictureNameFormater(
+            return new ArticlePictureNameFormatter(
                 CreateSettings());
         }
 

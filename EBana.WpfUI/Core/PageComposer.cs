@@ -1,4 +1,5 @@
-﻿using EBana.Domain;
+﻿using EBana.Services.DesktopAppServices.ArticlePictures;
+using EBana.Domain;
 using EBana.Domain.ArticlePictures;
 using EBana.Domain.Models;
 using EBana.Domain.Security;
@@ -22,7 +23,14 @@ namespace EBana.WpfUI.Core
 {
     public class PageComposer
     {
+        // Dépendances avec un cycle de vie de Singleton
         private readonly INavigationService navigator;
+        private readonly IFileService fileService;
+        private readonly ArticlePictureSettings articlePictureSettings;
+        private readonly IArticlePictureNameFormatter articlePictureNameFormatter;
+        private readonly IArticlePictureLocator pictureLocator;
+        private readonly IHash hash;
+        private readonly IMessageBoxDialogService messageBoxDialogService;
 
         public PageComposer(INavigationService navigator)
         {
@@ -30,6 +38,22 @@ namespace EBana.WpfUI.Core
                 throw new ArgumentNullException(nameof(navigator));
 
             this.navigator = navigator;
+
+            fileService = new WindowsFileService();
+
+            articlePictureSettings = CreateArticlePictureSettings();
+
+            articlePictureNameFormatter = new ArticlePictureNameFormatter(
+                articlePictureSettings);
+
+            pictureLocator = new ArticlePictureLocator(
+                fileService,
+                articlePictureNameFormatter,
+                articlePictureSettings);
+
+            hash = new BCryptHash();
+
+            messageBoxDialogService = new MessageBoxDialogService();
         }
 
         public Page CreatePage(string pageName)
@@ -77,27 +101,13 @@ namespace EBana.WpfUI.Core
             DbContext context = CreateDbContext();
 
             return new CatalogueViewModel(
-                CreateArticlePictureLocator(),
-                new MessageBoxDialogService(),
+                pictureLocator,
+                messageBoxDialogService,
                 new WebBrowserService(),
                 new SearchCriteriaProvider(
                     new EfReader<TypeArticle>(context),
                     new EfReader<TypeEpi>(context)),
                 CreateArticleSearchEngine());
-        }
-
-        private IArticlePictureLocator CreateArticlePictureLocator()
-        {
-            return new ArticlePictureLocator(
-                CreateFileService(),
-                CreateArticlePictureNameFormater(),
-                CreateArticlePictureSettings());
-        }
-
-        private IArticlePictureNameFormater CreateArticlePictureNameFormater()
-        {
-            return new ArticlePictureNameFormater(
-                CreateArticlePictureSettings());
         }
 
         private ArticlePictureSettings CreateArticlePictureSettings()
@@ -106,11 +116,6 @@ namespace EBana.WpfUI.Core
                 "images/photos_articles",
                 "JPG",
                 "default");
-        }
-
-        private IFileService CreateFileService()
-        {
-            return new WindowsFileService();
         }
 
         private ArticleSearchEngine CreateArticleSearchEngine()
@@ -126,18 +131,13 @@ namespace EBana.WpfUI.Core
 
         private DbContext CreateDbContext()
         {
-            return new EBanaContext(CreateHash());
-        }
-
-        private IHash CreateHash()
-        {
-            return new BCryptHash();
+            return new EBanaContext(hash);
         }
 
         private MaintenanceConnexionViewModel CreateMaintenanceLoginViewModel()
         {
             return new MaintenanceConnexionViewModel(
-                new MessageBoxDialogService(),
+                messageBoxDialogService,
                 CreateAuthenticator(),
                 navigator);
         }
@@ -146,7 +146,7 @@ namespace EBana.WpfUI.Core
         {
             return new Authenticator(
                 CreateCredentialsReader(),
-                CreateHash());
+                hash);
         }
 
         private ICredentialsReader CreateCredentialsReader()
@@ -171,7 +171,7 @@ namespace EBana.WpfUI.Core
         {
             return new UpdateArticlesViewModel(
                 CreateExcelFileDialogService(),
-                new MessageBoxDialogService(),
+                messageBoxDialogService,
                 CreateUpdater(),
                 CreateArticleProvider());
         }
@@ -224,19 +224,19 @@ namespace EBana.WpfUI.Core
         private GestionPhotosViewModel CreatePictureManagerViewModel()
         {
             return new GestionPhotosViewModel(
-                CreateArticlePictureLocator(),
+                pictureLocator,
                 CreateArticlePictureUpdater(),
                 CreatePictureFileDialogService(),
-                new MessageBoxDialogService(),
+                messageBoxDialogService,
                 CreateArticleSearchEngine());
         }
 
         private IArticlePictureUpdater CreateArticlePictureUpdater()
         {
             return new ArticlePictureUpdater(
-                CreateFileService(),
-                CreateArticlePictureFileNameFormatter(),
-                CreateArticlePictureSettings());
+                fileService,
+                CreateArticlePictureFilePathFormatter(),
+                articlePictureSettings);
         }
 
         private IFileDialogService CreatePictureFileDialogService()
@@ -247,16 +247,17 @@ namespace EBana.WpfUI.Core
             };
         }
 
-        private IArticlePictureNameFormater CreateArticlePictureFileNameFormatter()
+        private IArticlePicturePathFormatter CreateArticlePictureFilePathFormatter()
         {
-            return new ArticlePictureNameFormater(
-                CreateArticlePictureSettings());
+            return new ArticlePicturePathFormatter(
+                articlePictureSettings,
+                articlePictureNameFormatter);
         }
 
         private NouveauMotDePasseViewModel CreatePasswordUpdaterViewModel()
         {
             return new NouveauMotDePasseViewModel(
-                new MessageBoxDialogService(),
+                messageBoxDialogService,
                 CreateAuthenticator(),
                 CreatePasswordUpdater());
         }
@@ -265,7 +266,7 @@ namespace EBana.WpfUI.Core
         {
             return new PasswordUpdater(
                 CreateCredentialsUpdater(),
-                CreateHash());
+                hash);
         }
 
         private ICredentialsUpdater CreateCredentialsUpdater()

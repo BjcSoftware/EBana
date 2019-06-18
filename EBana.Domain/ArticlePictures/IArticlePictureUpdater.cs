@@ -5,6 +5,6 @@ namespace EBana.Domain.ArticlePictures
 {
     public interface IArticlePictureUpdater
     {
-        void UpdatePictureOfArticle(Article articleToUpdate, Uri newPictureLocation);
+        void UpdatePictureOfArticle(Article articleToUpdate, string newPictureLocation);
     }
 }

@@ -48,21 +48,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArticlePictures\ArticlePictureFileNameFormater\ArticlePictureFileNameFormater.cs" />
-    <Compile Include="ArticlePictures\ArticlePictureFileNameFormater\IArticlePictureFileNameFormater.cs" />
-    <Compile Include="ArticlePictures\ArticlePictureSettings.cs" />
-    <Compile Include="ArticlePictures\Locator\ArticlePictureLocator.cs" />
-    <Compile Include="ArticlePictures\Locator\IArticlePictureLocator.cs" />
-    <Compile Include="ArticlePictures\Updater\ArticlePictureUpdater.cs" />
-    <Compile Include="ArticlePictures\Updater\IArticlePictureUpdater.cs" />
+    <Compile Include="ArticlePictures\IArticlePictureLocator.cs" />
+    <Compile Include="ArticlePictures\IArticlePictureUpdater.cs" />
+    <Compile Include="SearchEngine\SearchSettings.cs" />
     <Compile Include="ArticleStorageUpdater\ArticleStorageUpdater.cs" />
     <Compile Include="IArticleRepository.cs" />
-    <Compile Include="ArticleSearchEngine\IArticleSearchEngine.cs" />
+    <Compile Include="SearchEngine\IArticleSearchEngine.cs" />
     <Compile Include="ArticleSettings\ArticleSettings.cs" />
     <Compile Include="ArticleSettings\IArticleSettings.cs" />
     <Compile Include="IArticleProvider.cs" />
     <Compile Include="ArticleStorageUpdater\IArticleStorageUpdater.cs" />
-    <Compile Include="ArticleSearchEngine\ISearchCriteriaProvider.cs" />
+    <Compile Include="SearchEngine\ISearchCriteriaProvider.cs" />
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Banalise.cs" />
     <Compile Include="Models\Credentials.cs" />
@@ -79,12 +75,6 @@
     <Compile Include="Security\ICredentialsUpdater.cs" />
     <Compile Include="Security\PasswordUpdater\IPasswordUpdater.cs" />
     <Compile Include="Security\PasswordUpdater\PasswordUpdater.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EBana.Services\EBana.Services\EBana.Services.csproj">
-      <Project>{EDB65C51-2A9E-4834-878C-81DD72A1AF5B}</Project>
-      <Name>EBana.Services</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="LICENSE.txt" />
