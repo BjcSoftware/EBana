@@ -5,7 +5,7 @@ using EBana.Domain.ArticlePictures;
 using EBana.Domain.Models;
 using EBana.Services.File;
 
-namespace EBana.Services.DesktopAppServices.ArticlePictures
+namespace EBana.DesktopAppServices.ArticlePictures
 {
     public class ArticlePictureLocator : IArticlePictureLocator
     {
@@ -32,17 +32,6 @@ namespace EBana.Services.DesktopAppServices.ArticlePictures
             this.settings = settings;
 
             availableArticlePictureCache = new List<string>();
-
-            CreatePictureFolderIfDoesNotExist();
-        }
-
-        private void CreatePictureFolderIfDoesNotExist()
-        {
-            string pictureFolderPath = settings.PictureFolderPath;
-            if (!fileService.DirectoryExists(pictureFolderPath))
-            {
-                fileService.CreateDirectory(pictureFolderPath);
-            }
         }
 
         public Uri GetArticlePictureLocationOrDefault(Article articleToLocate)

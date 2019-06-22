@@ -63,6 +63,7 @@
     <Compile Include="ArticlePictures\ArticlePicturePathFormaterTests.cs" />
     <Compile Include="ArticlePictures\ArticlePictureSettingsTests.cs" />
     <Compile Include="ArticlePictures\ArticlePictureUpdaterTests.cs" />
+    <Compile Include="ArticlePictures\EventHandlers\ArticlePictureUpdatedUserNotifierTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

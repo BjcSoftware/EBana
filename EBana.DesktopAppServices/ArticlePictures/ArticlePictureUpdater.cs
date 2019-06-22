@@ -1,41 +1,33 @@
 ﻿using System;
+using EBana.Domain;
 using EBana.Domain.ArticlePictures;
+using EBana.Domain.ArticlePictures.Events;
 using EBana.Domain.Models;
 using EBana.Services.File;
 
-namespace EBana.Services.DesktopAppServices.ArticlePictures
+namespace EBana.DesktopAppServices.ArticlePictures
 {
     public class ArticlePictureUpdater : IArticlePictureUpdater
     {
         private readonly IFileService fileService;
         private readonly IArticlePicturePathFormatter formatter;
-        private readonly ArticlePictureSettings settings;
+        private readonly IEventHandler<ArticlePictureUpdated> articlePictureUpdated;
 
         public ArticlePictureUpdater(
             IFileService fileService, 
             IArticlePicturePathFormatter formatter,
-            ArticlePictureSettings settings)
+            IEventHandler<ArticlePictureUpdated> articlePictureUpdated)
         {
             if (fileService == null)
                 throw new ArgumentNullException(nameof(fileService));
             if (formatter == null)
                 throw new ArgumentNullException(nameof(formatter));
-            if (settings == null)
-                throw new ArgumentNullException(nameof(settings));
+            if (articlePictureUpdated == null)
+                throw new ArgumentNullException(nameof(articlePictureUpdated));
 
             this.fileService = fileService;
             this.formatter = formatter;
-            this.settings = settings;
-
-            CreatePictureFolderIfDoesNotExist();
-        }
-
-        private void CreatePictureFolderIfDoesNotExist()
-        {
-            if (!fileService.DirectoryExists(settings.PictureFolderPath))
-            {
-                fileService.CreateDirectory(settings.PictureFolderPath);
-            }
+            this.articlePictureUpdated = articlePictureUpdated;
         }
 
         public void UpdatePictureOfArticle(
@@ -50,6 +42,9 @@ namespace EBana.Services.DesktopAppServices.ArticlePictures
             fileService.Copy(
                 newPictureLocation,
                 formatter.FormatPath(articleToUpdate));
+
+            articlePictureUpdated.Handle(
+                new ArticlePictureUpdated(articleToUpdate));
         }
     }
 }

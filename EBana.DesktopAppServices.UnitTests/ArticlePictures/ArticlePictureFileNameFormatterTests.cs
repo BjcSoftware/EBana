@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using System;
 
-namespace EBana.Services.DesktopAppServices.ArticlePictures.UnitTests
+namespace EBana.DesktopAppServices.ArticlePictures.UnitTests
 {
     [TestFixture]
     public class ArticlePictureNameFormaterTests

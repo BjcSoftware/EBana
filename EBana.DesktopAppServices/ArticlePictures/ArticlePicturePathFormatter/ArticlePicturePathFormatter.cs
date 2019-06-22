@@ -1,7 +1,7 @@
 ﻿using System;
 using EBana.Domain.Models;
 
-namespace EBana.Services.DesktopAppServices.ArticlePictures
+namespace EBana.DesktopAppServices.ArticlePictures
 {
     public class ArticlePicturePathFormatter : IArticlePicturePathFormatter
     {

@@ -1,6 +1,6 @@
 ﻿using EBana.Domain.Models;
 
-namespace EBana.Services.DesktopAppServices.ArticlePictures
+namespace EBana.DesktopAppServices.ArticlePictures
 {
     public interface IArticlePictureNameFormatter
     {

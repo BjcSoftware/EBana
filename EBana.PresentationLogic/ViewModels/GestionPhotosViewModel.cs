@@ -17,7 +17,6 @@ namespace EBana.PresentationLogic.ViewModels
 		private readonly IArticlePictureLocator locator;
 		private readonly IArticlePictureUpdater updater;
 		private readonly IFileDialogService fileDialogService;
-		private readonly IMessageBoxDialogService messageBoxService;
 		private readonly IArticleSearchEngine searchEngine;
 
         public SearchSettings SearchSettings { get; private set; }
@@ -25,8 +24,7 @@ namespace EBana.PresentationLogic.ViewModels
 		public GestionPhotosViewModel(
 			IArticlePictureLocator locator,
 			IArticlePictureUpdater updater,
-			IFileDialogService fileDialogService, 
-			IMessageBoxDialogService messageBoxService, 
+			IFileDialogService fileDialogService,
 			IArticleSearchEngine searchEngine)
         {
             if (locator == null)
@@ -35,15 +33,12 @@ namespace EBana.PresentationLogic.ViewModels
                 throw new ArgumentNullException(nameof(updater));
             if (fileDialogService == null)
                 throw new ArgumentNullException(nameof(fileDialogService));
-            if (messageBoxService == null)
-                throw new ArgumentNullException(nameof(messageBoxService));
             if (searchEngine == null)
                 throw new ArgumentNullException(nameof(searchEngine));
 
             this.locator = locator;
             this.updater = updater;
             this.fileDialogService = fileDialogService;
-            this.messageBoxService = messageBoxService;
             this.searchEngine = searchEngine;
 
             SearchCommand = new RelayCommand(() => Search());
@@ -149,17 +144,7 @@ namespace EBana.PresentationLogic.ViewModels
 			// la sélection de l'utilisateur a été validée
 			HasTheUserSelectedANewPicture = false;
 
-			NotifyUserArticlePictureUpdated(SelectedArticle);
-
 			RefreshSearchResults();
-		}
-
-		private void NotifyUserArticlePictureUpdated(Article article)
-		{
-			messageBoxService.Show(
-		        "Succès",
-			    $"La photo de l'article {article.Ref} ({article.Libelle}) a été mise à jour.",
-			    DialogButton.Ok);
 		}
 
 		private void OnOnlySearchArticlesWithoutPictureChanged()

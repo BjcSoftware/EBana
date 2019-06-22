@@ -4,7 +4,7 @@ using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace EBana.Services.DesktopAppServices.ArticlePictures.UnitTests
+namespace EBana.DesktopAppServices.ArticlePictures.UnitTests
 {
     [TestFixture]
     class ArticlePictureLocatorTests

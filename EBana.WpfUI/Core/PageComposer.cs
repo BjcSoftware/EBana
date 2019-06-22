@@ -1,4 +1,4 @@
-﻿using EBana.Services.DesktopAppServices.ArticlePictures;
+﻿using EBana.DesktopAppServices.ArticlePictures;
 using EBana.Domain;
 using EBana.Domain.ArticlePictures;
 using EBana.Domain.Models;
@@ -19,6 +19,7 @@ using System.Data.Entity;
 using System.Windows.Controls;
 using EBana.WindowsService;
 using EBana.Domain.SearchEngine;
+using EBana.DesktopAppServices.ArticlePictures.EventHandlers;
 
 namespace EBana.WpfUI.Core
 {
@@ -55,6 +56,16 @@ namespace EBana.WpfUI.Core
             hash = new BCryptHash();
 
             messageBoxDialogService = new MessageBoxDialogService();
+
+            CreatePictureFolderIfDoesNotExist();
+        }
+
+        private void CreatePictureFolderIfDoesNotExist()
+        {
+            if (!fileService.DirectoryExists(articlePictureSettings.PictureFolderPath))
+            {
+                fileService.CreateDirectory(articlePictureSettings.PictureFolderPath);
+            }
         }
 
         public Page CreatePage(string pageName)
@@ -230,7 +241,6 @@ namespace EBana.WpfUI.Core
                 pictureLocator,
                 CreateArticlePictureUpdater(),
                 CreatePictureFileDialogService(),
-                messageBoxDialogService,
                 CreateArticleSearchEngine());
         }
 
@@ -239,7 +249,8 @@ namespace EBana.WpfUI.Core
             return new ArticlePictureUpdater(
                 fileService,
                 CreateArticlePictureFilePathFormatter(),
-                articlePictureSettings);
+                new ArticlePictureUpdatedUserNotifier(
+                    messageBoxDialogService));
         }
 
         private IFileDialogService CreatePictureFileDialogService()

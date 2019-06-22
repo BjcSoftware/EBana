@@ -3,8 +3,10 @@ using NUnit.Framework;
 using NSubstitute;
 using EBana.Domain.Models;
 using EBana.Services.File;
+using EBana.Domain;
+using EBana.Domain.ArticlePictures.Events;
 
-namespace EBana.Services.DesktopAppServices.ArticlePictures.UnitTests
+namespace EBana.DesktopAppServices.ArticlePictures.UnitTests
 {
     [TestFixture]
     class ArticlePictureUpdaterTests
@@ -14,13 +16,13 @@ namespace EBana.Services.DesktopAppServices.ArticlePictures.UnitTests
         {
             IFileService nullService = null;
             var stubFormatter = Substitute.For<IArticlePicturePathFormatter>();
-            var stubSettings = new ArticlePictureSettings("", "", "");
+            var stubHandler = Substitute.For<IEventHandler<ArticlePictureUpdated>>();
 
             var exception = Assert.Catch<ArgumentNullException>(
                 () => new ArticlePictureUpdater(
                     nullService, 
-                    stubFormatter, 
-                    stubSettings));
+                    stubFormatter,
+                    stubHandler));
         }
 
         [Test]
@@ -28,27 +30,27 @@ namespace EBana.Services.DesktopAppServices.ArticlePictures.UnitTests
         {
             IFileService stubService = Substitute.For<IFileService>();
             IArticlePicturePathFormatter nullFormater = null;
-            var stubSettings = new ArticlePictureSettings("", "", "");
+            var stubHandler = Substitute.For<IEventHandler<ArticlePictureUpdated>>();
 
             var exception = Assert.Catch<ArgumentNullException>(
                 () => new ArticlePictureUpdater(
                     stubService,
                     nullFormater,
-                    stubSettings));
+                    stubHandler));
         }
 
         [Test]
-        public void Contructor_NullSettingsPassed_Throws()
+        public void Contructor_NullHandlerPassed_Throws()
         {
             IFileService stubService = Substitute.For<IFileService>();
             var stubFormatter = Substitute.For<IArticlePicturePathFormatter>();
-            ArticlePictureSettings nullSettings = null;
+            IEventHandler<ArticlePictureUpdated> nullHandler = null;
 
             var exception = Assert.Catch<ArgumentNullException>(
                 () => new ArticlePictureUpdater(
                     stubService,
                     stubFormatter,
-                    nullSettings));
+                    nullHandler));
         }
 
         [Test]
@@ -93,27 +95,59 @@ namespace EBana.Services.DesktopAppServices.ArticlePictures.UnitTests
                 .Copy(updateSrc, updateDest);
         }
 
+        [Test]
+        public void UpdatePictureOfArticle_Always_FiresEvent()
+        {
+            var stubEventHandler = Substitute.For<IEventHandler<ArticlePictureUpdated>>();
+            var updater = CreateUpdater(stubEventHandler);
+            var articleToUpdate = new Article();
+
+            updater.UpdatePictureOfArticle(articleToUpdate, "newPicturePath");
+
+            stubEventHandler.Received().Handle(
+                Arg.Any<ArticlePictureUpdated>());
+        }
+
         private ArticlePictureUpdater CreateUpdater()
         {
             var stubService = Substitute.For<IFileService>();
             var stubFormatter = Substitute.For<IArticlePicturePathFormatter>();
-            var stubSettings = new ArticlePictureSettings("", "", "");
+
+            return CreateUpdater(stubService, stubFormatter);
+        }
+
+        private ArticlePictureUpdater CreateUpdater(
+            IFileService fileService,
+            IArticlePicturePathFormatter pathFormatter)
+        {
+            var handler = Substitute.For<IEventHandler<ArticlePictureUpdated>>();
+            return CreateUpdater(
+                fileService,
+                pathFormatter,
+                handler);
+        }
+
+        private ArticlePictureUpdater CreateUpdater(
+            IFileService fileService,
+            IArticlePicturePathFormatter pathFormater,
+            IEventHandler<ArticlePictureUpdated> handler)
+        {
+            return new ArticlePictureUpdater(
+                fileService,
+                pathFormater,
+                handler);
+        }
+
+        private ArticlePictureUpdater CreateUpdater(
+            IEventHandler<ArticlePictureUpdated> handler)
+        {
+            var stubService = Substitute.For<IFileService>();
+            var stubFormatter = Substitute.For<IArticlePicturePathFormatter>();
 
             return new ArticlePictureUpdater(
                 stubService,
                 stubFormatter,
-                stubSettings);
-        }
-
-        private ArticlePictureUpdater CreateUpdater(
-            IFileService fileService, 
-            IArticlePicturePathFormatter pathFormater)
-        {
-            var settings = new ArticlePictureSettings("pictureFolder", "jpg", "default");
-            return new ArticlePictureUpdater(
-                fileService, 
-                pathFormater, 
-                settings);
+                handler);
         }
     }
 }

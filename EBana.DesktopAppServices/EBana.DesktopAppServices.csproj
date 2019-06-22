@@ -48,6 +48,7 @@
     <Compile Include="ArticlePictures\ArticlePicturePathFormatter\IArticlePicturePathFormatter.cs" />
     <Compile Include="ArticlePictures\ArticlePictureSettings.cs" />
     <Compile Include="ArticlePictures\ArticlePictureUpdater.cs" />
+    <Compile Include="ArticlePictures\EventHandlers\ArticlePictureUpdatedUserNotifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

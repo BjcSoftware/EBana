@@ -3,7 +3,7 @@ using NSubstitute;
 using System;
 using EBana.Domain.Models;
 
-namespace EBana.Services.DesktopAppServices.ArticlePictures.UnitTests
+namespace EBana.DesktopAppServices.ArticlePictures.UnitTests
 {
     [TestFixture]
     public class ArticlePicturePathFormaterTests
