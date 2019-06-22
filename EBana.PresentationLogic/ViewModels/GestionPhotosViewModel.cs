@@ -71,10 +71,6 @@ namespace EBana.PresentationLogic.ViewModels
         private void Search()
 		{
 			RefreshSearchResults();
-			
-			if(SearchResults.Count == 0) {
-				NotifyUserThatNoResultFound();
-			}
 		}
 
 		private void RefreshSearchResults()
@@ -114,14 +110,6 @@ namespace EBana.PresentationLogic.ViewModels
 		private void ResetSearchResultsTo(IEnumerable<Article> articles)
 		{
 			SearchResults = new ObservableCollection<Article>(articles);
-		}
-
-		private void NotifyUserThatNoResultFound()
-		{
-			messageBoxService.Show(
-				"Information",
-				"Aucun résultat ne correspond à vos critères de recherche.",
-				DialogButton.Ok);
 		}
 
 		/// <summary>
@@ -169,9 +157,9 @@ namespace EBana.PresentationLogic.ViewModels
 		private void NotifyUserArticlePictureUpdated(Article article)
 		{
 			messageBoxService.Show(
-				"Succès",
-			   $"La photo de l'article {article.Ref} ({article.Libelle}) a été mise à jour.",
-			   DialogButton.Ok);
+		        "Succès",
+			    $"La photo de l'article {article.Ref} ({article.Libelle}) a été mise à jour.",
+			    DialogButton.Ok);
 		}
 
 		private void OnOnlySearchArticlesWithoutPictureChanged()

@@ -13,11 +13,12 @@ using EBana.Services.Dialog;
 using EBana.Services.File;
 using EBana.WindowsServices.Dialog;
 using EBana.WindowsServices.File;
-using EBana.WindowsServices.Web;
 using EBana.WpfUI.Views;
 using System;
 using System.Data.Entity;
 using System.Windows.Controls;
+using EBana.WindowsService;
+using EBana.Domain.SearchEngine;
 
 namespace EBana.WpfUI.Core
 {
@@ -102,8 +103,7 @@ namespace EBana.WpfUI.Core
 
             return new CatalogueViewModel(
                 pictureLocator,
-                messageBoxDialogService,
-                new WebBrowserService(),
+                new WindowsWebBrowserService(),
                 new SearchCriteriaProvider(
                     new EfReader<TypeArticle>(context),
                     new EfReader<TypeEpi>(context)),
@@ -118,15 +118,18 @@ namespace EBana.WpfUI.Core
                 "default");
         }
 
-        private ArticleSearchEngine CreateArticleSearchEngine()
+        private IArticleSearchEngine CreateArticleSearchEngine()
         {
             DbContext context = CreateDbContext();
 
-            return new ArticleSearchEngine(
-                new EfReader<Article>(context),
-                new EfReader<Banalise>(context),
-                new EfReader<EPI>(context),
-                new EfReader<SEL>(context));
+            return new SearchEngineNoResultFoundNotifier(
+                new ArticleSearchEngine(
+                    new EfReader<Article>(context),
+                    new EfReader<Banalise>(context),
+                    new EfReader<EPI>(context),
+                    new EfReader<SEL>(context)),
+                new MessageBoxDialogService()
+            );
         }
 
         private DbContext CreateDbContext()

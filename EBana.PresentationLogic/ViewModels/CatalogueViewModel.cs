@@ -2,14 +2,13 @@
 using System.Collections.ObjectModel;
 using EBana.Domain.Models;
 using System.Windows.Input;
-using System.Collections.Generic;
 using System;
-using EBana.Services.Dialog;
-using EBana.Services.Web;
 using EBana.Domain.ArticlePictures;
 using EBana.Domain.SearchEngine;
 using EBana.PresentationLogic.Core.ViewModel;
 using EBana.PresentationLogic.Core.Command;
+using EBana.Domain.Commands;
+using EBana.Services.Command;
 
 namespace EBana.PresentationLogic.ViewModels
 {
@@ -20,22 +19,18 @@ namespace EBana.PresentationLogic.ViewModels
         public SearchSettings SearchSettings { get; private set; }
 
 		private readonly IArticlePictureLocator articlePictureLocator;
-		private readonly IMessageBoxDialogService messageBoxService;
-		private readonly IWebBrowserService webBrowserService;
+        private readonly ICommandService<OpenWebPage> webBrowserService;
 		private readonly ISearchSettingsProvider searchSettingsProvider;
 		private readonly IArticleSearchEngine searchEngine;
 
 		public CatalogueViewModel(
 			IArticlePictureLocator articlePictureLocator,
-			IMessageBoxDialogService messageBoxService, 
-			IWebBrowserService webBrowserService,
+			ICommandService<OpenWebPage> webBrowserService,
 			ISearchSettingsProvider searchSettingsProvider,
 			IArticleSearchEngine searchEngine)
 		{
 			if (articlePictureLocator == null)
 				throw new ArgumentNullException(nameof(articlePictureLocator));
-			if (messageBoxService == null)
-				throw new ArgumentNullException(nameof(messageBoxService));
 			if (webBrowserService == null)
 				throw new ArgumentNullException(nameof(webBrowserService));
 			if (searchSettingsProvider == null)
@@ -44,7 +39,6 @@ namespace EBana.PresentationLogic.ViewModels
 				throw new ArgumentNullException(nameof(searchEngine));
 
 			this.articlePictureLocator = articlePictureLocator;
-			this.messageBoxService = messageBoxService;
 			this.webBrowserService = webBrowserService;
 			this.searchSettingsProvider = searchSettingsProvider;
 			this.searchEngine = searchEngine;
@@ -99,37 +93,14 @@ namespace EBana.PresentationLogic.ViewModels
 		/// </summary>
 		private void Search()
 		{
-			RefreshSearchResults();
-
-			if (SearchResults.Count == 0)
-			{
-				NotifyUserThatNoResultFound();
-			}
-		}
-
-		private void RefreshSearchResults()
-		{
-			var foundArticles = searchEngine.PerformSearch(SearchSettings);
-			ResetSearchResultsTo(foundArticles);
-		}
-
-		private void ResetSearchResultsTo(IEnumerable<Article> articles)
-		{
-			SearchResults = new ObservableCollection<Article>(articles);
-		}
-
-		private void NotifyUserThatNoResultFound()
-		{
-			messageBoxService.Show(
-				"Information",
-				"Aucun résultat ne correspond à vos critères de recherche.",
-				DialogButton.Ok);
-		}
+            var foundArticles = searchEngine.PerformSearch(SearchSettings);
+            SearchResults = new ObservableCollection<Article>(foundArticles);
+        }
 
 		private void ShowSelectedArticleFlu()
 		{
 			string url = ((Banalise)SelectedArticle).LienFlu;
-			webBrowserService.Open(url);
+            webBrowserService.Execute(new OpenWebPage { Url = url });
 		}
 
 		private void OnSelectedArticleChanged()
