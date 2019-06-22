@@ -41,10 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Command\OpenWebPage.cs" />
     <Compile Include="Window\IFileDialogService.cs" />
     <Compile Include="IFileService.cs" />
     <Compile Include="Window\IMessageBoxDialogService.cs" />
-    <Compile Include="IWebBrowserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -115,9 +115,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EBana\EBanaContext.cs" />
-    <Compile Include="EBana\ArticleSearchEngine.cs" />
-    <Compile Include="EBana\SearchCriteriaProvider.cs" />
+    <Compile Include="EBanaContext.cs" />
+    <Compile Include="ArticleSearchEngine.cs" />
+    <Compile Include="SearchCriteriaProvider.cs" />
     <Compile Include="Repository\ArticleRepository.cs" />
     <Compile Include="Repository\Credentials\CredentialsReader.cs" />
     <Compile Include="Repository\Credentials\CredentialsUpdater.cs" />
@@ -131,9 +131,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EBana.Domain\EBana.Domain.csproj">

@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="ArticlePictures\IArticlePictureLocator.cs" />
     <Compile Include="ArticlePictures\IArticlePictureUpdater.cs" />
+    <Compile Include="Commands\ICommandService.cs" />
     <Compile Include="SearchEngine\SearchSettings.cs" />
     <Compile Include="ArticleStorageUpdater\ArticleStorageUpdater.cs" />
     <Compile Include="IArticleRepository.cs" />
