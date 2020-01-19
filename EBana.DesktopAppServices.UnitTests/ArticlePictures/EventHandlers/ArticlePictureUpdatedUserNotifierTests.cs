@@ -6,7 +6,7 @@ using EBana.Services.Dialog;
 using EBana.DesktopAppServices.ArticlePictures.EventHandlers;
 using EBana.Domain.ArticlePictures.Events;
 
-namespace EBana.Services.DesktopAppServicesTests.ArticlePictures.EventHandlers
+namespace EBana.DesktopAppServicesTests.ArticlePictures.EventHandlers.UnitTests
 {
     [TestFixture]
     public class ArticlePictureUpdatedUserNotifierTests

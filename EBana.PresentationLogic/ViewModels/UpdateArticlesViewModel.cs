@@ -1,4 +1,5 @@
 ﻿using EBana.Domain;
+using EBana.Domain.ArticleStorageUpdater;
 using EBana.PresentationLogic.Core.ViewModel;
 using EBana.Services.Dialog;
 using System;
@@ -43,7 +44,6 @@ namespace EBana.PresentationLogic.ViewModels
         	if(IsUpdateSourceCorrect())
             {
                 Update();
-                NotifyUserUpdateSuccessful();
             }
             else
             {
@@ -64,14 +64,6 @@ namespace EBana.PresentationLogic.ViewModels
         {
             var newArticles = articleProvider.GetArticlesFrom(UpdateSource);
             updater.ReplaceAvailableArticlesWith(newArticles);
-        }
-
-        private void NotifyUserUpdateSuccessful()
-        {
-            messageBoxService.Show(
-                "Succès",
-                "Mise à jour terminée.",
-                DialogButton.Ok);
         }
 
         private void NotifyUserUpdateFailed()

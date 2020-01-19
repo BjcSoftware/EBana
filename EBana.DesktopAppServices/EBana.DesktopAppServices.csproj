@@ -49,6 +49,8 @@
     <Compile Include="ArticlePictures\ArticlePictureSettings.cs" />
     <Compile Include="ArticlePictures\ArticlePictureUpdater.cs" />
     <Compile Include="ArticlePictures\EventHandlers\ArticlePictureUpdatedUserNotifier.cs" />
+    <Compile Include="ArticleStorageUpdater\EventHandlers\ArticleStorageUpdatedUserNotifier.cs" />
+    <Compile Include="Security\EventHandlers\PasswordUpdatedUserNotifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -61,5 +63,6 @@
       <Name>EBana.Services</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

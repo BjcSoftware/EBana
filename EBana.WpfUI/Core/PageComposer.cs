@@ -20,6 +20,9 @@ using System.Windows.Controls;
 using EBana.WindowsService;
 using EBana.Domain.SearchEngine;
 using EBana.DesktopAppServices.ArticlePictures.EventHandlers;
+using EBana.DesktopAppServices.Security.EventHandlers;
+using EBana.Domain.ArticleStorageUpdater;
+using EBana.DesktopAppServices.ArticleStorageUpdater.EventHandlers;
 
 namespace EBana.WpfUI.Core
 {
@@ -39,6 +42,7 @@ namespace EBana.WpfUI.Core
             if (navigator == null)
                 throw new ArgumentNullException(nameof(navigator));
 
+            // initialisation des dépendances avec un cycle de vie de singleton
             this.navigator = navigator;
 
             fileService = new WindowsFileService();
@@ -210,7 +214,9 @@ namespace EBana.WpfUI.Core
             return new ArticleStorageUpdater(
                 new ArticleRepository(
                     articleWriter,
-                    typeEpiWriter));
+                    typeEpiWriter),
+                new ArticleStorageUpdatedUserNotifier(
+                    messageBoxDialogService));
         }
 
         private IArticleProvider CreateArticleProvider()
@@ -280,7 +286,9 @@ namespace EBana.WpfUI.Core
         {
             return new PasswordUpdater(
                 CreateCredentialsUpdater(),
-                hash);
+                hash,
+                new PasswordUpdatedUserNotifier(
+                    messageBoxDialogService));
         }
 
         private ICredentialsUpdater CreateCredentialsUpdater()

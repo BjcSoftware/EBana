@@ -7,7 +7,7 @@ using System.Linq;
 namespace EBana.Excel
 {
     /// <summary>
-    /// Permet d'utiliser un fichier Excel comme source d'articles.
+    /// Permet de créer des Articles à partir d'un provider de RawArticles.
     /// </summary>
     public class ExcelArticleProvider : IArticleProvider
     {
@@ -28,7 +28,7 @@ namespace EBana.Excel
         }
 
         /// <summary>
-        /// Lire les articles du fichier Excel <source>
+        /// Lire les articles du fichier Excel <see cref="source"/>
         /// </summary>
         public IEnumerable<Article> GetArticlesFrom(string source)
         {

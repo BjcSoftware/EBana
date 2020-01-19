@@ -46,7 +46,6 @@ namespace EBana.PresentationLogic.ViewModels
             if(AreSuppliedInformationsCorrect())
             {
                 DefineNewPassword();
-                NotifyUserThatPasswordSuccessfullyChanged();
             }
             else
             {
@@ -84,14 +83,6 @@ namespace EBana.PresentationLogic.ViewModels
         {
             string newPassword = txtNewPassword.Password;
             passwordUpdater.Update(newPassword);
-        }
-
-        private void NotifyUserThatPasswordSuccessfullyChanged()
-        {
-            messageBoxService.Show(
-                "Succès",
-                "Le mot de passe a été mis à jour.",
-                DialogButton.Ok);
         }
 
         private void NotifyUserThatPasswordDidNotChanged()

@@ -51,6 +51,11 @@
     <Compile Include="ArticlePictures\Events\ArticlePictureUpdated.cs" />
     <Compile Include="ArticlePictures\IArticlePictureLocator.cs" />
     <Compile Include="ArticlePictures\IArticlePictureUpdater.cs" />
+    <Compile Include="Updater\ArticleUpdaterService.cs" />
+    <Compile Include="Updater\Exceptions\InvalidUpdateSourceException.cs" />
+    <Compile Include="Updater\SimpleUpdateSourceValidator.cs" />
+    <Compile Include="Updater\IArticleUpdaterService.cs" />
+    <Compile Include="ArticleStorageUpdater\Event\ArticleStorageUpdated.cs" />
     <Compile Include="Commands\ICommandService.cs" />
     <Compile Include="IEventHandler.cs" />
     <Compile Include="SearchEngine\SearchSettings.cs" />
@@ -76,8 +81,10 @@
     <Compile Include="Security\Hash\IHash.cs" />
     <Compile Include="Security\ICredentialsReader.cs" />
     <Compile Include="Security\ICredentialsUpdater.cs" />
+    <Compile Include="Security\Event\PasswordUpdated.cs" />
     <Compile Include="Security\PasswordUpdater\IPasswordUpdater.cs" />
     <Compile Include="Security\PasswordUpdater\PasswordUpdater.cs" />
+    <Compile Include="Updater\IUpdateSourceValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
