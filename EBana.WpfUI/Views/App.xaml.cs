@@ -25,13 +25,25 @@ namespace EBana
 			base.OnStartup(e);
 
             mainWindow = new Window1();
+
             navigator = new NavigationService(mainWindow);
             var composer = new PageComposer(navigator);
             mainWindow.ContentLoader = new MyContentLoader(composer);
             mainWindow.Show();
 
+            DisablePageCachingByDefaultInWindow(mainWindow);
+
             navigator.NavigateTo("MainMenu");
 		}
+
+        /// <summary>
+        /// Permet de désactiver le cache des pages: une nouvelle instance de page est créée à chaque arrivée sur une page
+        /// </summary>
+        void DisablePageCachingByDefaultInWindow(ModernWindow window)
+        {
+            var frame = window.Template.FindName("ContentFrame", window) as ModernFrame;
+            frame.KeepContentAlive = false;
+        }
 
         private void SetupLogger()
 		{
