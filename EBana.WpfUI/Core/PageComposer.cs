@@ -23,6 +23,7 @@ using EBana.DesktopAppServices.ArticlePictures.EventHandlers;
 using EBana.DesktopAppServices.Security.EventHandlers;
 using EBana.Domain.ArticleStorageUpdater;
 using EBana.DesktopAppServices.ArticleStorageUpdater.EventHandlers;
+using EBana.Excel.Core;
 
 namespace EBana.WpfUI.Core
 {

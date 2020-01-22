@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace EBana.Excel
+namespace EBana.Excel.Core
 {
     /// <summary>
     /// Représente un fichier Excel.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EBana.Excel
+namespace EBana.Excel.Core
 {
     /// <summary>
     /// Représente les coordonnées d'une cellule d'une feuille Excel.

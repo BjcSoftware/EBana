@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EBana.Excel
+namespace EBana.Excel.Core
 {
     /// <summary>
     /// Représente un rectangle de cellules d'une feuille Excel.

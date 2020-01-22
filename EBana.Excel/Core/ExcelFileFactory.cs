@@ -1,4 +1,4 @@
-﻿namespace EBana.Excel
+﻿namespace EBana.Excel.Core
 {
     public class ExcelFileFactory : IExcelFileFactory
     {

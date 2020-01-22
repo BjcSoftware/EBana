@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.Linq;
+using EBana.Excel.Core;
 
 namespace EBana.Excel
 {
