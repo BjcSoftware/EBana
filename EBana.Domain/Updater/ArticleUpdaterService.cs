@@ -1,11 +1,12 @@
 ﻿using EBana.Domain.ArticleStorageUpdater;
+using EBana.Domain.Commands;
 using EBana.Domain.Updater.Exceptions;
 using System;
 
 namespace EBana.Domain.Updater
 {
     public class ArticleUpdaterService :
-        IArticleUpdaterService
+        ICommandService<UpdateArticles>
     {
         private readonly IUpdateSourceValidator validator;
         private readonly IArticleProvider provider;
@@ -28,16 +29,16 @@ namespace EBana.Domain.Updater
             this.updater = updater;
         }
 
-        public void UpdateArticles(string updateSource)
+        public void Execute(UpdateArticles command)
         {
-            if (updateSource == null)
-                throw new ArgumentNullException(nameof(updateSource));
+            if (command == null)
+                throw new ArgumentNullException(nameof(command));
 
-            Validate(updateSource);
+            Validate(command.UpdateSource);
 
             updater.ReplaceAvailableArticlesWith(
                 provider.GetArticlesFrom(
-                    updateSource));
+                    command.UpdateSource));
         }
 
         private void Validate(string updateSource)

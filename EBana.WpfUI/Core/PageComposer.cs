@@ -24,6 +24,8 @@ using EBana.DesktopAppServices.Security.EventHandlers;
 using EBana.Domain.ArticleStorageUpdater;
 using EBana.DesktopAppServices.ArticleStorageUpdater.EventHandlers;
 using EBana.Excel.Core;
+using EBana.Domain.Updater;
+using EBana.Domain.Commands;
 
 namespace EBana.WpfUI.Core
 {
@@ -189,10 +191,21 @@ namespace EBana.WpfUI.Core
         private UpdateArticlesViewModel CreateUpdaterViewModel()
         {
             return new UpdateArticlesViewModel(
-                CreateExcelFileDialogService(),
-                messageBoxDialogService,
                 CreateUpdater(),
-                CreateArticleProvider());
+                CreateExcelFileDialogService());
+        }
+
+        private ICommandService<UpdateArticles> CreateUpdater()
+        {
+            return
+                new InvalidUpdateSourceUserNotifier(
+                    new ArticleUpdaterService(
+                        new SimpleUpdateSourceValidator(),
+                        CreateArticleProvider(),
+                        CreateStorageUpdater()
+                    ),
+                    messageBoxDialogService
+                );
         }
 
         private IFileDialogService CreateExcelFileDialogService()
@@ -203,7 +216,7 @@ namespace EBana.WpfUI.Core
             };
         }
 
-        private IArticleStorageUpdater CreateUpdater()
+        private IArticleStorageUpdater CreateStorageUpdater()
         {
             DbContext context = CreateDbContext();
 

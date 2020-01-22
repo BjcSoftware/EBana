@@ -62,6 +62,7 @@
     <Compile Include="SearchEngine\SearchSettingsTests.cs" />
     <Compile Include="Security\AuthenticatorTests.cs" />
     <Compile Include="Updater\ArticleUpdaterServiceTests.cs" />
+    <Compile Include="Updater\SimpleUpdateSourceValidatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EBana.Domain\EBana.Domain.csproj">

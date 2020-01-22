@@ -54,7 +54,6 @@
     <Compile Include="Updater\ArticleUpdaterService.cs" />
     <Compile Include="Updater\Exceptions\InvalidUpdateSourceException.cs" />
     <Compile Include="Updater\SimpleUpdateSourceValidator.cs" />
-    <Compile Include="Updater\IArticleUpdaterService.cs" />
     <Compile Include="ArticleStorageUpdater\Event\ArticleStorageUpdated.cs" />
     <Compile Include="Commands\ICommandService.cs" />
     <Compile Include="IEventHandler.cs" />
@@ -85,6 +84,7 @@
     <Compile Include="Security\PasswordUpdater\IPasswordUpdater.cs" />
     <Compile Include="Security\PasswordUpdater\PasswordUpdater.cs" />
     <Compile Include="Updater\IUpdateSourceValidator.cs" />
+    <Compile Include="Updater\UpdateArticles.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

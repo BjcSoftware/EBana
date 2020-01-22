@@ -54,17 +54,17 @@ namespace EBana.Domain.Updater.UnitTests
         }
 
         [Test]
-        public void UpdateArticles_NullSource_Throws()
+        public void Execute_NullCommand_Throws()
         {
             var service = CreateService();
-            string nullSource = null;
+            UpdateArticles nullCommand = null;
 
             Assert.Catch<ArgumentNullException>(() =>
-                service.UpdateArticles(nullSource));
+                service.Execute(nullCommand));
         }
 
         [Test]
-        public void UpdateArticles_InvalidSource_Throws()
+        public void Execute_InvalidUpdateSource_Throws()
         {
             var stubValidator = Substitute.For<IUpdateSourceValidator>();
             stubValidator
@@ -73,11 +73,11 @@ namespace EBana.Domain.Updater.UnitTests
             var service = CreateService(stubValidator);
 
             Assert.Catch<InvalidUpdateSourceException>(() => 
-                service.UpdateArticles("source"));
+                service.Execute(new UpdateArticles()));
         }
 
         [Test]
-        public void UpdateArticles_ValidSource_PerformsUpdateWithRightArticles()
+        public void Execute_ValidUpdateSource_PerformsUpdateWithRightArticles()
         {
             var stubValidator = Substitute.For<IUpdateSourceValidator>();
             stubValidator
@@ -94,7 +94,7 @@ namespace EBana.Domain.Updater.UnitTests
 
             var service = CreateService(stubValidator, stubProvider, mockUpdater);
 
-            service.UpdateArticles("source");
+            service.Execute(new UpdateArticles());
 
             mockUpdater
                 .Received()
