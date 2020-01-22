@@ -1,4 +1,5 @@
-﻿using ExcelDataReader;
+﻿using EBana.Excel.Core.Exceptions;
+using ExcelDataReader;
 using System;
 using System.IO;
 
@@ -20,14 +21,22 @@ namespace EBana.Excel.Core
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentNullException(nameof(filePath));
 
-            fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
+            try
+            {
+                fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
+            }
+            catch (IOException)
+            {
+                throw new FileOpenedByAnotherProcessException();
+            }
+
             excelReader = ExcelReaderFactory.CreateReader(fileStream);
         }
 
         ~ExcelFile()
         {
-            excelReader.Close();
-            fileStream.Close();
+            excelReader?.Close();
+            fileStream?.Close();
         }
 
         public string[,] GetCellsAsStringInRange(RectangularRange range)

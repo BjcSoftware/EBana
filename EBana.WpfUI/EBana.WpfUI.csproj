@@ -124,6 +124,7 @@
     <ApplicationDefinition Include="Views\App.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileAlreadyOpenedUserNotifier.cs" />
     <Compile Include="InvalidUpdateSourceUserNotifier.cs" />
     <Compile Include="SearchEngineNoResultFoundNotifier.cs" />
     <Compile Include="Views\App.xaml.cs">
