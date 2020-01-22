@@ -16,7 +16,8 @@
 			TextAlignment="Center"
 			FontSize="18"
 			Grid.Row="0"
-			Margin="0 15" />
+			Margin="0 15" 
+            Style="{StaticResource Title}"/>
 		<Button
             Command="{Binding GoToArticlesUpdaterCommand}"
 			Content="Mettre à jour"

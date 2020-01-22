@@ -28,7 +28,8 @@
                 <TextBlock
 					Text="Mot de passe actuel"
 					FontSize="14"
-					TextAlignment="Center" />
+					TextAlignment="Center" 
+                    Style="{StaticResource Title}"/>
 
                 <PasswordBox
                     x:Name="txtCurrentPassword"

@@ -18,7 +18,8 @@
 				Text="Authentification pour accès au menu de maintenance"
 				TextAlignment="Center"
 				FontSize="18"
-				Margin="0 10" />
+				Margin="0 10" 
+                Style="{StaticResource Title}"/>
 			<StackPanel
 				Orientation="Vertical"
 				HorizontalAlignment="Center"

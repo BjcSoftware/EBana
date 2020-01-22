@@ -19,28 +19,32 @@
 
         <StackPanel Grid.Row="0" VerticalAlignment="Center">
             <mui:ModernButton
-                HorizontalAlignment="Center"
                 Command="{Binding GoToCatalogueCommand}"
+                ToolTip="Accéder au catalogue"
+                HorizontalAlignment="Center"
 			    Name="cmdConsulter"
                 IconData="{StaticResource CatalogueIconData}"
                 EllipseDiameter="200" EllipseStrokeThickness="5"
                 IconWidth="132" IconHeight="132"/>
-            <Label 
+            <TextBlock 
                 HorizontalAlignment="Center"
-                Content="Catalogue" FontSize="25" Margin="0 10 0 0"/>
+                Text="Catalogue" FontSize="25" Margin="0 10 0 0"
+                Style="{StaticResource Title}"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1" VerticalAlignment="Center">
             <mui:ModernButton
-                HorizontalAlignment="Center"
                 Command="{Binding GoToMaintenanceMenuCommand}"
+                HorizontalAlignment="Center"
+                ToolTip="Accéder au menu de maintenance"
 			    Name="cmdMaintenance"
                 IconData="{StaticResource SettingsIconData}"
                 EllipseDiameter="96" EllipseStrokeThickness="3"
                 IconWidth="64" IconHeight="64"/>
-            <Label 
+            <TextBlock 
                 HorizontalAlignment="Center"
-                Content="Maintenance" FontSize="16" Margin="0 10 0 0"/>
+                Text="Maintenance" FontSize="16" Margin="0 10 0 0"
+                Style="{StaticResource Title}"/>
         </StackPanel>
     </Grid>
 </Page>
