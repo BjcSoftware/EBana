@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using EBana.Excel.Core;
+using NUnit.Framework;
 using System;
 
 namespace EBana.Excel.UnitTests

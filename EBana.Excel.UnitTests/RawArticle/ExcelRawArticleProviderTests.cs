@@ -3,6 +3,7 @@ using NSubstitute;
 using System.Collections.Generic;
 using System;
 using EBana.Domain.Models;
+using EBana.Excel.Core;
 
 namespace EBana.Excel.UnitTests
 {
