@@ -206,15 +206,11 @@ namespace EBana.WpfUI.Core
         }
 
         private ICommandService<UpdateArticles> Decorate(
-            ICommandService<UpdateArticles> decoratee)
+            ICommandService<UpdateArticles> decoratedUpdater)
         {
             return
-                new NotAnExcelFileUserNotifier(
-                    new FileAlreadyOpenedUserNotifier(
-                        new InvalidUpdateSourceUserNotifier(
-                            decoratee,
-                            messageBoxDialogService),
-                        messageBoxDialogService),
+                new ErrorHandlerUpdaterDecorator(
+                    decoratedUpdater,
                     messageBoxDialogService);
         }
 
