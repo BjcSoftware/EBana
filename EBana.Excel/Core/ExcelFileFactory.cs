@@ -2,9 +2,9 @@
 {
     public class ExcelFileFactory : IExcelFileFactory
     {
-        public IExcelFile CreateExcelFile(string filePath)
+        public IExcelFileReader CreateExcelFile(string filePath)
         {
-            return new ExcelFile(filePath);
+            return new ExcelFileReader(filePath);
         }
     }
 }

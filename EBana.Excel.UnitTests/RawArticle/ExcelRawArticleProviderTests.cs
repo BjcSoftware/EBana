@@ -106,7 +106,7 @@ namespace EBana.Excel.UnitTests
 
         private ExcelRawArticleProvider CreateExcelRawArticleProvider(string[,] rawArticlesData)
         {
-            IExcelFile stubExcelFile = CreateStubExcelFile(rawArticlesData);
+            IExcelFileReader stubExcelFile = CreateStubExcelFile(rawArticlesData);
             var excelFileFactoryStub = Substitute.For<IExcelFileFactory>();
             excelFileFactoryStub
                 .CreateExcelFile(Arg.Any<string>())
@@ -118,9 +118,9 @@ namespace EBana.Excel.UnitTests
                 excelFileFactoryStub);
         }
 
-        private IExcelFile CreateStubExcelFile(string[,] data)
+        private IExcelFileReader CreateStubExcelFile(string[,] data)
         {
-            var stubExcelFile = Substitute.For<IExcelFile>();
+            var stubExcelFile = Substitute.For<IExcelFileReader>();
             stubExcelFile
                 .GetCellsAsStringInRange(Arg.Any<RectangularRange>())
                 .Returns(data);

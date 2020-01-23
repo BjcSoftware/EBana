@@ -50,7 +50,7 @@ namespace EBana.Excel
             return articles;
         }
 
-        private string[,] ReadRawArticlesDataFrom(IExcelFile file, uint articleCount)
+        private string[,] ReadRawArticlesDataFrom(IExcelFileReader file, uint articleCount)
         {
             ExcelCoords upperLhs = new ExcelCoords(1, 2);
             uint xOffset =  recordToRawArticleMapper.FieldCount - 1;

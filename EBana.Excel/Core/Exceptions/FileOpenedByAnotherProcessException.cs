@@ -2,7 +2,8 @@
 
 namespace EBana.Excel.Core.Exceptions
 {
-    public class FileOpenedByAnotherProcessException : InvalidOperationException
+    public class FileOpenedByAnotherProcessException 
+        : InvalidOperationException
     {
         public FileOpenedByAnotherProcessException()
         {

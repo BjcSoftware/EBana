@@ -6,17 +6,17 @@ using System.IO;
 namespace EBana.Excel.Core
 {
     /// <summary>
-    /// Représente un fichier Excel.
+    /// Permet de lire le contenu d'un fichier Excel.
     /// Utilise la bibliothèque ExcelDataReader: https://github.com/ExcelDataReader/ExcelDataReader.
     /// 
     /// Note: Excel n'a pas besoin d'être installé pour que la bibliothèque fonctionne.
     /// </summary>
-    public class ExcelFile : IExcelFile
+    public class ExcelFileReader : IExcelFileReader
     {
         private readonly FileStream fileStream;
         private readonly IExcelDataReader excelReader;
 
-        public ExcelFile(string filePath)
+        public ExcelFileReader(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentNullException(nameof(filePath));
@@ -24,16 +24,23 @@ namespace EBana.Excel.Core
             try
             {
                 fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
-            }
+            } 
             catch (IOException)
             {
                 throw new FileOpenedByAnotherProcessException();
             }
 
-            excelReader = ExcelReaderFactory.CreateReader(fileStream);
+            try
+            {
+                excelReader = ExcelReaderFactory.CreateReader(fileStream);
+            }
+            catch (ExcelDataReader.Exceptions.HeaderException)
+            {
+                throw new NotAnExcelFileException();
+            }
         }
 
-        ~ExcelFile()
+        ~ExcelFileReader()
         {
             excelReader?.Close();
             fileStream?.Close();

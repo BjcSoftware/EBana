@@ -1,6 +1,6 @@
 ﻿namespace EBana.Excel.Core
 {
-    public interface IExcelFile
+    public interface IExcelFileReader
     {
         /// <summary>
         /// Récupérer les données contenues dans le recangle.

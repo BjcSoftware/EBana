@@ -198,13 +198,22 @@ namespace EBana.WpfUI.Core
         private ICommandService<UpdateArticles> CreateUpdater()
         {
             return
-                new FileAlreadyOpenedUserNotifier(
-                    new InvalidUpdateSourceUserNotifier(
-                        new ArticleUpdaterService(
-                            new SimpleUpdateSourceValidator(),
-                            CreateArticleProvider(),
-                            CreateStorageUpdater()
-                        ),
+                Decorate(
+                    new ArticleUpdaterService(
+                        new SimpleUpdateSourceValidator(),
+                        CreateArticleProvider(),
+                        CreateStorageUpdater()));
+        }
+
+        private ICommandService<UpdateArticles> Decorate(
+            ICommandService<UpdateArticles> decoratee)
+        {
+            return
+                new NotAnExcelFileUserNotifier(
+                    new FileAlreadyOpenedUserNotifier(
+                        new InvalidUpdateSourceUserNotifier(
+                            decoratee,
+                            messageBoxDialogService),
                         messageBoxDialogService),
                     messageBoxDialogService);
         }

@@ -13,7 +13,7 @@ namespace EBana.Excel.UnitTests
             string nullPath = null;
 
             var exception = Assert.Catch<ArgumentNullException>(
-                () => new ExcelFile(nullPath));
+                () => new ExcelFileReader(nullPath));
         }
     }
 }

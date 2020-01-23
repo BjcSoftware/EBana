@@ -46,11 +46,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Exceptions\FileOpenedByAnotherProcessException.cs" />
+    <Compile Include="Core\Exceptions\NotAnExcelFileException.cs" />
     <Compile Include="ExcelArticleProvider.cs" />
-    <Compile Include="Core\ExcelFile.cs" />
+    <Compile Include="Core\ExcelFileReader.cs" />
     <Compile Include="Core\ExcelCoords.cs" />
     <Compile Include="Core\ExcelFileFactory.cs" />
-    <Compile Include="Core\IExcelFile.cs" />
+    <Compile Include="Core\IExcelFileReader.cs" />
     <Compile Include="Core\IExcelFileFactory.cs" />
     <Compile Include="Core\RectangularRange.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

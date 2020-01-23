@@ -2,6 +2,6 @@
 {
     public interface IExcelFileFactory
     {
-        IExcelFile CreateExcelFile(string filePath);
+        IExcelFileReader CreateExcelFile(string filePath);
     }
 }
