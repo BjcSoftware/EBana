@@ -218,7 +218,7 @@ namespace EBana.WpfUI.Core
         {
             return new WindowsFileDialogService
             {
-                Filter = "Fichiers Excel (*.xlsx;*.xls)|*xlsx;*xls|Tous les fichiers (*.*)|*.*"
+                Filter = "Fichiers Excel (*.xlsx;*.xls)|*.xlsx;*.xls|Tous les fichiers (*.*)|*.*"
             };
         }
 
@@ -252,7 +252,7 @@ namespace EBana.WpfUI.Core
                 new RecordToRawArticleMapperWithEpiCaching(
                     new RecordToRawArticleMapper(
                         new ArticleFieldToRecordFieldMapping())),
-                new ExcelFileFactory());
+                new ExcelFileReaderFactory());
         }
 
         private IRawArticleToArticleMapper CreateRawArticleToArticleMapper()
@@ -283,7 +283,7 @@ namespace EBana.WpfUI.Core
         {
             return new WindowsFileDialogService
             {
-                Filter = "Photos (*.jpg)|*jpg|Tous les fichiers (*.*)|*.*"
+                Filter = "Photos (*.jpg;*.png;*.jpeg)|*.jpg;*.png;.*jpeg"
             };
         }
 

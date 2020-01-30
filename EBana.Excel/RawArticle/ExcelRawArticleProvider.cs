@@ -16,11 +16,11 @@ namespace EBana.Excel
         private uint currentArticleIndex;
 
         private readonly IRecordToRawArticleMapper recordToRawArticleMapper;
-        private readonly IExcelFileFactory factory;
+        private readonly IExcelFileReaderFactory factory;
 
         public ExcelRawArticleProvider(
             IRecordToRawArticleMapper recordToRawArticleMapper,
-            IExcelFileFactory factory)
+            IExcelFileReaderFactory factory)
         {
             if (recordToRawArticleMapper == null)
                 throw new ArgumentNullException(nameof(recordToRawArticleMapper));

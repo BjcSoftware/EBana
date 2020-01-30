@@ -159,7 +159,7 @@ namespace EBana.PresentationLogic.ViewModels
 			{
 				UpdateDisplayedPictureFromArticle(SelectedArticle);
 
-				// désélectionner le potentiel choix de photo du joueur
+				// désélectionner le potentiel choix de photo de l'utilisateur
 				HasTheUserSelectedANewPicture = false;
 			}
 		}

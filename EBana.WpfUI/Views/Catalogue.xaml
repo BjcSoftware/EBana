@@ -83,7 +83,7 @@
 		
 		<!-- Paramètres de recherche -->
 		<GroupBox
-			Header="Rechercher un article"
+			Header="Critères de recherche"
 			FontSize="15"
 			VerticalAlignment="Top"
 			Grid.Row="1"
@@ -138,6 +138,7 @@
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
 					</Grid.ColumnDefinitions>
 					
 					<TextBlock Text="Rechercher:"
@@ -157,14 +158,22 @@
 						Margin="10 5 0 5"
 						Style="{StaticResource placeHolder}" Tag=" Entrer un libellé ou une référence...">
 
-						<TextBox.InputBindings>
-							<KeyBinding Command="{Binding SearchCommand}"  
+                        <TextBox.InputBindings>
+                            <KeyBinding Command="{Binding SearchCommand}"  
 										Key="Return" />
-						</TextBox.InputBindings>
-						
-					</TextBox>
+                        </TextBox.InputBindings>
+                    </TextBox>
 
-				</Grid>
+                    <!-- Bouton de recherche -->
+                    <mui:ModernButton
+                            Command="{Binding SearchCommand}"
+                            IconData="{StaticResource SearchIconData}"
+                            ToolTip="Lancer la recherche"
+					        Grid.Row="0"
+					        Grid.Column="2"
+                            Padding="5 0 0 0"/>
+
+                </Grid>
 				
 				<!-- Paramètres de recherche complémentaires liés au banalisé -->
 				<Grid
@@ -223,29 +232,16 @@
 				</Grid>
 				
 				<!-- Paramètres de recherche liés au SEL -->
-				<Grid
+                <Grid
 					Grid.Row="2"
 					Grid.Column="0" Grid.ColumnSpan="1"
 					Name="gridParamEPI"
 					Visibility="{Binding SelectedItem, ElementName=cmbTypeArticle, Converter={StaticResource SelectedItemTypeToVisibilityConverter}, ConverterParameter=SEL}">
-					<!-- Rendre visible si le type d'article recherché est SEL -->
-					
-					<!-- Insérer ici les contrôles liés aux articles SEL -->
-				</Grid>
-				
-				<!-- Bouton de recherche -->
-				<mui:ModernButton
-					Command="{Binding SearchCommand}"
-                    IconData="{StaticResource SearchIconData}"
-                    ToolTip="Lancer la recherche"
-					Grid.Row="2"
-					Grid.Column="1"
-					HorizontalAlignment="Right"
-                    EllipseDiameter="40" EllipseStrokeThickness="2"
-					IconWidth="26" IconHeight="26">
-				</mui:ModernButton>
-			
-			</Grid>
+                    <!-- Rendre visible si le type d'article recherché est SEL -->
+
+                    <!-- Insérer ici les contrôles liés aux articles SEL -->
+                </Grid>
+            </Grid>
 		
 		</GroupBox>
 		

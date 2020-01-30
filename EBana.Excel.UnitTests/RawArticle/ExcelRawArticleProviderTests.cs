@@ -45,7 +45,7 @@ namespace EBana.Excel.UnitTests
         {
             IRecordToRawArticleMapper nullMapper = null;
 
-            var stubExcelFileFactory = Substitute.For<IExcelFileFactory>();
+            var stubExcelFileFactory = Substitute.For<IExcelFileReaderFactory>();
             var exception = Assert.Catch<ArgumentNullException>(
                 () => new ExcelRawArticleProvider(nullMapper, stubExcelFileFactory));
         }
@@ -53,7 +53,7 @@ namespace EBana.Excel.UnitTests
         [Test]
         public void Constructor_NullExcelFileFactoryPassed_Throws()
         {
-            IExcelFileFactory nullFactory = null;
+            IExcelFileReaderFactory nullFactory = null;
             
             var stubMapper = Substitute.For<IRecordToRawArticleMapper>();
             var exception = Assert.Catch<ArgumentNullException>(
@@ -107,7 +107,7 @@ namespace EBana.Excel.UnitTests
         private ExcelRawArticleProvider CreateExcelRawArticleProvider(string[,] rawArticlesData)
         {
             IExcelFileReader stubExcelFile = CreateStubExcelFile(rawArticlesData);
-            var excelFileFactoryStub = Substitute.For<IExcelFileFactory>();
+            var excelFileFactoryStub = Substitute.For<IExcelFileReaderFactory>();
             excelFileFactoryStub
                 .CreateExcelFile(Arg.Any<string>())
                 .Returns(stubExcelFile);

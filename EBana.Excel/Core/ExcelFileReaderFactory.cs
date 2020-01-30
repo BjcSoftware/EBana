@@ -1,6 +1,6 @@
 ﻿namespace EBana.Excel.Core
 {
-    public class ExcelFileFactory : IExcelFileFactory
+    public class ExcelFileReaderFactory : IExcelFileReaderFactory
     {
         public IExcelFileReader CreateExcelFile(string filePath)
         {
