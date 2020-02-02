@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using EBana.Domain.Models;
 using EBana.Excel.Core;
+using System.Linq;
 
 namespace EBana.Excel.UnitTests
 {
@@ -28,11 +29,11 @@ namespace EBana.Excel.UnitTests
         [Test]
         public void GetRawArticles_EmptyFile_ReturnsEmptyList()
         {
-            string[,] emptyFileData = GetEmptyFileData();
+            List<Record> emptyFileData = GetEmptyFileData();
             ExcelRawArticleProvider rawArticleProvider =
                 CreateExcelRawArticleProvider(emptyFileData);
 
-            var rawArticles = rawArticleProvider.GetRawArticlesFrom("empty.xls");
+            var rawArticles = rawArticleProvider.GetRawArticlesFrom("empty.xls").ToList();
 
             Assert.AreEqual(
                 expected: 0,
@@ -45,19 +46,19 @@ namespace EBana.Excel.UnitTests
         {
             IRecordToRawArticleMapper nullMapper = null;
 
-            var stubExcelFileFactory = Substitute.For<IExcelFileReaderFactory>();
+            var stubRecordReader = Substitute.For<IExcelRecordReader>();
             var exception = Assert.Catch<ArgumentNullException>(
-                () => new ExcelRawArticleProvider(nullMapper, stubExcelFileFactory));
+                () => new ExcelRawArticleProvider(nullMapper, stubRecordReader));
         }
 
         [Test]
         public void Constructor_NullExcelFileFactoryPassed_Throws()
         {
-            IExcelFileReaderFactory nullFactory = null;
+            IExcelRecordReader nullReader = null;
             
             var stubMapper = Substitute.For<IRecordToRawArticleMapper>();
             var exception = Assert.Catch<ArgumentNullException>(
-                () => new ExcelRawArticleProvider(stubMapper, nullFactory));
+                () => new ExcelRawArticleProvider(stubMapper, nullReader));
         }
 
         [Test]
@@ -104,45 +105,30 @@ namespace EBana.Excel.UnitTests
             return CreateExcelRawArticleProvider(GetEmptyFileData());
         }
 
-        private ExcelRawArticleProvider CreateExcelRawArticleProvider(string[,] rawArticlesData)
+        private ExcelRawArticleProvider CreateExcelRawArticleProvider(List<Record> records)
         {
-            IExcelFileReader stubExcelFile = CreateStubExcelFile(rawArticlesData);
-            var excelFileFactoryStub = Substitute.For<IExcelFileReaderFactory>();
-            excelFileFactoryStub
-                .CreateExcelFile(Arg.Any<string>())
-                .Returns(stubExcelFile);
+            var stubReader = Substitute.For<IExcelRecordReader>();
+            stubReader
+                .ReadAllRecordsFrom(Arg.Any<ExcelSource>())
+                .Returns(records);
 
             return new ExcelRawArticleProvider(
                 new RecordToRawArticleMapper(
                     new ArticleFieldToRecordFieldMapping()),
-                excelFileFactoryStub);
+                stubReader);
         }
 
-        private IExcelFileReader CreateStubExcelFile(string[,] data)
+        private List<Record> GetRawArticleDataForTwoArticles()
         {
-            var stubExcelFile = Substitute.For<IExcelFileReader>();
-            stubExcelFile
-                .GetCellsAsStringInRange(Arg.Any<RectangularRange>())
-                .Returns(data);
-
-            stubExcelFile
-                .RowCount
-                .Returns((uint)(data.GetLength(0) + 1));
-
-            return stubExcelFile;
-        }
-
-        private string[,] GetRawArticleDataForTwoArticles()
-        {
-            return new string[2, 10] {
-                { "Ref1", "Lab1", "Div1", "1", "Loc1", "1", "Flu1", "Infos1", "EpiId1", "EpiType1" },
-                { "Ref2", "Lab2", "Div2", "2", "Loc2", "2", "Flu2", "Infos2", "EpiId2", "EpiType2" }
+            return new List<Record> {
+                new Record(new List<string> { "Ref1", "Lab1", "Div1", "1", "Loc1", "1", "Flu1", "Infos1", "EpiId1", "EpiType1" }),
+                new Record(new List<string> { "Ref2", "Lab2", "Div2", "2", "Loc2", "2", "Flu2", "Infos2", "EpiId2", "EpiType2" })
             };
         }
 
-        private string[,] GetEmptyFileData()
+        private List<Record> GetEmptyFileData()
         {
-            return new string[,] { };
+            return new List<Record>();
         }
     }
 }

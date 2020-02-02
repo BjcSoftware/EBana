@@ -252,7 +252,17 @@ namespace EBana.WpfUI.Core
                 new RecordToRawArticleMapperWithEpiCaching(
                     new RecordToRawArticleMapper(
                         new ArticleFieldToRecordFieldMapping())),
-                new ExcelFileReaderFactory());
+                CreateExcelRecordReader());
+        }
+
+        private IExcelRecordReader CreateExcelRecordReader()
+        {
+            return
+                new ErrorHandlerExcelRecordReaderDecorator(
+                    new ExcelRecordReader(
+                        new ExcelRecordReaderParams(
+                            fieldPerRecordCount: 10,
+                            lineNumberWhereReadingStarts: 1)));
         }
 
         private IRawArticleToArticleMapper CreateRawArticleToArticleMapper()

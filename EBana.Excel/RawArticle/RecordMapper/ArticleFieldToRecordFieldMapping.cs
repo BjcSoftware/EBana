@@ -5,9 +5,6 @@
     /// </summary>
     public class ArticleFieldToRecordFieldMapping
     {
-        // doit être mis à jour en cas de changement dans le mapping
-        public readonly uint ColumnCount = 10;
-
         public readonly int Ref = 0;
         public readonly int Label = 1;
         public readonly int Division = 2;

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using EBana.Domain.Models;
+using EBana.Excel.Core;
 
 namespace EBana.Excel.UnitTests
 {
@@ -21,7 +22,7 @@ namespace EBana.Excel.UnitTests
         public void Map_NullRecordPassed_Throws()
         {
             var mapper = CreateMapper();
-            List<string> nullRecord = null;
+            Record nullRecord = null;
 
             var exception = Assert.Catch<ArgumentNullException>(
                 () => mapper.Map(nullRecord));
@@ -31,19 +32,21 @@ namespace EBana.Excel.UnitTests
         public void Map_CorrectRecordPassed_ReturnsCorrectRawArticle()
         {
             // Arrange
-            var record = new List<string>
-            {
-                "Ref",
-                "Libelle",
-                "Division",
-                "10",
-                "Localisation",
-                "10",
-                "Flu",
-                "Infos",
-                "X",
-                "Casque"
-            };
+            var record = new Record(
+                new List<string>
+                {
+                    "Ref",
+                    "Libelle",
+                    "Division",
+                    "10",
+                    "Localisation",
+                    "10",
+                    "Flu",
+                    "Infos",
+                    "X",
+                    "Casque"
+                }
+            );
 
             RawArticle expectedArticle = new RawArticle
             {

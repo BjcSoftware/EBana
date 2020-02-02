@@ -1,4 +1,5 @@
 ﻿using EBana.Domain.Models;
+using EBana.Excel.Core;
 using NSubstitute;
 using NUnit.Framework;
 using System;
@@ -21,7 +22,7 @@ namespace EBana.Excel.UnitTests
         [Test]
         public void Map_NullRecordPassed_Throws()
         {
-            List<string> nullRecord = null;
+            Record nullRecord = null;
             var mapper = CreateMapper();
 
             var exception = Assert.Catch<ArgumentNullException>(
@@ -59,8 +60,8 @@ namespace EBana.Excel.UnitTests
                 secondArticle.TypeEpi);
         }
 
-        private readonly List<string> FirstRecord = new List<string>();
-        private readonly List<string> SecondRecord = new List<string>();
+        private readonly Record FirstRecord = new Record(new List<string>());
+        private readonly Record SecondRecord = new Record(new List<string>());
 
         private readonly RawArticle FirstRawArticle = new RawArticle
         {

@@ -1,4 +1,5 @@
 ﻿using EBana.Domain.Models;
+using EBana.Excel.Core;
 using System;
 using System.Collections.Generic;
 
@@ -25,9 +26,7 @@ namespace EBana.Excel
             cachedEpiType = new List<TypeEpi>();
         }
 
-        public uint FieldCount => decoratedMapper.FieldCount;
-
-        public RawArticle Map(List<string> record)
+        public RawArticle Map(Record record)
         {
             if (record == null)
                 throw new ArgumentNullException(nameof(record));

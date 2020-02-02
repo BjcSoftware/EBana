@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using EBana.Excel.Core;
 
 namespace EBana.Excel
 {
@@ -7,8 +7,6 @@ namespace EBana.Excel
         /// <summary>
         /// Permet de créer un RawArticle à partir d'un Record.
         /// </summary>
-        RawArticle Map(List<string> record);
-
-        uint FieldCount { get; }
+        RawArticle Map(Record record);
     }
 }

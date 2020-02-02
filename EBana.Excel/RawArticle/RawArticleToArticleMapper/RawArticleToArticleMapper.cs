@@ -22,7 +22,7 @@ namespace EBana.Excel
         public Article Map(RawArticle rawArticle)
         {
             if (rawArticle == null)
-                throw new ArgumentNullException("rawArticle");
+                throw new ArgumentNullException(nameof(rawArticle));
 
             if (IsRawArticleBanalise(rawArticle))
                 return rawArticle.IsEpi() ? CreateEpiFromRawArticle(rawArticle) : 
@@ -31,7 +31,7 @@ namespace EBana.Excel
             else if (IsRawArticleSEL(rawArticle))
                 return CreateSelFromRawArticle(rawArticle);
             else
-                throw new InvalidOperationException("rawArticle");
+                throw new InvalidOperationException(nameof(rawArticle));
         }
 
         private bool IsRawArticleBanalise(RawArticle rawArticle)
