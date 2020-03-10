@@ -1,7 +1,7 @@
 # eBana
 eBana is an inventory software that I designed during a seasonal job at EDF in 2018.
 
-I keep working on this project to experiment with my new knowledge and techniques in software development.
+I keep working on this project to experiment with my new knowledge and techniques in software engineering.
 
 eBana has the following features:
   * Searching for articles using several search criteria.
