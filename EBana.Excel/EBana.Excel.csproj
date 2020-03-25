@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExcelDataReader, Version=3.4.2.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
-      <HintPath>..\packages\ExcelDataReader.3.4.2\lib\net45\ExcelDataReader.dll</HintPath>
+    <Reference Include="ExcelDataReader, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.3.6.0\lib\net45\ExcelDataReader.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,15 +45,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\ExcelSource.cs" />
+    <Compile Include="Core\RecordReader\Record.cs" />
+    <Compile Include="Core\RecordReader\IExcelRecordReader.cs" />
+    <Compile Include="Core\RecordReader\ExcelRecordReader.cs" />
+    <Compile Include="Core\RecordReader\ExcelRecordReaderParams.cs" />
+	<Compile Include="Core\RecordReader\ErrorHandlerExcelRecordReaderDecorator.cs" />
     <Compile Include="Core\Exceptions\FileOpenedByAnotherProcessException.cs" />
     <Compile Include="Core\Exceptions\NotAnExcelFileException.cs" />
     <Compile Include="ExcelArticleProvider.cs" />
-    <Compile Include="Core\ExcelFileReader.cs" />
-    <Compile Include="Core\ExcelCoords.cs" />
-    <Compile Include="Core\ExcelFileReaderFactory.cs" />
-    <Compile Include="Core\IExcelFileReader.cs" />
-    <Compile Include="Core\IExcelFileReaderFactory.cs" />
-    <Compile Include="Core\RectangularRange.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawArticle\RawArticleToArticleMapper\IRawArticleToArticleMapper.cs" />
     <Compile Include="RawArticle\RawArticleToArticleMapper\RawArticleToArticleMapper.cs" />
@@ -66,14 +66,13 @@
     <Compile Include="RawArticle\RecordMapper\RecordToRawArticleMapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\EBana.Domain\EBana.Domain.csproj">
       <Project>{778ef8a1-cec3-49c8-a3e1-a68710eca6ec}</Project>
       <Name>EBana.Domain</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
