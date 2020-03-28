@@ -61,7 +61,7 @@ namespace EBana.WpfUI.UnitTests
         public void PerformSearch_ResultFound_DoesNotNotifyUser()
         {
             var stubSearchEngine = Substitute.For<IArticleSearchEngine>();
-            var notEmptyResultSet = new List<Article> { new Article() };
+            var notEmptyResultSet = new List<Article> { CreateStubArticle() };
             stubSearchEngine
                 .PerformSearch(Arg.Any<SearchSettings>())
                 .Returns(notEmptyResultSet);
@@ -77,6 +77,17 @@ namespace EBana.WpfUI.UnitTests
                 Arg.Any<string>(),
                 Arg.Any<string>(),
                 Arg.Any<DialogButton>());
+        }
+
+        private Article CreateStubArticle()
+        {
+            return
+                new Article(
+                    new ReferenceArticle("N1111111"),
+                    "Article",
+                    "Loc",
+                    45,
+                    "Infos");
         }
     }
 }

@@ -42,13 +42,15 @@ namespace EBana.Excel
         private Banalise CreateBanaliseFromRawArticle(RawArticle rawArticle)
         {
             return new Banalise(
-                CreateArticleFromRawArticle(rawArticle)) { LienFlu = rawArticle.LienFlu };
+                CreateArticleFromRawArticle(rawArticle), 
+                rawArticle.LienFlu);
         }
 
         private Article CreateEpiFromRawArticle(RawArticle rawArticle)
         {
-            return new EPI(
-                CreateBanaliseFromRawArticle(rawArticle)) { TypeEpi = rawArticle.TypeEpi };
+            return new Epi(
+                CreateBanaliseFromRawArticle(rawArticle), 
+                rawArticle.TypeEpi);
         }
 
         private bool IsRawArticleSEL(RawArticle rawArticle)
@@ -56,22 +58,20 @@ namespace EBana.Excel
             return rawArticle.IdMagasin == settings.IdMagasinSEL;
         }
 
-        private SEL CreateSelFromRawArticle(RawArticle rawArticle)
+        private Sel CreateSelFromRawArticle(RawArticle rawArticle)
         {
-            return new SEL(
+            return new Sel(
                 CreateArticleFromRawArticle(rawArticle));
         }
 
         private Article CreateArticleFromRawArticle(RawArticle rawArticle)
         {
-            return new Article()
-            {
-                Ref = rawArticle.Ref,
-                Libelle = rawArticle.Libelle,
-                Localisation = rawArticle.Localisation,
-                Quantite = rawArticle.Quantite,
-                InfosSupplementaires = rawArticle.InfosSupplementaires
-            };
+            return new Article(
+                new ReferenceArticle(rawArticle.Ref),
+                rawArticle.Libelle,
+                rawArticle.Localisation,
+                rawArticle.Quantite,
+                rawArticle.InfosSupplementaires);
         }
     }
 }

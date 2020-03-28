@@ -188,7 +188,7 @@ namespace EBana.PresentationLogic.ViewModels
 			}
 			set {
 				mOnlySearchArticlesWithoutPicture = value;
-				OnPropertyChanged("OnlySearchArticlesWithoutPicture");
+				OnPropertyChanged(nameof(OnlySearchArticlesWithoutPicture));
 				OnOnlySearchArticlesWithoutPictureChanged();
 			}
 		}
@@ -201,7 +201,7 @@ namespace EBana.PresentationLogic.ViewModels
 			}
 			set {
 				mSearchResults = value;
-				OnPropertyChanged("SearchResults");
+				OnPropertyChanged(nameof(SearchResults));
 			}
 		}
 		
@@ -213,7 +213,7 @@ namespace EBana.PresentationLogic.ViewModels
 			}
 			set {
 				mSelectedArticle = value;
-				OnPropertyChanged("SelectedArticle");
+				OnPropertyChanged(nameof(SelectedArticle));
 				OnSelectedArticleChanged();
 			}
 		}
@@ -227,7 +227,7 @@ namespace EBana.PresentationLogic.ViewModels
 			}
 			set {
 				mHasTheUserSelectedANewPicture = value;
-				OnPropertyChanged("HasTheUserSelectedANewPicture");
+				OnPropertyChanged(nameof(HasTheUserSelectedANewPicture));
 			}
 		}
 
@@ -239,7 +239,7 @@ namespace EBana.PresentationLogic.ViewModels
 			}
 			set {
 				mDisplayedArticlePicturePath = value;
-				OnPropertyChanged("DisplayedArticlePicturePath");
+				OnPropertyChanged(nameof(DisplayedArticlePicturePath));
 			}
 		}
 

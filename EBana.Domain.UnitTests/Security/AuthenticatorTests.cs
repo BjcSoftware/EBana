@@ -93,7 +93,7 @@ namespace EBana.Domain.Security.UnitTests
         {
             var stubCredentialsReader = Substitute.For<ICredentialsReader>();
             stubCredentialsReader.GetCredentials()
-                .Returns(new Credentials());
+                .Returns(new Credentials("stubPassword"));
 
             return stubCredentialsReader;
         }

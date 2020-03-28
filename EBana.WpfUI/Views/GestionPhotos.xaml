@@ -99,10 +99,11 @@
 					   VerticalAlignment="Center"/>
 			
 			<!-- Raccourci clavier pour rechercher -->
-			<TextBox Text="{Binding SearchSettings.Query, UpdateSourceTrigger=PropertyChanged}" 
-					 Grid.Column="1"
-					 Margin="5 0"
-					 Style="{StaticResource placeHolder}" Tag=" Entrer un libellé, une référence ou laisser le champ vide pour afficher tous les articles">
+			<TextBox 
+                Text="{Binding SearchSettings.Query, UpdateSourceTrigger=PropertyChanged}" 
+				Grid.Column="1"
+				Margin="5 0"
+				Style="{StaticResource placeHolder}" Tag=" Entrer un libellé, une référence ou laisser le champ vide pour afficher tous les articles">
 				<TextBox.InputBindings>
 							<KeyBinding Command="{Binding SearchCommand}"  
 										Key="Return" />
@@ -133,7 +134,7 @@
 				<DataTemplate>
 					<StackPanel Orientation="Horizontal">
 						<StackPanel Orientation="Vertical" Margin="0 0 0 5">
-							<TextBlock Text="{Binding Ref}" />
+							<TextBlock Text="{Binding Reference.Value}" />
 							<TextBlock Text="{Binding Libelle}" />
 						</StackPanel>
 					</StackPanel>
@@ -171,21 +172,21 @@
 					TextAlignment="Center" />
 				<TextBox
 					IsReadOnly="True"
-					Text="{Binding SelectedArticle.Ref}" />
+					Text="{Binding SelectedArticle.Reference.Value, Mode=OneWay}" />
 			
 				<!-- Libellé -->
 				<TextBlock Text="Libellé"
 					TextAlignment="Center" />
 				<TextBox
 					IsReadOnly="True"
-					Text="{Binding SelectedArticle.Libelle}" />
+					Text="{Binding SelectedArticle.Libelle, Mode=OneWay}" />
 			
 				<!-- Localisation -->
 				<TextBlock Text="Localisation"
 					TextAlignment="Center" />
 				<TextBox
 					IsReadOnly="True"
-					Text="{Binding SelectedArticle.Localisation}" />
+					Text="{Binding SelectedArticle.Localisation, Mode=OneWay}" />
 			</StackPanel>
 			
 	   

@@ -11,14 +11,14 @@ namespace EBana.EfDataAccess
     {
         private readonly IReader<Article> articleReader;
         private readonly IReader<Banalise> banaliseReader;
-        private readonly IReader<EPI> epiReader;
-        private readonly IReader<SEL> selReader;
+        private readonly IReader<Epi> epiReader;
+        private readonly IReader<Sel> selReader;
 
         public ArticleSearchEngine(
             IReader<Article> articleReader,
             IReader<Banalise> banaliseReader,
-            IReader<EPI> epiReader,
-            IReader<SEL> selReader)
+            IReader<Epi> epiReader,
+            IReader<Sel> selReader)
         {
             if (articleReader == null)
                 throw new ArgumentNullException(nameof(articleReader));
@@ -40,8 +40,7 @@ namespace EBana.EfDataAccess
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
 
-            string articleTypeFilter = settings.ArticleTypeFilter?.Libelle;
-            switch (articleTypeFilter)
+            switch (settings.ArticleTypeFilter)
             {
                 case null:
                     return SearchArticles(settings.Query);
@@ -66,8 +65,8 @@ namespace EBana.EfDataAccess
             searchQuery = searchQuery.ToLower();
             return articleReader
                 .Find(a => a.Libelle.ToLower().Contains(searchQuery) ||
-                            a.Ref.ToLower().Contains(searchQuery))
-                .OrderBy(a => a.Ref);
+                            a.Reference.Value.ToLower().Contains(searchQuery))
+                .OrderBy(a => a.Reference.Value);
         }
 
         private IEnumerable<Article> SearchBanalise(SearchSettings settings)
@@ -91,8 +90,8 @@ namespace EBana.EfDataAccess
             searchQuery = searchQuery.ToLower();
             return banaliseReader
                 .Find(a => a.Libelle.ToLower().Contains(searchQuery) ||
-                            a.Ref.ToLower().Contains(searchQuery))
-                .OrderBy(a => a.Ref);
+                            a.Reference.Value.ToLower().Contains(searchQuery))
+                .OrderBy(a => a.Reference.Value);
         }
 
         /// <summary>
@@ -109,9 +108,9 @@ namespace EBana.EfDataAccess
             searchQuery = searchQuery.ToLower();
             return epiReader
                 .Find(a => (a.Libelle.ToLower().Contains(searchQuery) ||
-                            a.Ref.ToLower().Contains(searchQuery)) &&
+                            a.Reference.Value.ToLower().Contains(searchQuery)) &&
                             a.TypeEpi.Equals(type))
-                .OrderBy(a => a.Ref);
+                .OrderBy(a => a.Reference.Value);
         }
 
         /// <summary>
@@ -126,8 +125,8 @@ namespace EBana.EfDataAccess
             searchQuery = searchQuery.ToLower();
             return selReader
                 .Find(a => a.Libelle.ToLower().Contains(searchQuery) ||
-                            a.Ref.ToLower().Contains(searchQuery))
-                .OrderBy(a => a.Ref);
+                            a.Reference.Value.ToLower().Contains(searchQuery))
+                .OrderBy(a => a.Reference.Value);
         }
     }
 }

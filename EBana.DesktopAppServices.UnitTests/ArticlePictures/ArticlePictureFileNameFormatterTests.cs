@@ -29,15 +29,26 @@ namespace EBana.DesktopAppServices.ArticlePictures.UnitTests
         [Test]
         public void Format_CorrectArticlePassed_ReturnsCorrectName()
         {
-            var article = new Article() { Ref = "N0000000" };
+            var article = CreateStubArticleFromReference(new ReferenceArticle("N0000000"));
             var formater = CreateFormater();
-            string expectedFileName = article.Ref;
+            string expectedFileName = article.Reference.Value;
 
             string actualFileName = formater.FormatName(article);
 
             Assert.AreEqual(
                 expectedFileName,
                 actualFileName);
+        }
+
+        private Article CreateStubArticleFromReference(ReferenceArticle reference)
+        {
+            return
+                new Article(
+                    reference,
+                    "Article",
+                    "Loc",
+                    45,
+                    "Infos");
         }
 
         [Test]

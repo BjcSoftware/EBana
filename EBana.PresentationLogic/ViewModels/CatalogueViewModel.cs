@@ -60,7 +60,7 @@ namespace EBana.PresentationLogic.ViewModels
 		private void InitAvailableArticleTypesList()
 		{
 			var articlesTypes = searchSettingsProvider.GetArticleTypes();
-			AvailableArticleTypes = new ObservableCollection<TypeArticle>(articlesTypes);
+			AvailableArticleTypes = new ObservableCollection<string>(articlesTypes);
 			SelectDefaultArticleType();
 		}
 
@@ -125,8 +125,8 @@ namespace EBana.PresentationLogic.ViewModels
 		#region Paramètres de recherche
 
 		#region Type d'article
-		private ObservableCollection<TypeArticle> mAvailableArticleTypes;
-		public ObservableCollection<TypeArticle> AvailableArticleTypes
+		private ObservableCollection<string> mAvailableArticleTypes;
+		public ObservableCollection<string> AvailableArticleTypes
 		{
 			get { return mAvailableArticleTypes; }
 			set {

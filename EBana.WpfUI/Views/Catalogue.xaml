@@ -148,7 +148,7 @@
 						VerticalAlignment="Center" />
 					
 					<!-- TextBox pour saisir une recherche (le style "placeHolder" est responsable de la MaxLength) -->
-					<TextBox
+                    <TextBox
 						Text="{Binding SearchSettings.Query, UpdateSourceTrigger=PropertyChanged}"
 						Height="24"
 						Grid.Row="0"
@@ -157,7 +157,6 @@
 						HorizontalAlignment="Stretch"
 						Margin="10 5 0 5"
 						Style="{StaticResource placeHolder}" Tag=" Entrer un libellé ou une référence...">
-
                         <TextBox.InputBindings>
                             <KeyBinding Command="{Binding SearchCommand}"  
 										Key="Return" />
@@ -221,7 +220,7 @@
 						<ComboBox.ItemTemplate>
 							<DataTemplate>
 								<StackPanel Orientation="Horizontal" Margin="0 0 0 3">
-									<TextBlock Text="{Binding}" VerticalAlignment="Center" Width="75" TextWrapping="Wrap" />
+									<TextBlock Text="{Binding Path=Value}" VerticalAlignment="Center" Width="75" TextWrapping="Wrap" />
 									<Image Height="50" Width="50" Margin="10 0" 
 										Source="{Binding Converter={StaticResource SelectedEpiTypeToPicturePathConverter}}"/>
 								</StackPanel>
@@ -271,7 +270,7 @@
 					<DataTemplate>
 						<StackPanel Orientation="Horizontal">
 							<StackPanel Margin="0 0 0 5">
-								<TextBlock Text="{Binding Ref}" />
+								<TextBlock Text="{Binding Reference}" />
 								<TextBlock Text="{Binding Libelle}" />
 							</StackPanel>
 						</StackPanel>
@@ -309,21 +308,21 @@
 						TextAlignment="Center" />
 					<TextBox
 						IsReadOnly="True"
-						Text="{Binding SelectedArticle.Ref}" />
+						Text="{Binding SelectedArticle.Reference, Mode=OneWay}" />
 				
 					<!-- Libellé -->
 					<TextBlock Text="Libellé"
 						TextAlignment="Center" />
 					<TextBox
 						IsReadOnly="True"
-						Text="{Binding SelectedArticle.Libelle}" />
+						Text="{Binding SelectedArticle.Libelle, Mode=OneWay}" />
 				
 					<!-- Localisation -->
 					<TextBlock Text="Localisation"
 						TextAlignment="Center" />
 					<TextBox
 						IsReadOnly="True"
-						Text="{Binding SelectedArticle.Localisation}" />
+						Text="{Binding SelectedArticle.Localisation, Mode=OneWay}" />
 				
 					<!-- Quantité (décommenter pour afficher)
 					<TextBlock

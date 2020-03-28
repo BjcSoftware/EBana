@@ -38,7 +38,7 @@ namespace EBana.Excel
             string epiLabel = record.GetFieldAt(fieldMapping.EpiLabel)?.Capitalize();
             if(epiLabel != null)
             {
-                rawArticle.TypeEpi = new TypeEpi { Libelle = epiLabel };
+                rawArticle.TypeEpi = new TypeEpi(epiLabel);
             }
 
             return rawArticle;

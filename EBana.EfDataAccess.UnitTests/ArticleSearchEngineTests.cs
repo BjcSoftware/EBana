@@ -15,8 +15,8 @@ namespace EBana.EfDataAccess.UnitTests
         {
             IReader<Article> nullArticleReader = null;
             IReader<Banalise> nullBanaliseReader = Substitute.For<IReader<Banalise>>();
-            IReader<EPI> stubEpiReader = Substitute.For<IReader<EPI>>();
-            IReader<SEL> stubSelReader = Substitute.For<IReader<SEL>>();
+            IReader<Epi> stubEpiReader = Substitute.For<IReader<Epi>>();
+            IReader<Sel> stubSelReader = Substitute.For<IReader<Sel>>();
 
             var exception = Assert.Catch<ArgumentNullException>(
                 () => new ArticleSearchEngine(
@@ -31,8 +31,8 @@ namespace EBana.EfDataAccess.UnitTests
         {
             IReader<Article> stubArticleReader = Substitute.For<IReader<Article>>();
             IReader<Banalise> nullBanaliseReader = null;
-            IReader<EPI> stubEpiReader = Substitute.For<IReader<EPI>>();
-            IReader<SEL> stubSelReader = Substitute.For<IReader<SEL>>();
+            IReader<Epi> stubEpiReader = Substitute.For<IReader<Epi>>();
+            IReader<Sel> stubSelReader = Substitute.For<IReader<Sel>>();
 
             var exception = Assert.Catch<ArgumentNullException>(
                 () => new ArticleSearchEngine(
@@ -47,8 +47,8 @@ namespace EBana.EfDataAccess.UnitTests
         {
             IReader<Article> stubArticleReader = Substitute.For<IReader<Article>>();
             IReader<Banalise> stubBanaliseReader = Substitute.For<IReader<Banalise>>();
-            IReader<EPI> nullEpiReader = null;
-            IReader<SEL> stubSelReader = Substitute.For<IReader<SEL>>();
+            IReader<Epi> nullEpiReader = null;
+            IReader<Sel> stubSelReader = Substitute.For<IReader<Sel>>();
 
             var exception = Assert.Catch<ArgumentNullException>(
                 () => new ArticleSearchEngine(
@@ -63,8 +63,8 @@ namespace EBana.EfDataAccess.UnitTests
         {
             IReader<Article> stubArticleReader = Substitute.For<IReader<Article>>();
             IReader<Banalise> stubBanaliseReader = Substitute.For<IReader<Banalise>>();
-            IReader<EPI> stubEpiReader = Substitute.For<IReader<EPI>>();
-            IReader<SEL> nullSelReader = null;
+            IReader<Epi> stubEpiReader = Substitute.For<IReader<Epi>>();
+            IReader<Sel> nullSelReader = null;
 
             var exception = Assert.Catch<ArgumentNullException>(
                 () => new ArticleSearchEngine(
@@ -88,8 +88,8 @@ namespace EBana.EfDataAccess.UnitTests
         {
             var stubArticleReader = Substitute.For<IReader<Article>>();
             var stubBanaliseReader = Substitute.For<IReader<Banalise>>();
-            var stubEpiReader = Substitute.For<IReader<EPI>>();
-            var stubSelReader = Substitute.For<IReader<SEL>>();
+            var stubEpiReader = Substitute.For<IReader<Epi>>();
+            var stubSelReader = Substitute.For<IReader<Sel>>();
 
             return new ArticleSearchEngine(
                 stubArticleReader,

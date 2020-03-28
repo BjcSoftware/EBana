@@ -3,35 +3,34 @@ using EBana.Domain.SearchEngine;
 using EBana.EfDataAccess.Repository;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EBana.EfDataAccess
 {
     public class SearchCriteriaProvider : ISearchSettingsProvider
     {
-        private readonly IReader<TypeArticle> typeArticleReader;
-        private readonly IReader<TypeEpi> typeEpiReader;
+        private readonly IReader<Epi> epiReader;
 
         public SearchCriteriaProvider(
-            IReader<TypeArticle> typeArticleReader,
-            IReader<TypeEpi> typeEpiReader)
+            IReader<Epi> epiReader)
         {
-            if (typeArticleReader == null)
-                throw new ArgumentNullException("typeArticleReader");
-            if (typeEpiReader == null)
-                throw new ArgumentNullException("typeEpiReader");
+            if (epiReader == null)
+                throw new ArgumentNullException(nameof(epiReader));
 
-            this.typeArticleReader = typeArticleReader;
-            this.typeEpiReader = typeEpiReader;
+            this.epiReader = epiReader;
         }
 
-        public IEnumerable<TypeArticle> GetArticleTypes()
+        public IEnumerable<string> GetArticleTypes()
         {
-            return typeArticleReader.GetAll();
+            return new List<string>() { "Banalisé", "SEL" };
         }
 
         public IEnumerable<TypeEpi> GetEpiTypes()
         {
-            return typeEpiReader.GetAll();
+            return epiReader
+                .GetAll()
+                .Select(e => e.TypeEpi)
+                .Distinct();
         }
     }
 }

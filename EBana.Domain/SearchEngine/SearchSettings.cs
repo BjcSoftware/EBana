@@ -21,8 +21,8 @@ namespace EBana.Domain.SearchEngine
             }
         }
 
-        private TypeArticle _articleTypeFilter;
-        public TypeArticle ArticleTypeFilter {
+        private string _articleTypeFilter;
+        public string ArticleTypeFilter {
             get {
                 return _articleTypeFilter;
             }

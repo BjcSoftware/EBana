@@ -15,7 +15,7 @@ using EBana.WindowsServices.Dialog;
 using EBana.WindowsServices.File;
 using EBana.WpfUI.Views;
 using System;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Windows.Controls;
 using EBana.WindowsService;
 using EBana.Domain.SearchEngine;
@@ -26,6 +26,7 @@ using EBana.DesktopAppServices.ArticleStorageUpdater.EventHandlers;
 using EBana.Excel.Core;
 using EBana.Domain.Updater;
 using EBana.Domain.Commands;
+using System.Linq;
 
 namespace EBana.WpfUI.Core
 {
@@ -65,6 +66,7 @@ namespace EBana.WpfUI.Core
             messageBoxDialogService = new MessageBoxDialogService();
 
             CreatePictureFolderIfDoesNotExist();
+            CreateDatabaseIfDoesNotExist();
         }
 
         private void CreatePictureFolderIfDoesNotExist()
@@ -74,6 +76,39 @@ namespace EBana.WpfUI.Core
                 fileService.CreateDirectory(articlePictureSettings.PictureFolderPath);
             }
         }
+
+        private void CreateDatabaseIfDoesNotExist()
+        {
+            using (var context = new EBanaContext())
+            {
+                context.Database.EnsureCreated();
+                InitDatabaseIfNotInitialized(context);
+            }
+        }
+
+        private void InitDatabaseIfNotInitialized(DbContext context)
+        {
+            if(DatabaseIsNotInitialized(context))
+            {
+                SetDefaultPassword(context);
+                context.SaveChanges();
+            }
+        }
+
+        private bool DatabaseIsNotInitialized(DbContext context)
+        {
+            return context.Set<Credentials>().Count() == 0;
+        }
+
+        private void SetDefaultPassword(DbContext context)
+        {
+            string defaultPassword = "admin";
+            string hashedPassword = hash.Hash(defaultPassword);
+
+            context.Add(new Credentials(hashedPassword));
+        }
+
+
 
         public Page CreatePage(string pageName)
         {
@@ -123,8 +158,7 @@ namespace EBana.WpfUI.Core
                 pictureLocator,
                 new WindowsWebBrowserService(),
                 new SearchCriteriaProvider(
-                    new EfReader<TypeArticle>(context),
-                    new EfReader<TypeEpi>(context)),
+                    new EfReader<Epi>(context)),
                 CreateArticleSearchEngine());
         }
 
@@ -144,15 +178,15 @@ namespace EBana.WpfUI.Core
                 new ArticleSearchEngine(
                     new EfReader<Article>(context),
                     new EfReader<Banalise>(context),
-                    new EfReader<EPI>(context),
-                    new EfReader<SEL>(context)),
+                    new EfReader<Epi>(context),
+                    new EfReader<Sel>(context)),
                 new MessageBoxDialogService()
             );
         }
 
         private DbContext CreateDbContext()
         {
-            return new EBanaContext(hash);
+            return new EBanaContext();
         }
 
         private MaintenanceConnexionViewModel CreateMaintenanceLoginViewModel()
@@ -228,13 +262,9 @@ namespace EBana.WpfUI.Core
 
             IWriter<Article> articleWriter =
                 new EfWriter<Article>(context);
-            IWriter<TypeEpi> typeEpiWriter =
-                new EfWriter<TypeEpi>(context);
 
             return new ArticleStorageUpdater(
-                new ArticleRepository(
-                    articleWriter,
-                    typeEpiWriter),
+                new ArticleRepository(articleWriter),
                 new ArticleStorageUpdatedUserNotifier(
                     messageBoxDialogService));
         }
@@ -245,13 +275,12 @@ namespace EBana.WpfUI.Core
                 CreateRawArticleProvider(),
                 CreateRawArticleToArticleMapper());
         }
-
+        
         private IRawArticleProvider CreateRawArticleProvider()
         {
             return new ExcelRawArticleProvider(
-                new RecordToRawArticleMapperWithEpiCaching(
-                    new RecordToRawArticleMapper(
-                        new ArticleFieldToRecordFieldMapping())),
+                new RecordToRawArticleMapper(
+                    new ArticleFieldToRecordFieldMapping()),
                 CreateExcelRecordReader());
         }
 

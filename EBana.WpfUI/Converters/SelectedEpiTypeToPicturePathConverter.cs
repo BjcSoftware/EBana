@@ -32,7 +32,7 @@ namespace EBana.WpfUI.Converters
             // emplacement où devrait être l'image de l'EPI sélectionné si elle existe
             string potentialImagePath = string.Format("{0}/{1}.{2}", 
                                                       pictureDirectory,
-                                                      selectedEpiType.Libelle.ToLower(), 
+                                                      selectedEpiType.Value.ToLower(), 
                                                       pictureExtension);
 
             // il existe une image liée à l'EPI sélectionné, retourner son emplacement

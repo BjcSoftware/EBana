@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EBana.Excel</RootNamespace>
     <AssemblyName>EBana.Excel</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -50,7 +50,7 @@
     <Compile Include="Core\RecordReader\IExcelRecordReader.cs" />
     <Compile Include="Core\RecordReader\ExcelRecordReader.cs" />
     <Compile Include="Core\RecordReader\ExcelRecordReaderParams.cs" />
-	<Compile Include="Core\RecordReader\ErrorHandlerExcelRecordReaderDecorator.cs" />
+    <Compile Include="Core\RecordReader\ErrorHandlerExcelRecordReaderDecorator.cs" />
     <Compile Include="Core\Exceptions\FileOpenedByAnotherProcessException.cs" />
     <Compile Include="Core\Exceptions\NotAnExcelFileException.cs" />
     <Compile Include="ExcelArticleProvider.cs" />
@@ -58,7 +58,6 @@
     <Compile Include="RawArticle\RawArticleToArticleMapper\IRawArticleToArticleMapper.cs" />
     <Compile Include="RawArticle\RawArticleToArticleMapper\RawArticleToArticleMapper.cs" />
     <Compile Include="RawArticle\RecordMapper\ArticleFieldToRecordFieldMapping.cs" />
-    <Compile Include="RawArticle\RecordMapper\RecordToRawArticleMapperWithEpiCaching.cs" />
     <Compile Include="RawArticle\IRawArticleProvider.cs" />
     <Compile Include="RawArticle\RecordMapper\IRecordToRawArticleMapper.cs" />
     <Compile Include="RawArticle\RawArticle.cs" />

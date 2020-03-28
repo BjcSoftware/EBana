@@ -21,7 +21,7 @@ namespace EBana.DesktopAppServices.ArticlePictures
             if (article == null)
                 throw new ArgumentNullException(nameof(article));
 
-            return article.Ref;
+            return article.Reference.Value;
         }
 
         public string FormatDefaultName()

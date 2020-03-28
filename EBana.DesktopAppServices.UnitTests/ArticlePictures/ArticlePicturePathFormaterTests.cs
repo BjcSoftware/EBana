@@ -53,10 +53,21 @@ namespace EBana.DesktopAppServices.ArticlePictures.UnitTests
                 stubNameFormater);
 
             string expectedPath = "folder/ArticleName.png";
-            string actualPath = formater.FormatPath(new Article());
+            string actualPath = formater.FormatPath(CreateStubArticle());
             Assert.AreEqual(
                 expectedPath, 
                 actualPath);
+        }
+
+        private Article CreateStubArticle()
+        {
+            return
+                new Article(
+                    new ReferenceArticle("N1111111"),
+                    "Article",
+                    "Loc",
+                    45,
+                    "Infos");
         }
 
         private ArticlePicturePathFormatter CreateFormater()

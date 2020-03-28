@@ -37,7 +37,7 @@ namespace EBana.Domain.Security
 
         private Credentials CreateNewCredentialsFromPassword(string newPassword)
         {
-            return new Credentials { Password = hash.Hash(newPassword) };
+            return new Credentials(hash.Hash(newPassword));
         }
     }
 }

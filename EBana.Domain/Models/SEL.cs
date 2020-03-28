@@ -1,22 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace EBana.Domain.Models
+﻿namespace EBana.Domain.Models
 {
 	/// <summary>
 	/// Représente un article SEL
 	/// </summary>
-	[Table("SEL")]
-	public class SEL : Article
+	public class Sel : Article
 	{
-        /// <summary>
-        /// Constructeur par défaut
-        /// </summary>
-        public SEL()
-        {
+        protected Sel()
+        { }
 
+        public Sel(
+            ReferenceArticle reference,
+            string libelle,
+            string localisation,
+            double? quantite,
+            string infosSupplementaires)
+            : base(
+                  reference,
+                  libelle,
+                  localisation,
+                  quantite,
+                  infosSupplementaires)
+        {
         }
 
-        public SEL(Article article)
+        public Sel(Article article)
             : base(article)
         {
         }

@@ -14,9 +14,9 @@ namespace EBana.EfDataAccess.Repository
             ICredentialsReader credentialsReader)
         {
             if (credentialsWriter == null)
-                throw new ArgumentNullException("credentialsWriter");
+                throw new ArgumentNullException(nameof(credentialsWriter));
             if (credentialsReader == null)
-                throw new ArgumentNullException("credentialsReader");
+                throw new ArgumentNullException(nameof(credentialsReader));
 
             this.credentialsWriter = credentialsWriter;
             this.credentialsReader = credentialsReader;
@@ -35,7 +35,7 @@ namespace EBana.EfDataAccess.Repository
         private void RemoveCurrentCredentials()
         {
             Credentials currentCredentials = credentialsReader.GetCredentials();
-            credentialsWriter.Remove(currentCredentials.IdCredentials);
+            credentialsWriter.Remove(currentCredentials.Id);
         }
     }
 }

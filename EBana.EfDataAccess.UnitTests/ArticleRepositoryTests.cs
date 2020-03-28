@@ -14,24 +14,10 @@ namespace EBana.EfDataAccess.UnitTests
         public void Constructor_NullArticleWriterPassed_Throws()
         {
             IWriter<Article> nullArticleWriter = null;
-            var stubTypeEpiWriter = Substitute.For<IWriter<TypeEpi>>();
 
             var exception = Assert.Catch<ArgumentNullException>(
                 () => new ArticleRepository(
-                    nullArticleWriter,
-                    stubTypeEpiWriter));
-        }
-
-        [Test]
-        public void Constructor_NullTypeEpiWriterPassed_Throws()
-        {
-            var stubArticleWriter = Substitute.For<IWriter<Article>>();
-            IWriter<TypeEpi> nullTypeEpiWriter = null;
-
-            var exception = Assert.Catch<ArgumentNullException>(
-                () => new ArticleRepository(
-                    stubArticleWriter,
-                    nullTypeEpiWriter));
+                    nullArticleWriter));
         }
 
         [Test]
@@ -47,11 +33,9 @@ namespace EBana.EfDataAccess.UnitTests
         private ArticleRepository CreateRepository()
         {
             var stubArticleWriter = Substitute.For<IWriter<Article>>();
-            var stubTypeEpiWriter = Substitute.For<IWriter<TypeEpi>>();
 
             return new ArticleRepository(
-                stubArticleWriter,
-                stubTypeEpiWriter);
+                stubArticleWriter);
         }
     }
 }

@@ -84,7 +84,7 @@ namespace EBana.Excel.UnitTests
                     IdMagasin = 1,
                     InfosSupplementaires = "Infos1",
                     LienFlu = "Flu1",
-                    TypeEpi = new TypeEpi() { Libelle = "Epitype1" }
+                    TypeEpi = new TypeEpi("Epitype1")
                 },
                 new RawArticle() {
                     IdArticle = 0,
@@ -95,7 +95,7 @@ namespace EBana.Excel.UnitTests
                     IdMagasin = 2,
                     InfosSupplementaires = "Infos2",
                     LienFlu = "Flu2",
-                    TypeEpi = new TypeEpi() { Libelle = "Epitype2" }
+                    TypeEpi = new TypeEpi("Epitype2")
                 }
             };
         }

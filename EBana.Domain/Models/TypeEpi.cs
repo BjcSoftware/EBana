@@ -1,38 +1,49 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EBana.Domain.Models
 {
-	[Table("TypeEpi")]
-	public class TypeEpi
-	{
-		[Key]
-		[Column("IdTypeEpi")]
-		public int IdTypeEpi { get; set; }
+    public class TypeEpi
+    {
+        public string Value { get; private set; }
 
-		[Column("Libelle")]
-		public string Libelle { get; set; }
+        private TypeEpi()
+        { }
 
-		public override bool Equals(object obj)
-		{
-			var epi = obj as TypeEpi;
-			return epi != null &&
-				   IdTypeEpi == epi.IdTypeEpi &&
-				   Libelle == epi.Libelle;
-		}
+        public TypeEpi(string type)
+        {
+            if (string.IsNullOrEmpty(type))
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            Value = type.Capitalize();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is TypeEpi epi &&
+                   Value == epi.Value;
+        }
 
         public override int GetHashCode()
         {
-            var hashCode = 721653230;
-            hashCode = hashCode * -1521134295 + IdTypeEpi.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Libelle);
-            return hashCode;
+            return -1937169414 + EqualityComparer<string>.Default.GetHashCode(Value);
         }
+    }
 
-        public override string ToString()
-		{
-			return Libelle;
-		}
-	}
+    public static class StringHelper
+    {
+        public static string Capitalize(this string s)
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                return s;
+            }
+            else
+            {
+                return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(s.ToLower());
+            }
+        }
+    }
 }

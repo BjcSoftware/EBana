@@ -58,7 +58,7 @@ namespace EBana.Excel.UnitTests
 
             Article article = mapper.Map(rawArticle);
 
-            Assert.IsInstanceOf<EPI>(article);
+            Assert.IsInstanceOf<Epi>(article);
         }
 
         private RawArticle CreateValidRawArticleEPI()
@@ -69,7 +69,7 @@ namespace EBana.Excel.UnitTests
                 Libelle = "Libelle",
                 Localisation = "Localisation",
                 IdMagasin = articlesSettings.IdMagasinBanalise,
-                TypeEpi = new TypeEpi() { Libelle = "TypeEPI" }
+                TypeEpi = new TypeEpi("TypeEPI")
             };
 
             return validRawArticleEPI;
@@ -83,7 +83,7 @@ namespace EBana.Excel.UnitTests
 
             Article article = mapper.Map(rawArticle);
 
-            Assert.IsInstanceOf<SEL>(article);
+            Assert.IsInstanceOf<Sel>(article);
         }
 
         private RawArticle CreateValidRawArticleSEL()

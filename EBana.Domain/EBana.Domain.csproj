@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EBana.Domain</RootNamespace>
     <AssemblyName>EBana.Domain</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -51,6 +51,8 @@
     <Compile Include="ArticlePictures\Events\ArticlePictureUpdated.cs" />
     <Compile Include="ArticlePictures\IArticlePictureLocator.cs" />
     <Compile Include="ArticlePictures\IArticlePictureUpdater.cs" />
+    <Compile Include="Models\Exceptions\InvalidArticleReferenceException.cs" />
+    <Compile Include="Models\ReferenceArticle.cs" />
     <Compile Include="Updater\ArticleUpdaterService.cs" />
     <Compile Include="Updater\Exceptions\InvalidUpdateSourceException.cs" />
     <Compile Include="Updater\SimpleUpdateSourceValidator.cs" />
@@ -69,9 +71,8 @@
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Banalise.cs" />
     <Compile Include="Models\Credentials.cs" />
-    <Compile Include="Models\EPI.cs" />
-    <Compile Include="Models\SEL.cs" />
-    <Compile Include="Models\TypeArticle.cs" />
+    <Compile Include="Models\Epi.cs" />
+    <Compile Include="Models\Sel.cs" />
     <Compile Include="Models\TypeEpi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\Authenticator\Authenticator.cs" />

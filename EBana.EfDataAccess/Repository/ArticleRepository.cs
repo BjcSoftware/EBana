@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EBana.Domain.Models;
 using EBana.Domain.Repository;
 
@@ -11,25 +12,20 @@ namespace EBana.EfDataAccess.Repository
     public class ArticleRepository : IArticleRepository
     {
         private readonly IWriter<Article> articleWriter;
-        private readonly IWriter<TypeEpi> typeEpiWriter;
 
         public ArticleRepository(
-            IWriter<Article> articleWriter,
-            IWriter<TypeEpi> typeEpiWriter)
+            IWriter<Article> articleWriter)
         {
             if (articleWriter == null)
-                throw new ArgumentNullException("articleWriter");
-            if (typeEpiWriter == null)
-                throw new ArgumentNullException("typeEpiReader");
+                throw new ArgumentNullException(nameof(articleWriter));
 
             this.articleWriter = articleWriter;
-            this.typeEpiWriter = typeEpiWriter;
         }
 
         public void AddRange(IEnumerable<Article> articlesToAdd)
         {
             if (articlesToAdd == null)
-                throw new ArgumentNullException("articlesToAdd");
+                throw new ArgumentNullException(nameof(articlesToAdd));
 
             articleWriter.AddRange(articlesToAdd);
             articleWriter.Save();
@@ -38,10 +34,6 @@ namespace EBana.EfDataAccess.Repository
         public void RemoveAll()
         {
             articleWriter.RemoveAll();
-            typeEpiWriter.RemoveAll();
-
-            // seul un save sur articleWriter est suffisant car articleWriter et typeEpiWriter 
-            // doivent partager le même DbContext
             articleWriter.Save();
         }
     }

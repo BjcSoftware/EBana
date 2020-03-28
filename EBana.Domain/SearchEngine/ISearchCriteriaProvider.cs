@@ -11,7 +11,7 @@ namespace EBana.Domain.SearchEngine
         /// <summary>
         /// Récupérer les types d'articles disponibles.
         /// </summary>
-        IEnumerable<TypeArticle> GetArticleTypes();
+        IEnumerable<string> GetArticleTypes();
 
         /// <summary>
         /// Récupérer les types d'EPIs disponibles.

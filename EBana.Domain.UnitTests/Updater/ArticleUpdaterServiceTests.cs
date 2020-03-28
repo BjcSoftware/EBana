@@ -84,7 +84,7 @@ namespace EBana.Domain.Updater.UnitTests
                 .IsValid(Arg.Any<string>())
                 .Returns(true);
 
-            var newArticles = new List<Article> { new Article(), new EPI() };
+            var newArticles = new List<Article> { CreateStubArticle(), CreateStubEpi() };
             var stubProvider = Substitute.For<IArticleProvider>();
             stubProvider
                 .GetArticlesFrom(Arg.Any<string>())
@@ -99,6 +99,30 @@ namespace EBana.Domain.Updater.UnitTests
             mockUpdater
                 .Received()
                 .ReplaceAvailableArticlesWith(newArticles);
+        }
+
+        private Article CreateStubArticle()
+        {
+            return
+                new Article(
+                    new ReferenceArticle("N1111111"),
+                    "Article",
+                    "Loc",
+                    45,
+                    "Infos");
+        }
+
+        private Article CreateStubEpi()
+        {
+            return
+                new Epi(
+                    new ReferenceArticle("N1111111"),
+                    "Article",
+                    "Loc",
+                    45,
+                    "Infos",
+                    "lien",
+                    new TypeEpi("Casque"));
         }
 
         ArticleUpdaterService CreateService()

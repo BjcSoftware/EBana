@@ -26,7 +26,7 @@ namespace EBana.DesktopAppServices.ArticlePictures.EventHandlers
 
             dialogService.Show(
                 "Succès",
-                $"La photo de l'article {e.Article.Ref} ({e.Article.Libelle}) a été mise à jour.",
+                $"La photo de l'article {e.Article.Reference} ({e.Article.Libelle}) a été mise à jour.",
                 DialogButton.Ok);
         }
     }

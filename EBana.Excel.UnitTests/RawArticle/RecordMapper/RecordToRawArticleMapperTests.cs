@@ -57,7 +57,7 @@ namespace EBana.Excel.UnitTests
                 IdMagasin = 10,
                 LienFlu = "Flu",
                 InfosSupplementaires = "Infos",
-                TypeEpi = new TypeEpi { Libelle = "Casque" }
+                TypeEpi = new TypeEpi("Casque")
             };
 
             var mapper = CreateMapper();

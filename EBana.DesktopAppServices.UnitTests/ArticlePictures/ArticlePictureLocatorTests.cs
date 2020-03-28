@@ -35,7 +35,7 @@ namespace EBana.DesktopAppServices.ArticlePictures.UnitTests
 
             var locator = CreateArticlePictureLocator(stubFileService, stubNameFormater);
 
-            Article articleWithAPicture = new Article();
+            Article articleWithAPicture = CreateStubArticle();
             bool IsArticleHavingAPicture = locator
                 .IsArticleHavingAPicture(articleWithAPicture);
 
@@ -64,7 +64,7 @@ namespace EBana.DesktopAppServices.ArticlePictures.UnitTests
 
             var locator = CreateArticlePictureLocator(stubFileService);
 
-            Article articleWithoutPicture = new Article();
+            Article articleWithoutPicture = CreateStubArticle();
             string returnedPicturePath = locator
                 .GetArticlePictureLocationOrDefault(articleWithoutPicture)
                 .OriginalString;
@@ -88,11 +88,22 @@ namespace EBana.DesktopAppServices.ArticlePictures.UnitTests
 
             var locator = CreateArticlePictureLocator(stubFileService, stubNameFormater);
 
-            Article articleWithAPicture = new Article();
+            Article articleWithAPicture = CreateStubArticle();
             string returnedPicturePath = locator
                 .GetArticlePictureLocationOrDefault(articleWithAPicture).OriginalString;
 
             Assert.AreEqual($"{GetPictureFolderPath()}/article.jpg", returnedPicturePath);
+        }
+
+        private Article CreateStubArticle()
+        {
+            return
+                new Article(
+                    new ReferenceArticle("N1111111"),
+                    "Article",
+                    "Loc",
+                    45,
+                    "Infos");
         }
 
         private ArticlePictureLocator CreateArticlePictureLocator()

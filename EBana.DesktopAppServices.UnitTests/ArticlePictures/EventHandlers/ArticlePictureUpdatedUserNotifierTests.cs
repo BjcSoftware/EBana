@@ -40,12 +40,23 @@ namespace EBana.DesktopAppServicesTests.ArticlePictures.EventHandlers.UnitTests
             var notifier = new ArticlePictureUpdatedUserNotifier(
                 stubDialogService);
 
-            notifier.Handle(new ArticlePictureUpdated(new Article()));
+            notifier.Handle(new ArticlePictureUpdated(CreateStubArticle()));
 
             stubDialogService.Received().Show(
                 Arg.Any<string>(),
                 Arg.Any<string>(),
                 Arg.Any<DialogButton>());
+        }
+
+        private Article CreateStubArticle()
+        {
+            return
+                new Article(
+                    new ReferenceArticle("N1111111"),
+                    "Article",
+                    "Loc",
+                    45,
+                    "Infos");
         }
     }
 }

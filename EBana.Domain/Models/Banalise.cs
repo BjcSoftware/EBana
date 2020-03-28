@@ -1,17 +1,35 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace EBana.Domain.Models
+﻿namespace EBana.Domain.Models
 {
-    [Table("Banalise")]
     public class Banalise : Article
-	{	
-        public Banalise()
+    {
+        public string LienFlu { get; private set; }
+
+        protected Banalise()
+        { }
+
+        public Banalise(
+            ReferenceArticle reference,
+            string libelle,
+            string localisation,
+            double? quantite,
+            string infosSupplementaires,
+            string lienFlu)
+            : base(
+                  reference,
+                  libelle,
+                  localisation,
+                  quantite,
+                  infosSupplementaires)
         {
+            LienFlu = lienFlu;
         }
 
-        public Banalise(Article article)
+        public Banalise(
+            Article article,
+            string lienFlu)
             : base(article)
         {
+            LienFlu = lienFlu;
         }
 
         public Banalise(Banalise autre)
@@ -19,8 +37,5 @@ namespace EBana.Domain.Models
         {
             LienFlu = autre.LienFlu;
         }
-
-    	[Column("LienFlu")]
-    	public string LienFlu { get; set; }
-	}
+    }
 }

@@ -70,7 +70,7 @@ namespace EBana.DesktopAppServices.ArticlePictures.UnitTests
             string nullLocation = null;
 
             var exception = Assert.Catch<ArgumentNullException>(
-                () => updater.UpdatePictureOfArticle(new Article(), nullLocation));
+                () => updater.UpdatePictureOfArticle(CreateStubArticle(), nullLocation));
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace EBana.DesktopAppServices.ArticlePictures.UnitTests
 
             string updateSrc = "srcFolder/picture.jpg";
             updater.UpdatePictureOfArticle(
-                new Article(),
+                CreateStubArticle(),
                 updateSrc);
 
             stubFileService
@@ -100,7 +100,7 @@ namespace EBana.DesktopAppServices.ArticlePictures.UnitTests
         {
             var stubEventHandler = Substitute.For<IEventHandler<ArticlePictureUpdated>>();
             var updater = CreateUpdater(stubEventHandler);
-            var articleToUpdate = new Article();
+            var articleToUpdate = CreateStubArticle();
 
             updater.UpdatePictureOfArticle(articleToUpdate, "newPicturePath");
 
@@ -148,6 +148,17 @@ namespace EBana.DesktopAppServices.ArticlePictures.UnitTests
                 stubService,
                 stubFormatter,
                 handler);
+        }
+
+        private Article CreateStubArticle()
+        {
+            return
+                new Article(
+                    new ReferenceArticle("N1111111"),
+                    "Article",
+                    "Loc",
+                    45,
+                    "Infos");
         }
     }
 }

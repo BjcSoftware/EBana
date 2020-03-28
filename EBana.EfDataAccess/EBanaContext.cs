@@ -1,81 +1,71 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using SQLite.CodeFirst;
-using EBana.Domain.Models;
-using EBana.Security.Hash;
-using System;
+﻿using EBana.Domain.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EBana.EfDataAccess
 {
 	public class EBanaContext : DbContext
 	{
-		private readonly IHash hash;
-
-		public EBanaContext(IHash hash) : base("name=EBanaDB") 
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			if (hash == null)
-				throw new ArgumentNullException("hash");
-
-			this.hash = hash;
+			optionsBuilder
+				.UseSqlite(@"Data Source=eBana.db;");
 		}
-
-		// définition des tables utilisables
-		public DbSet<Article> Article { get; set; }
-		public DbSet<TypeArticle> TypeArticle { get; set; }
-		public DbSet<TypeEpi> TypeEpi { get; set; }
-		public DbSet<Credentials> Credentials { get; set; }
 		
-		protected override void OnModelCreating(DbModelBuilder modelBuilder)
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			var sqliteConnectionInitializer = new MyDbContextInitializer(hash, modelBuilder);
-			Database.SetInitializer(sqliteConnectionInitializer);
-
-			// les noms de tables sont au singulier
-			modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
-			// relations table/classe
-			modelBuilder.Entity<Article>().ToTable("Article");
-			modelBuilder.Entity<Banalise>().ToTable("Banalise");
-			modelBuilder.Entity<EPI>().ToTable("EPI");
-			modelBuilder.Entity<SEL>().ToTable("SEL");
-			modelBuilder.Entity<Credentials>().ToTable("Credentials");
-			modelBuilder.Entity<TypeEpi>().ToTable("TypeEpi");
+			modelBuilder.ApplyConfiguration(new ArticleEntityTypeConfiguration());
+			modelBuilder.ApplyConfiguration(new BanaliseEntityTypeConfiguration());
+			modelBuilder.ApplyConfiguration(new EpiEntityTypeConfiguration());
+			modelBuilder.ApplyConfiguration(new SelEntityTypeConfiguration());
+			modelBuilder.ApplyConfiguration(new CredentialsEntityTypeConfiguration());
 		}
 	}
 
-
-	/// <summary>
-	/// Initialisateur de context basé sur le SqliteCreateDatabaseIfNotExists
-	/// Permet de fournir des données initiales à la base
-	/// </summary>
-	public class MyDbContextInitializer : SqliteCreateDatabaseIfNotExists<EBanaContext>
+	class ArticleEntityTypeConfiguration : IEntityTypeConfiguration<Article>
 	{
-		private readonly IHash hash;
-
-		public MyDbContextInitializer(IHash hash, DbModelBuilder modelBuilder)
-			: base(modelBuilder)
+		public void Configure(EntityTypeBuilder<Article> articleConfiguration)
 		{
-			if (hash == null)
-				throw new ArgumentNullException("hash");
-
-			this.hash = hash;
+			articleConfiguration
+				.ToTable("articles")
+				.HasKey(o => o.Id);
+			articleConfiguration.OwnsOne(o => o.Reference);
 		}
+	}
 
-		protected override void Seed(EBanaContext context)
+	class BanaliseEntityTypeConfiguration : IEntityTypeConfiguration<Banalise>
+	{
+		public void Configure(EntityTypeBuilder<Banalise> banaliseConfiguration)
 		{
-			// définition des types d'articles disponibles
-			context.TypeArticle.Add(new TypeArticle { Libelle = "Banalisé" });
-			context.TypeArticle.Add(new TypeArticle { Libelle = "SEL" });
-
-			SetDefaultPassword(context);
+			banaliseConfiguration.HasBaseType<Article>();
 		}
+	}
 
-		private void SetDefaultPassword(EBanaContext context)
+	class EpiEntityTypeConfiguration : IEntityTypeConfiguration<Epi>
+	{
+		public void Configure(EntityTypeBuilder<Epi> EpiConfiguration)
 		{
-			string defaultPassword = "admin";
-			string hashedPassword = hash.Hash(defaultPassword);
+			EpiConfiguration
+				.HasBaseType<Banalise>()
+				.OwnsOne(o => o.TypeEpi);
+		}
+	}
 
-			context.Credentials.Add(new Credentials { Password = hashedPassword });
+	class SelEntityTypeConfiguration : IEntityTypeConfiguration<Sel>
+	{
+		public void Configure(EntityTypeBuilder<Sel> SelConfiguration)
+		{
+			SelConfiguration.HasBaseType<Article>();
+		}
+	}
+
+	class CredentialsEntityTypeConfiguration : IEntityTypeConfiguration<Credentials>
+	{
+		public void Configure(EntityTypeBuilder<Credentials> articleConfiguration)
+		{
+			articleConfiguration
+				.ToTable("credentials")
+				.HasKey(o => o.Id);
 		}
 	}
 }

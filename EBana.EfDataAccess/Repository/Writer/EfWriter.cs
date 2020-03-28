@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 
 namespace EBana.EfDataAccess.Repository
 {
@@ -13,7 +13,7 @@ namespace EBana.EfDataAccess.Repository
         public EfWriter(DbContext context)
         {
             if (context == null)
-                throw new ArgumentNullException("context");
+                throw new ArgumentNullException(nameof(context));
 
             this.context = context;
             entities = this.context.Set<TEntity>();
@@ -29,9 +29,9 @@ namespace EBana.EfDataAccess.Repository
             entities.AddRange(entitiesToAdd);
         }
 
-        public void Remove(int entityID)
+        public void Remove(int entityId)
         {
-            TEntity entity = entities.Find(entityID);
+            TEntity entity = entities.Find(entityId);
             entities.Remove(entity);
         }
 

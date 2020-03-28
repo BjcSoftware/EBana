@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Data;
 using System.Globalization;
-using EBana.Domain.Models;
 
 namespace EBana.WpfUI.Converters
 {	
@@ -18,8 +17,8 @@ namespace EBana.WpfUI.Converters
 			
 			string articleTypeLabelLinkedToSender = parameter.ToString();
 			
-			TypeArticle selectedArticleType = (TypeArticle)value;
-			return (selectedArticleType.Libelle == articleTypeLabelLinkedToSender) ? Visibility.Visible : Visibility.Hidden;
+			string selectedArticleType = (string)value;
+			return (selectedArticleType == articleTypeLabelLinkedToSender) ? Visibility.Visible : Visibility.Hidden;
 	    }
 		
 		public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

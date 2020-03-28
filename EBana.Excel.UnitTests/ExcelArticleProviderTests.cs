@@ -43,7 +43,7 @@ namespace EBana.Excel.UnitTests
         [Test]
         public void GetArticles_TwoRawArticlesProvided_ReturnsTwoArticles()
         {
-            var sampleArticle = new Article() { Libelle = "Sample" };
+            var sampleArticle = CreateStubArticle();
             var articleProvider = CreateExcelArticleProvider(
                 CreateRawArticleProviderReturningTwoRawArticles(),
                 CreateMapperReturning(sampleArticle));
@@ -57,6 +57,17 @@ namespace EBana.Excel.UnitTests
             Assert.AreEqual(
                 expectedTwoArticles,
                 actualArticles);
+        }
+
+        private Article CreateStubArticle()
+        {
+            return
+                new Article(
+                    new ReferenceArticle("N1111111"),
+                    "Article",
+                    "Loc",
+                    45,
+                    "Infos");
         }
 
         [Test]
