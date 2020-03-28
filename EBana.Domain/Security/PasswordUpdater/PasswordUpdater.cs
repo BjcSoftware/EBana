@@ -1,6 +1,5 @@
 ﻿using EBana.Domain.Models;
 using EBana.Domain.Security.Event;
-using EBana.Security.Hash;
 using System;
 
 namespace EBana.Domain.Security
@@ -8,36 +7,39 @@ namespace EBana.Domain.Security
     public class PasswordUpdater : IPasswordUpdater
     {
         private readonly ICredentialsUpdater credentialsUpdater;
-        private readonly IHash hash;
+        private readonly IPasswordHashGenerator passwordHashGenerator;
         private readonly IEventHandler<PasswordUpdated> handler;
 
         public PasswordUpdater(
-            ICredentialsUpdater credentialsUpdater, 
-            IHash hash,
+            ICredentialsUpdater credentialsUpdater,
+            IPasswordHashGenerator passwordHashGenerator,
             IEventHandler<PasswordUpdated> handler)
         {
             if (credentialsUpdater == null)
                 throw new ArgumentNullException(nameof(credentialsUpdater));
-            if (hash == null)
-                throw new ArgumentNullException(nameof(hash));
+            if (passwordHashGenerator == null)
+                throw new ArgumentNullException(nameof(passwordHashGenerator));
             if (handler == null)
                 throw new ArgumentNullException(nameof(handler));
 
             this.credentialsUpdater = credentialsUpdater;
-            this.hash = hash;
+            this.passwordHashGenerator = passwordHashGenerator;
             this.handler = handler;
         }
 
-        public void Update(string newPassword)
+        public void Update(UnhashedPassword newPassword)
         {
-            Credentials newCredentials = CreateNewCredentialsFromPassword(newPassword);
-            credentialsUpdater.Update(newCredentials);
+            credentialsUpdater.Update(
+                CreateCredentialsFromPassword(newPassword));
             handler.Handle(new PasswordUpdated());
         }
 
-        private Credentials CreateNewCredentialsFromPassword(string newPassword)
+        private Credentials CreateCredentialsFromPassword(UnhashedPassword newPassword)
         {
-            return new Credentials(hash.Hash(newPassword));
+            return 
+                new Credentials(
+                    new HashedPassword(
+                        newPassword, passwordHashGenerator));
         }
     }
 }

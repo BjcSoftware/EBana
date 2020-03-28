@@ -1,4 +1,4 @@
-﻿using EBana.Security.Hash;
+﻿using EBana.Domain.Models;
 using System;
 
 namespace EBana.Domain.Security
@@ -6,31 +6,31 @@ namespace EBana.Domain.Security
     public class Authenticator : IAuthenticator
     {
         private readonly ICredentialsReader credentialsReader;
-        private readonly IHash hash;
+        private readonly IPasswordHashComparer passwordHashComparer;
 
         public Authenticator(
-            ICredentialsReader credentialsReader, 
-            IHash hash)
+            ICredentialsReader credentialsReader,
+            IPasswordHashComparer passwordHashComparer)
         {
             if (credentialsReader == null)
                 throw new ArgumentNullException(nameof(credentialsReader));
-            if (hash == null)
-                throw new ArgumentNullException(nameof(hash));
+            if (passwordHashComparer == null)
+                throw new ArgumentNullException(nameof(passwordHashComparer));
 
             this.credentialsReader = credentialsReader;
-            this.hash = hash;
+            this.passwordHashComparer = passwordHashComparer;
         }
 
-        public bool IsPasswordCorrect(string password)
+        public bool IsPasswordCorrect(UnhashedPassword passwordToTest)
         {
-            if (password == null)
-                throw new ArgumentNullException(nameof(password));
+            if (passwordToTest == null)
+                throw new ArgumentNullException(nameof(passwordToTest));
 
-            var hashedPassword = GetPasswordHash();
-            return hash.Verify(password, hashedPassword);
+            return ActualPassword()
+                .MatchWith(passwordToTest, passwordHashComparer);
         }
 
-        private string GetPasswordHash()
+        private HashedPassword ActualPassword()
         {
             return credentialsReader.GetCredentials().Password;
         }

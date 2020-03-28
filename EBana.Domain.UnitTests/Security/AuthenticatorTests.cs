@@ -1,8 +1,8 @@
 ﻿using EBana.Domain.Models;
 using NUnit.Framework;
 using NSubstitute;
-using EBana.Security.Hash;
 using System;
+using EBana.Security.Hash;
 
 namespace EBana.Domain.Security.UnitTests
 {
@@ -13,7 +13,7 @@ namespace EBana.Domain.Security.UnitTests
         public void Constructor_NullCredentialsReaderPassed_Throws()
         {
             ICredentialsReader nullCredentialsReader = null;
-            var stubHash = Substitute.For<IHash>();
+            var stubHash = Substitute.For<IPasswordHashComparer>();
 
             var exception = Assert.Catch<ArgumentNullException>(
                 () => new Authenticator(
@@ -22,59 +22,57 @@ namespace EBana.Domain.Security.UnitTests
         }
 
         [Test]
-        public void Constructor_NullHashPassed_Throws()
+        public void Constructor_NullPasswordHashComparerPassed_Throws()
         {
             var stubCredentialsReader = Substitute.For<ICredentialsReader>();
-            IHash nullHash = null;
+            IPasswordHashComparer nullPasswordHashComparer = null;
 
             var exception = Assert.Catch<ArgumentNullException>(
                 () => new Authenticator(
                     stubCredentialsReader,
-                    nullHash));
+                    nullPasswordHashComparer));
         }
 
         [Test]
         public void IsPasswordCorrect_NullPassword_Throws()
         {
             var authenticator = CreateAuthenticator();
-            string nullPassword = null;
+            UnhashedPassword nullPassword = null;
 
             var exception = Assert.Catch<ArgumentNullException>(
                 () => authenticator.IsPasswordCorrect(nullPassword));
         }
 
         [Test]
-        public void IsPasswordCorrect_CorrectPassword_ReturnsTrue()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void IsPasswordCorrect_ReturnsCorrectResult(bool expected)
         {
-            var stubHash = Substitute.For<IHash>();
-            stubHash
-                .Verify(Arg.Any<string>(), Arg.Any<string>())
-                .Returns(true);
-            var authenticator = CreateAuthenticator(stubHash);
+            var authenticator = CreateAuthenticator(
+                CreateStubPasswordHashComparerReturning(expected));
 
-            bool isPasswordCorrect = authenticator.IsPasswordCorrect("a correct password");
-
-            Assert.True(isPasswordCorrect);
+            Assert.AreEqual(
+                expected,
+                authenticator
+                    .IsPasswordCorrect(
+                        new UnhashedPassword("password")));
         }
 
-        [Test]
-        public void IsPasswordCorrect_IncorrectPassword_ReturnsFalse()
+        private IPasswordHashComparer CreateStubPasswordHashComparerReturning(bool areMatching)
         {
-            var stubHash = Substitute.For<IHash>();
-            stubHash
-                .Verify(Arg.Any<string>(), Arg.Any<string>())
-                .Returns(false);
-            var authenticator = CreateAuthenticator(stubHash);
+            var stubPasswordHashComparer = Substitute.For<IPasswordHashComparer>();
+            stubPasswordHashComparer
+                .AreMatching(Arg.Any<HashedPassword>(), Arg.Any<UnhashedPassword>())
+                .Returns(areMatching);
 
-            bool isPasswordCorrect = authenticator.IsPasswordCorrect("an incorrect password");
-
-            Assert.False(isPasswordCorrect);
+            return stubPasswordHashComparer;
         }
 
-        private Authenticator CreateAuthenticator(IHash hash)
+        private Authenticator CreateAuthenticator(IPasswordHashComparer passwordHashComparer)
         {
-            ICredentialsReader stubCredentialsReader = CreateStubCredentialsReader();
-            var authenticator = new Authenticator(stubCredentialsReader, hash);
+            var authenticator = new Authenticator(
+                CreateStubCredentialsReader(),
+                passwordHashComparer);
 
             return authenticator;
         }
@@ -82,18 +80,23 @@ namespace EBana.Domain.Security.UnitTests
         private Authenticator CreateAuthenticator()
         {
             var stubCredentialsReader = Substitute.For<ICredentialsReader>();
-            var stubHash = Substitute.For<IHash>();
+            var stubPasswordHashComparer = Substitute.For<IPasswordHashComparer>();
 
             return new Authenticator(
                 stubCredentialsReader,
-                stubHash);
+                stubPasswordHashComparer);
         }
 
         private ICredentialsReader CreateStubCredentialsReader()
         {
             var stubCredentialsReader = Substitute.For<ICredentialsReader>();
-            stubCredentialsReader.GetCredentials()
-                .Returns(new Credentials("stubPassword"));
+            stubCredentialsReader
+                .GetCredentials()
+                .Returns(
+                    new Credentials(
+                        new HashedPassword(
+                            new UnhashedPassword("stubPassword"), 
+                            new PasswordHashGenerator())));
 
             return stubCredentialsReader;
         }

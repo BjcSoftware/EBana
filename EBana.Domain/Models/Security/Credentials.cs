@@ -4,12 +4,12 @@
 	{
 		public int Id { get; private set; }
 		
-		public string Password { get; private set; }
+		public HashedPassword Password { get; private set; }
 
 		private Credentials()
 		{ }
 
-		public Credentials(string password)
+		public Credentials(HashedPassword password)
 		{
 			Password = password;
 		}

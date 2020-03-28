@@ -38,7 +38,8 @@ namespace EBana.WpfUI.Core
         private readonly ArticlePictureSettings articlePictureSettings;
         private readonly IArticlePictureNameFormatter articlePictureNameFormatter;
         private readonly IArticlePictureLocator pictureLocator;
-        private readonly IHash hash;
+        private readonly IPasswordHashGenerator passwordHashGenerator;
+        private readonly IPasswordHashComparer passwordHashComparer;
         private readonly IMessageBoxDialogService messageBoxDialogService;
 
         public PageComposer(INavigationService navigator)
@@ -61,7 +62,8 @@ namespace EBana.WpfUI.Core
                 articlePictureNameFormatter,
                 articlePictureSettings);
 
-            hash = new BCryptHash();
+            passwordHashGenerator = new PasswordHashGenerator();
+            passwordHashComparer = new PasswordHashComparer();
 
             messageBoxDialogService = new MessageBoxDialogService();
 
@@ -102,13 +104,11 @@ namespace EBana.WpfUI.Core
 
         private void SetDefaultPassword(DbContext context)
         {
-            string defaultPassword = "admin";
-            string hashedPassword = hash.Hash(defaultPassword);
-
-            context.Add(new Credentials(hashedPassword));
+            var defaultPassword = new UnhashedPassword("admin");
+            context.Add(
+                new Credentials(
+                    new HashedPassword(defaultPassword, passwordHashGenerator)));
         }
-
-
 
         public Page CreatePage(string pageName)
         {
@@ -199,9 +199,7 @@ namespace EBana.WpfUI.Core
 
         private IAuthenticator CreateAuthenticator()
         {
-            return new Authenticator(
-                CreateCredentialsReader(),
-                hash);
+            return new Authenticator(CreateCredentialsReader(), passwordHashComparer);
         }
 
         private ICredentialsReader CreateCredentialsReader()
@@ -345,7 +343,7 @@ namespace EBana.WpfUI.Core
         {
             return new PasswordUpdater(
                 CreateCredentialsUpdater(),
-                hash,
+                passwordHashGenerator,
                 new PasswordUpdatedUserNotifier(
                     messageBoxDialogService));
         }

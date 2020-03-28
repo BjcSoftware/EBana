@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 using System.Windows.Input;
+using EBana.Domain.Models;
 using EBana.Domain.Security;
 using EBana.PresentationLogic.Core.Command;
 using EBana.PresentationLogic.Core.ViewModel;
@@ -76,12 +77,14 @@ namespace EBana.PresentationLogic.ViewModels
 
         private bool IsPasswordCorrect()
         {
-            return authenticator.IsPasswordCorrect(txtCurrentPassword.Password);
+            return authenticator
+                .IsPasswordCorrect(
+                    new UnhashedPassword(txtCurrentPassword.Password));
         }
 
         private void DefineNewPassword()
         {
-            string newPassword = txtNewPassword.Password;
+            var newPassword = new UnhashedPassword(txtNewPassword.Password);
             passwordUpdater.Update(newPassword);
         }
 

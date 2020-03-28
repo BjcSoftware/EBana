@@ -61,11 +61,14 @@ namespace EBana.EfDataAccess
 
 	class CredentialsEntityTypeConfiguration : IEntityTypeConfiguration<Credentials>
 	{
-		public void Configure(EntityTypeBuilder<Credentials> articleConfiguration)
+		public void Configure(EntityTypeBuilder<Credentials> credentialsConfiguration)
 		{
-			articleConfiguration
+			credentialsConfiguration
 				.ToTable("credentials")
 				.HasKey(o => o.Id);
+
+			credentialsConfiguration
+				.OwnsOne(o => o.Password);
 		}
 	}
 }

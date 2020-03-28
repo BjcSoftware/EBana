@@ -1,7 +1,9 @@
-﻿namespace EBana.Domain.Security
+﻿using EBana.Domain.Models;
+
+namespace EBana.Domain.Security
 {
     public interface IPasswordUpdater
     {
-        void Update(string newPassword);
+        void Update(UnhashedPassword newPassword);
     }
 }

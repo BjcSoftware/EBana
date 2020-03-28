@@ -1,7 +1,9 @@
-﻿namespace EBana.Domain.Security
+﻿using EBana.Domain.Models;
+
+namespace EBana.Domain.Security
 {
     public interface IAuthenticator
     {
-        bool IsPasswordCorrect(string password);
+        bool IsPasswordCorrect(UnhashedPassword passwordToTest);
     }
 }

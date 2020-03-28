@@ -6,6 +6,7 @@ using EBana.Domain.Security;
 using EBana.PresentationLogic.Core.ViewModel;
 using EBana.PresentationLogic.Core;
 using EBana.PresentationLogic.Core.Command;
+using EBana.Domain.Models;
 
 namespace EBana.PresentationLogic.ViewModels
 {
@@ -63,7 +64,9 @@ namespace EBana.PresentationLogic.ViewModels
 
         private bool PasswordIsCorrect()
         {
-            return authenticator.IsPasswordCorrect(passwordBox.Password);
+            return authenticator
+                .IsPasswordCorrect(
+                    new UnhashedPassword(passwordBox.Password));
         }
 
         private void OpenMaintenanceMainMenu()
